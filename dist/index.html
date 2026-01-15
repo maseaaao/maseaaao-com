@@ -77,7 +77,7 @@
 body::before {
     content: '';
     position: fixed;
-    top: -10%; /* Уменьшили размер с -50%, чтобы снизить нагрузку */
+    top: -10%;
     left: -10%;
     width: 120%;
     height: 120%;
@@ -87,8 +87,8 @@ body::before {
         radial-gradient(ellipse at 50% 50%, rgba(196, 181, 253, 0.04) 0%, transparent 60%);
     animation: ambientFloat 20s ease-in-out infinite;
     pointer-events: none;
-    z-index: -1; /* Явно выносим на самый нижний слой */
-    will-change: transform; /* Подсказываем браузеру использовать видеокарту */
+    z-index: -1;
+    will-change: transform;
 }
 
         /* Floating particles */
@@ -113,8 +113,8 @@ body::before {
             animation: float var(--duration, 14s) infinite;
             animation-delay: var(--delay, 0s);
             left: var(--left, 50%);
-will-change: transform;
-    backface-visibility: hidden;
+            will-change: transform;
+            backface-visibility: hidden;
         }
 
         @keyframes float {
@@ -179,7 +179,6 @@ will-change: transform;
             transform: scale(1.05);
         }
 
-        /* Fallback пока изображение грузится */
         .avatar-fallback {
             width: 120px;
             height: 120px;
@@ -208,112 +207,121 @@ will-change: transform;
         }
 
         /* Donate Section */
-        /* .donate-section {
+        .donate-section {
             margin-bottom: 24px;
+            opacity: 0;
+            animation: fadeIn 0.6s ease forwards;
+            animation-delay: 0.1s;
         }
 
-        .donate-item {
+        .donate-title {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            text-align: center;
+            margin-bottom: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .donate-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .donate-card {
             position: relative;
             text-decoration: none;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 14px;
-            padding: 18px 22px;
+            padding: 16px 12px;
             background: linear-gradient(135deg, 
-                rgba(228, 160, 196, 0.12) 0%, 
-                rgba(167, 139, 250, 0.12) 100%);
-            border: 1px solid rgba(228, 160, 196, 0.3);
+                rgba(228, 160, 196, 0.08) 0%, 
+                rgba(167, 139, 250, 0.08) 100%);
+            border: 1px solid rgba(228, 160, 196, 0.2);
             border-radius: 16px;
             color: var(--text-primary);
-            font-weight: 600;
-            font-size: 0.95rem;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             overflow: hidden;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInUp 0.5s ease forwards;
-            animation-delay: 0.05s;
-            box-shadow: 
-                0 0 20px rgba(228, 160, 196, 0.15),
-                0 0 40px rgba(167, 139, 250, 0.1);
             -webkit-tap-highlight-color: rgba(228, 160, 196, 0.2);
         }
 
-        .donate-item::before {
+        .donate-card::before {
             content: '';
             position: absolute;
             inset: 0;
             background: linear-gradient(135deg, 
-                rgba(228, 160, 196, 0.2) 0%, 
-                rgba(167, 139, 250, 0.2) 100%);
+                rgba(228, 160, 196, 0.15) 0%, 
+                rgba(167, 139, 250, 0.15) 100%);
             opacity: 0;
             transition: opacity 0.3s ease;
         }
 
-        .donate-item:hover::before,
-        .donate-item:focus::before {
+        .donate-card:hover::before,
+        .donate-card:focus::before {
             opacity: 1;
         }
 
-        .donate-item:hover,
-        .donate-item:focus {
+        .donate-card:hover,
+        .donate-card:focus {
             transform: translateY(-3px);
-            border-color: rgba(228, 160, 196, 0.5);
+            border-color: rgba(228, 160, 196, 0.4);
             box-shadow: 
                 0 12px 40px rgba(0, 0, 0, 0.3),
-                0 0 30px rgba(228, 160, 196, 0.25),
-                0 0 60px rgba(167, 139, 250, 0.15),
-                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+                0 0 25px rgba(228, 160, 196, 0.2),
+                0 0 50px rgba(167, 139, 250, 0.1);
         }
 
-        .donate-item:focus {
+        .donate-card:focus {
             outline: none;
             box-shadow: 
                 0 12px 40px rgba(0, 0, 0, 0.3),
                 0 0 0 3px var(--focus-ring),
-                0 0 30px rgba(228, 160, 196, 0.25),
-                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+                0 0 25px rgba(228, 160, 196, 0.2);
         }
 
-        .donate-item:active {
+        .donate-card:active {
             transform: scale(0.98);
         }
 
-        .donate-icon {
-            width: 24px;
-            height: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .donate-qr {
+            width: 80px;
+            height: 80px;
+            border-radius: 10px;
+            background: white;
+            margin-bottom: 10px;
             position: relative;
             z-index: 1;
-            flex-shrink: 0;
-            font-size: 20px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
         }
 
-        .donate-text {
+        .donate-card:hover .donate-qr {
+            transform: scale(1.05);
+        }
+
+        .donate-label {
+            font-size: 0.85rem;
+            font-weight: 600;
             position: relative;
             z-index: 1;
-            flex-grow: 1;
             background: linear-gradient(90deg, var(--accent-pink), var(--accent-lavender));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            text-align: center;
         }
 
-        .donate-arrow {
+        .donate-sublabel {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
             position: relative;
             z-index: 1;
-            opacity: 0.6;
-            transition: all 0.3s ease;
-            color: var(--accent-pink);
+            margin-top: 2px;
+            opacity: 0.7;
         }
-
-        .donate-item:hover .donate-arrow,
-        .donate-item:focus .donate-arrow {
-            opacity: 1;
-            transform: translateX(4px);
-        } */
 
         /* Links Section */
         .links {
@@ -342,18 +350,16 @@ will-change: transform;
             transform: translateY(20px);
             animation: fadeInUp 0.5s ease forwards;
             animation-delay: var(--item-delay);
-            /* Tap feedback для мобильных */
             -webkit-tap-highlight-color: rgba(167, 139, 250, 0.2);
         }
 
-        /* Staggered delays через CSS переменные */
-        .link-item:nth-child(1) { --item-delay: 0.1s; }
-        .link-item:nth-child(2) { --item-delay: 0.15s; }
-        .link-item:nth-child(3) { --item-delay: 0.2s; }
-        .link-item:nth-child(4) { --item-delay: 0.25s; }
-        .link-item:nth-child(5) { --item-delay: 0.3s; }
-        .link-item:nth-child(6) { --item-delay: 0.35s; }
-        .link-item:nth-child(7) { --item-delay: 0.4s; }
+        .link-item:nth-child(1) { --item-delay: 0.15s; }
+        .link-item:nth-child(2) { --item-delay: 0.2s; }
+        .link-item:nth-child(3) { --item-delay: 0.25s; }
+        .link-item:nth-child(4) { --item-delay: 0.3s; }
+        .link-item:nth-child(5) { --item-delay: 0.35s; }
+        .link-item:nth-child(6) { --item-delay: 0.4s; }
+        .link-item:nth-child(7) { --item-delay: 0.45s; }
 
         @keyframes fadeInUp {
             to { opacity: 1; transform: translateY(0); }
@@ -385,7 +391,6 @@ will-change: transform;
                 inset 0 1px 0 rgba(255, 255, 255, 0.05);
         }
 
-        /* Focus state для клавиатурной навигации */
         .link-item:focus {
             outline: none;
             box-shadow: 
@@ -408,7 +413,6 @@ will-change: transform;
                 inset 0 1px 0 rgba(255, 255, 255, 0.05);
         }
 
-        /* Active state для tap feedback */
         .link-item:active {
             transform: scale(0.98);
         }
@@ -456,6 +460,7 @@ will-change: transform;
         }
 
         /* Platform-specific accent colors */
+        .link-item.twitch:hover, .link-item.twitch:focus { border-color: rgba(145, 70, 255, 0.4); }
         .link-item.tiktok:hover, .link-item.tiktok:focus { border-color: rgba(255, 0, 80, 0.4); }
         .link-item.telegram:hover, .link-item.telegram:focus { border-color: rgba(38, 165, 228, 0.4); }
         .link-item.youtube:hover, .link-item.youtube:focus { border-color: rgba(255, 0, 0, 0.4); }
@@ -510,9 +515,17 @@ will-change: transform;
             .link-item {
                 padding: 14px 16px;
             }
+
+            .donate-qr {
+                width: 70px;
+                height: 70px;
+            }
+
+            .donate-card {
+                padding: 14px 10px;
+            }
         }
 
-        /* Очень узкие экраны */
         @media (max-width: 320px) {
             .container {
                 max-width: 100%;
@@ -528,9 +541,21 @@ will-change: transform;
                 width: 20px;
                 height: 20px;
             }
+
+            .donate-grid {
+                gap: 8px;
+            }
+
+            .donate-qr {
+                width: 60px;
+                height: 60px;
+            }
+
+            .donate-label {
+                font-size: 0.75rem;
+            }
         }
 
-        /* Landscape на мобильных */
         @media (max-height: 500px) and (orientation: landscape) {
             body {
                 padding: 20px 20px 30px;
@@ -552,9 +577,17 @@ will-change: transform;
             .link-item {
                 padding: 12px 16px;
             }
+
+            .donate-section {
+                margin-bottom: 16px;
+            }
+
+            .donate-qr {
+                width: 60px;
+                height: 60px;
+            }
         }
 
-        /* Skip link для a11y */
         .skip-link {
             position: absolute;
             top: -40px;
@@ -573,10 +606,8 @@ will-change: transform;
     </style>
 </head>
 <body>
-    <!-- Skip link для клавиатурной навигации -->
     <a href="#links" class="skip-link">Перейти к ссылкам</a>
 
-    <!-- Floating particles с CSS переменными -->
     <div class="particles" aria-hidden="true">
         <div class="particle" style="--left: 10%; --delay: 0s; --duration: 12s;"></div>
         <div class="particle" style="--left: 20%; --delay: 2s; --duration: 14s;"></div>
@@ -608,16 +639,35 @@ will-change: transform;
         </header>
 
         <!-- Donate Section -->
-        <!-- <section class="donate-section">
-            <a href="https://www.donationalerts.com/r/maseaaao" target="_blank" rel="noopener noreferrer" class="donate-item" title="Поддержать">
-                <span class="donate-icon" aria-hidden="true">💖</span>
-                <span class="donate-text">Задонатить</span>
-                <span class="donate-arrow" aria-hidden="true">→</span>
-            </a>
-        </section> -->
+        <section class="donate-section" aria-label="Поддержать">
+            <p class="donate-title">Поддержать 💖</p>
+            <div class="donate-grid">
+                <a href="https://www.donationalerts.com/r/maseaaao" target="_blank" rel="noopener noreferrer" class="donate-card" title="Донат на стриме">
+                    <img src="./stream-qr-donation.jpg" alt="QR код для доната на стриме" class="donate-qr" loading="lazy">
+                    <span class="donate-label">На стриме</span>
+                    <span class="donate-sublabel">DonationAlerts</span>
+                </a>
+                <a href="https://boosty.to/maseaaao/donate" target="_blank" rel="noopener noreferrer" class="donate-card" title="Донат просто так">
+                    <img src="./common-qr-donation.jpg" alt="QR код для доната" class="donate-qr" loading="lazy">
+                    <span class="donate-label">Просто так</span>
+                    <span class="donate-sublabel">Boosty</span>
+                </a>
+            </div>
+        </section>
 
         <!-- Links Section -->
         <nav class="links" id="links" aria-label="Социальные сети">
+            <!-- Twitch -->
+            <a href="https://www.twitch.tv/masyapurrrr" target="_blank" rel="noopener noreferrer" class="link-item twitch" title="Twitch masyapurrrr">
+                <div class="link-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714Z"/>
+                    </svg>
+                </div>
+                <span class="link-text">Twitch</span>
+                <span class="link-arrow" aria-hidden="true">→</span>
+            </a>
+
             <!-- Telegram -->
             <a href="https://t.me/maseaaao" target="_blank" rel="noopener noreferrer" class="link-item telegram" title="Telegram @maseaaao">
                 <div class="link-icon" aria-hidden="true">
@@ -654,7 +704,7 @@ will-change: transform;
 
         <!-- Footer -->
         <footer class="footer">
-            <p class="footer-text">made with <span class="heart" aria-label="любовью">♥</span></p>
+            <p class="footer-text">сделано с <span class="heart" aria-label="любовью">♥</span></p>
         </footer>
     </div>
 </body>
