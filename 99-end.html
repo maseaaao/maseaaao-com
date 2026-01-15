@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Стрим окончен — maseaaao</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0a0f;
+            --accent-pink: #e4a0c4;
+            --accent-purple: #a78bfa;
+            --accent-lavender: #c4b5fd;
+            --text-primary: #f5f5f7;
+            --text-secondary: #b4b4bb;
+            --glow-pink: rgba(228, 160, 196, 0.4);
+            --glow-purple: rgba(167, 139, 250, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: var(--bg-dark);
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        /* Ambient background - slightly dimmer for ending */
+        @keyframes ambientFloat {
+            0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+            33% { transform: translate3d(1%, 0.5%, 0) scale(1.01); }
+            66% { transform: translate3d(-0.5%, 1%, 0) scale(0.99); }
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: -20%;
+            left: -20%;
+            width: 140%;
+            height: 140%;
+            background: 
+                radial-gradient(ellipse at 20% 40%, rgba(167, 139, 250, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 60%, rgba(228, 160, 196, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(196, 181, 253, 0.04) 0%, transparent 60%);
+            animation: ambientFloat 20s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Floating particles - fewer for calmer feel */
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 0.3vmin;
+            height: 0.3vmin;
+            min-width: 2px;
+            min-height: 2px;
+            background: var(--accent-lavender);
+            border-radius: 50%;
+            opacity: 0;
+            animation: floatUp 15s ease-in-out infinite;
+        }
+
+        @keyframes floatUp {
+            0% {
+                opacity: 0;
+                transform: translateY(5vmin) scale(0);
+            }
+            10% {
+                opacity: 0.4;
+            }
+            90% {
+                opacity: 0.4;
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-5vmin) scale(1);
+            }
+        }
+
+        /* Content */
+        .content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3.5vmin;
+            padding: 5vmin;
+        }
+
+        .username {
+            font-size: clamp(32px, 7vmin, 64px);
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-lavender), var(--accent-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: softGlow 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes softGlow {
+            from { filter: drop-shadow(0 0 1.5vmin var(--glow-purple)); }
+            to { filter: drop-shadow(0 0 2.5vmin var(--glow-pink)); }
+        }
+
+        .status {
+            font-size: clamp(24px, 5vmin, 48px);
+            font-weight: 500;
+            color: var(--text-primary);
+            letter-spacing: clamp(2px, 0.6vmin, 6px);
+            text-transform: uppercase;
+            opacity: 0.9;
+        }
+
+        .thanks {
+            font-size: clamp(16px, 3.5vmin, 32px);
+            color: var(--text-secondary);
+            font-weight: 400;
+            display: flex;
+            align-items: center;
+            gap: 1.2vmin;
+        }
+
+        .heart {
+            color: var(--accent-pink);
+            animation: heartbeat 2s ease-in-out infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            15% { transform: scale(1.15); }
+            30% { transform: scale(1); }
+            45% { transform: scale(1.1); }
+        }
+
+        /* Social links hint */
+        .socials {
+            margin-top: 3vmin;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5vmin;
+        }
+
+        .socials-label {
+            font-size: clamp(10px, 1.8vmin, 18px);
+            color: var(--text-secondary);
+            letter-spacing: clamp(1px, 0.3vmin, 3px);
+            text-transform: uppercase;
+            opacity: 0.7;
+        }
+
+        .socials-icons {
+            display: flex;
+            gap: 3vmin;
+        }
+
+        .social-icon {
+            width: clamp(24px, 4vmin, 40px);
+            height: clamp(24px, 4vmin, 40px);
+            fill: var(--accent-lavender);
+            opacity: 0.6;
+            transition: opacity 0.3s ease;
+        }
+
+        /* Decorative line */
+        .line {
+            width: 20vmin;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-purple), transparent);
+            opacity: 0.4;
+        }
+
+        /* Fade out effect overlay */
+        .vignette {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, transparent 40%, rgba(10, 10, 15, 0.4) 100%);
+            pointer-events: none;
+            z-index: 5;
+        }
+    </style>
+</head>
+<body>
+    <div class="particles">
+        <script>
+            const container = document.querySelector('.particles');
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = (10 + Math.random() * 10) + 's';
+                const size = 0.25 + Math.random() * 0.35;
+                particle.style.width = size + 'vmin';
+                particle.style.height = size + 'vmin';
+                const colors = ['#e4a0c4', '#a78bfa', '#c4b5fd'];
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                container.appendChild(particle);
+            }
+        </script>
+    </div>
+
+    <div class="vignette"></div>
+
+    <div class="content">
+        <h1 class="username">maseaaao</h1>
+        <div class="line"></div>
+        <p class="status">Стрим окончен</p>
+        <p class="thanks">
+            спасибо, что были со мной <span class="heart">♥</span>
+        </p>
+
+        <div class="socials">
+            <span class="socials-label">подписывайся</span>
+        </div>
+    </div>
+</body>
+</html>

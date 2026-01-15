@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO -->
+    <title>maseaaao — стример | TikTok, Telegram, YouTube</title>
+    <meta name="description" content="Все ссылки maseaaao в одном месте. Стримы и клипы на TikTok, видео на YouTube, общение в Telegram.">
+    <meta name="keywords" content="maseaaao, стример, tiktok, telegram, gaming">
+    <link rel="canonical" href="https://maseaaao.com/">
+    
+    <!-- Open Graph (Discord, Telegram, VK, Facebook) -->
+    <meta property="og:type" content="profile">
+    <meta property="og:title" content="maseaaao ✨">
+    <meta property="og:description" content="Стример — все ссылки в одном месте">
+    <meta property="og:image" content="https://maseaaao.com/og-image.jpg">
+    <meta property="og:url" content="https://maseaaao.com/">
+    <meta property="og:site_name" content="maseaaao">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="maseaaao ✨">
+    <meta name="twitter:description" content="Стример — все ссылки в одном месте">
+    <meta name="twitter:image" content="https://maseaaao.com/og-image.jpg">
+    
+    <!-- Favicon (замени на свои) -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✨</text></svg>">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    
+    <meta name="theme-color" content="#0a0a0f">
+    
+    <!-- Preload критичного шрифта -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-dark: #0a0a0f;
+            --bg-card: rgba(255, 255, 255, 0.03);
+            --accent-pink: #e4a0c4;
+            --accent-purple: #a78bfa;
+            --accent-lavender: #c4b5fd;
+            --text-primary: #f5f5f7;
+            --text-secondary: #b4b4bb;
+            --glow-pink: rgba(228, 160, 196, 0.4);
+            --glow-purple: rgba(167, 139, 250, 0.3);
+            --focus-ring: rgba(167, 139, 250, 0.6);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Quicksand', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-dark);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            padding: 40px 20px 60px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Ambient background */
+       @keyframes ambientFloat {
+    0%, 100% { transform: translate3d(0, 0, 0); }
+    33% { transform: translate3d(1%, 0.5%, 0); }
+    66% { transform: translate3d(-0.5%, 1%, 0); }
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: -10%; /* Уменьшили размер с -50%, чтобы снизить нагрузку */
+    left: -10%;
+    width: 120%;
+    height: 120%;
+    background: 
+        radial-gradient(ellipse at 20% 20%, rgba(167, 139, 250, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(228, 160, 196, 0.06) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(196, 181, 253, 0.04) 0%, transparent 60%);
+    animation: ambientFloat 20s ease-in-out infinite;
+    pointer-events: none;
+    z-index: -1; /* Явно выносим на самый нижний слой */
+    will-change: transform; /* Подсказываем браузеру использовать видеокарту */
+}
+
+        /* Floating particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--accent-lavender);
+            border-radius: 50%;
+            opacity: 0;
+            animation: float var(--duration, 14s) infinite;
+            animation-delay: var(--delay, 0s);
+            left: var(--left, 50%);
+will-change: transform;
+    backface-visibility: hidden;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(-100px) scale(1); opacity: 0; }
+        }
+
+        .container {
+            width: 100%;
+            max-width: 420px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Profile Section */
+        .profile {
+            text-align: center;
+            margin-bottom: 32px;
+            opacity: 0;
+            animation: fadeIn 0.6s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        .avatar-wrapper {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .avatar-glow {
+            position: absolute;
+            inset: -4px;
+            background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple), var(--accent-lavender));
+            border-radius: 50%;
+            filter: blur(12px);
+            opacity: 0.6;
+            animation: pulseGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.05); }
+        }
+
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            position: relative;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
+        }
+
+        .avatar:hover {
+            transform: scale(1.05);
+        }
+
+        /* Fallback пока изображение грузится */
+        .avatar-fallback {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            position: relative;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .username {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+            letter-spacing: 0.5px;
+        }
+
+        .bio {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* Donate Section */
+        /* .donate-section {
+            margin-bottom: 24px;
+        }
+
+        .donate-item {
+            position: relative;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 18px 22px;
+            background: linear-gradient(135deg, 
+                rgba(228, 160, 196, 0.12) 0%, 
+                rgba(167, 139, 250, 0.12) 100%);
+            border: 1px solid rgba(228, 160, 196, 0.3);
+            border-radius: 16px;
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.5s ease forwards;
+            animation-delay: 0.05s;
+            box-shadow: 
+                0 0 20px rgba(228, 160, 196, 0.15),
+                0 0 40px rgba(167, 139, 250, 0.1);
+            -webkit-tap-highlight-color: rgba(228, 160, 196, 0.2);
+        }
+
+        .donate-item::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, 
+                rgba(228, 160, 196, 0.2) 0%, 
+                rgba(167, 139, 250, 0.2) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .donate-item:hover::before,
+        .donate-item:focus::before {
+            opacity: 1;
+        }
+
+        .donate-item:hover,
+        .donate-item:focus {
+            transform: translateY(-3px);
+            border-color: rgba(228, 160, 196, 0.5);
+            box-shadow: 
+                0 12px 40px rgba(0, 0, 0, 0.3),
+                0 0 30px rgba(228, 160, 196, 0.25),
+                0 0 60px rgba(167, 139, 250, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .donate-item:focus {
+            outline: none;
+            box-shadow: 
+                0 12px 40px rgba(0, 0, 0, 0.3),
+                0 0 0 3px var(--focus-ring),
+                0 0 30px rgba(228, 160, 196, 0.25),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .donate-item:active {
+            transform: scale(0.98);
+        }
+
+        .donate-icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+            flex-shrink: 0;
+            font-size: 20px;
+        }
+
+        .donate-text {
+            position: relative;
+            z-index: 1;
+            flex-grow: 1;
+            background: linear-gradient(90deg, var(--accent-pink), var(--accent-lavender));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .donate-arrow {
+            position: relative;
+            z-index: 1;
+            opacity: 0.6;
+            transition: all 0.3s ease;
+            color: var(--accent-pink);
+        }
+
+        .donate-item:hover .donate-arrow,
+        .donate-item:focus .donate-arrow {
+            opacity: 1;
+            transform: translateX(4px);
+        } */
+
+        /* Links Section */
+        .links {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .link-item {
+            --item-delay: 0.1s;
+            position: relative;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px 20px;
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.5s ease forwards;
+            animation-delay: var(--item-delay);
+            /* Tap feedback для мобильных */
+            -webkit-tap-highlight-color: rgba(167, 139, 250, 0.2);
+        }
+
+        /* Staggered delays через CSS переменные */
+        .link-item:nth-child(1) { --item-delay: 0.1s; }
+        .link-item:nth-child(2) { --item-delay: 0.15s; }
+        .link-item:nth-child(3) { --item-delay: 0.2s; }
+        .link-item:nth-child(4) { --item-delay: 0.25s; }
+        .link-item:nth-child(5) { --item-delay: 0.3s; }
+        .link-item:nth-child(6) { --item-delay: 0.35s; }
+        .link-item:nth-child(7) { --item-delay: 0.4s; }
+
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .link-item::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, 
+                rgba(228, 160, 196, 0.1) 0%, 
+                rgba(167, 139, 250, 0.1) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .link-item:hover::before,
+        .link-item:focus::before {
+            opacity: 1;
+        }
+
+        .link-item:hover,
+        .link-item:focus {
+            transform: translateY(-2px);
+            border-color: rgba(167, 139, 250, 0.3);
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.3),
+                0 0 0 1px rgba(167, 139, 250, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+
+        /* Focus state для клавиатурной навигации */
+        .link-item:focus {
+            outline: none;
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.3),
+                0 0 0 3px var(--focus-ring),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+
+        .link-item:focus:not(:focus-visible) {
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.3),
+                0 0 0 1px rgba(167, 139, 250, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+
+        .link-item:focus-visible {
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.3),
+                0 0 0 3px var(--focus-ring),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+
+        /* Active state для tap feedback */
+        .link-item:active {
+            transform: scale(0.98);
+        }
+
+        .link-icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+            flex-shrink: 0;
+        }
+
+        .link-icon svg {
+            width: 22px;
+            height: 22px;
+            fill: currentColor;
+            transition: transform 0.3s ease;
+        }
+
+        .link-item:hover .link-icon svg,
+        .link-item:focus .link-icon svg {
+            transform: scale(1.1);
+        }
+
+        .link-text {
+            position: relative;
+            z-index: 1;
+            flex-grow: 1;
+        }
+
+        .link-arrow {
+            position: relative;
+            z-index: 1;
+            opacity: 0.4;
+            transition: all 0.3s ease;
+        }
+
+        .link-item:hover .link-arrow,
+        .link-item:focus .link-arrow {
+            opacity: 0.8;
+            transform: translateX(4px);
+        }
+
+        /* Platform-specific accent colors */
+        .link-item.tiktok:hover, .link-item.tiktok:focus { border-color: rgba(255, 0, 80, 0.4); }
+        .link-item.telegram:hover, .link-item.telegram:focus { border-color: rgba(38, 165, 228, 0.4); }
+        .link-item.youtube:hover, .link-item.youtube:focus { border-color: rgba(255, 0, 0, 0.4); }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .footer-text {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            opacity: 0.5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .heart {
+            color: var(--accent-pink);
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            body {
+                padding: 30px 16px 50px;
+            }
+
+            .avatar, .avatar-fallback {
+                width: 100px;
+                height: 100px;
+            }
+
+            .avatar-fallback {
+                font-size: 2.5rem;
+            }
+
+            .username {
+                font-size: 1.5rem;
+            }
+
+            .link-item {
+                padding: 14px 16px;
+            }
+        }
+
+        /* Очень узкие экраны */
+        @media (max-width: 320px) {
+            .container {
+                max-width: 100%;
+            }
+            
+            .link-item {
+                padding: 12px 14px;
+                gap: 10px;
+                font-size: 0.9rem;
+            }
+
+            .link-icon svg {
+                width: 20px;
+                height: 20px;
+            }
+        }
+
+        /* Landscape на мобильных */
+        @media (max-height: 500px) and (orientation: landscape) {
+            body {
+                padding: 20px 20px 30px;
+            }
+
+            .avatar, .avatar-fallback {
+                width: 80px;
+                height: 80px;
+            }
+
+            .profile {
+                margin-bottom: 20px;
+            }
+
+            .links {
+                gap: 10px;
+            }
+
+            .link-item {
+                padding: 12px 16px;
+            }
+        }
+
+        /* Skip link для a11y */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: var(--accent-purple);
+            color: white;
+            padding: 8px 16px;
+            z-index: 100;
+            border-radius: 0 0 8px 0;
+            transition: top 0.3s;
+        }
+
+        .skip-link:focus {
+            top: 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Skip link для клавиатурной навигации -->
+    <a href="#links" class="skip-link">Перейти к ссылкам</a>
+
+    <!-- Floating particles с CSS переменными -->
+    <div class="particles" aria-hidden="true">
+        <div class="particle" style="--left: 10%; --delay: 0s; --duration: 12s;"></div>
+        <div class="particle" style="--left: 20%; --delay: 2s; --duration: 14s;"></div>
+        <div class="particle" style="--left: 30%; --delay: 4s; --duration: 11s;"></div>
+        <div class="particle" style="--left: 40%; --delay: 1s; --duration: 16s;"></div>
+        <div class="particle" style="--left: 50%; --delay: 3s; --duration: 13s;"></div>
+        <div class="particle" style="--left: 60%; --delay: 5s; --duration: 15s;"></div>
+        <div class="particle" style="--left: 70%; --delay: 2.5s; --duration: 12s;"></div>
+        <div class="particle" style="--left: 80%; --delay: 4.5s; --duration: 14s;"></div>
+        <div class="particle" style="--left: 90%; --delay: 1.5s; --duration: 11s;"></div>
+    </div>
+
+    <div class="container">
+        <!-- Profile Section -->
+        <header class="profile">
+            <div class="avatar-wrapper">
+                <div class="avatar-glow" aria-hidden="true"></div>
+                <img 
+                    src="og-image.jpg" 
+                    alt="Аватар maseaaao" 
+                    class="avatar"
+                    loading="eager"
+                    onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                >
+                <div class="avatar-fallback" style="display: none;" aria-hidden="true">✨</div>
+            </div>
+            <h1 class="username">maseaaao</h1>
+            <p class="bio">streamer ✨</p>
+        </header>
+
+        <!-- Donate Section -->
+        <!-- <section class="donate-section">
+            <a href="https://www.donationalerts.com/r/maseaaao" target="_blank" rel="noopener noreferrer" class="donate-item" title="Поддержать">
+                <span class="donate-icon" aria-hidden="true">💖</span>
+                <span class="donate-text">Задонатить</span>
+                <span class="donate-arrow" aria-hidden="true">→</span>
+            </a>
+        </section> -->
+
+        <!-- Links Section -->
+        <nav class="links" id="links" aria-label="Социальные сети">
+            <!-- Telegram -->
+            <a href="https://t.me/maseaaao" target="_blank" rel="noopener noreferrer" class="link-item telegram" title="Telegram @maseaaao">
+                <div class="link-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+                    </svg>
+                </div>
+                <span class="link-text">Telegram</span>
+                <span class="link-arrow" aria-hidden="true">💖</span>
+            </a>
+
+            <!-- TikTok -->
+            <a href="https://www.tiktok.com/@masyapurr" target="_blank" rel="noopener noreferrer" class="link-item tiktok" title="TikTok @masyapurr">
+                <div class="link-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+                    </svg>
+                </div>
+                <span class="link-text">TikTok</span>
+                <span class="link-arrow" aria-hidden="true">→</span>
+            </a>
+
+            <!-- YouTube -->
+            <a href="https://www.youtube.com/@maseaaao" target="_blank" rel="noopener noreferrer" class="link-item youtube" title="YouTube канал">
+                <div class="link-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                    </svg>
+                </div>
+                <span class="link-text">YouTube</span>
+                <span class="link-arrow" aria-hidden="true">→</span>
+            </a>
+        </nav>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p class="footer-text">made with <span class="heart" aria-label="любовью">♥</span></p>
+        </footer>
+    </div>
+</body>
+</html>
