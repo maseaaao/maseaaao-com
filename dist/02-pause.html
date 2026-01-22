@@ -33,7 +33,7 @@
             overflow: hidden;
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
             position: relative;
         }
 
@@ -74,8 +74,7 @@
         .steam {
             position: absolute;
             bottom: 35%;
-            left: 50%;
-            transform: translateX(-50%);
+            left: 20vmin;
             width: 20vmin;
             height: 30vmin;
         }
@@ -148,12 +147,13 @@
         .content {
             position: relative;
             z-index: 10;
-            text-align: center;
+            text-align: left;
             display: flex;
             flex-direction: column;
-            align-items: center;
+            align-items: flex-start;
             gap: 3vmin;
             padding: 5vmin;
+            margin-left: 8vmin;
         }
 
         .tea-icon {
@@ -237,6 +237,7 @@
         /* Soft pulse background circle */
         .pulse-circle {
             position: absolute;
+            left: 10vmin;
             width: 50vmin;
             height: 50vmin;
             border-radius: 50%;

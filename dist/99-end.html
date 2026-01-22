@@ -33,7 +33,7 @@
             overflow: hidden;
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
             position: relative;
         }
 
@@ -105,12 +105,13 @@
         .content {
             position: relative;
             z-index: 10;
-            text-align: center;
+            text-align: left;
             display: flex;
             flex-direction: column;
-            align-items: center;
+            align-items: flex-start;
             gap: 3.5vmin;
             padding: 5vmin;
+            margin-left: 8vmin;
         }
 
         .username {
@@ -163,7 +164,7 @@
             margin-top: 3vmin;
             display: flex;
             flex-direction: column;
-            align-items: center;
+            align-items: flex-start;
             gap: 1.5vmin;
         }
 
@@ -192,7 +193,7 @@
         .line {
             width: 20vmin;
             height: 2px;
-            background: linear-gradient(90deg, transparent, var(--accent-purple), transparent);
+            background: linear-gradient(90deg, var(--accent-purple), transparent);
             opacity: 0.4;
         }
 
@@ -239,10 +240,6 @@
         <p class="thanks">
             спасибо, что были со мной <span class="heart">♥</span>
         </p>
-
-        <div class="socials">
-            <span class="socials-label">подписывайся</span>
-        </div>
     </div>
 </body>
 </html>
