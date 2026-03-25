@@ -1,0 +1,10 @@
+{
+  "name": "maseaaao-com",
+  "private": true,
+  "scripts": {
+    "render:scenes": "node scripts/render-scenes/index.mjs"
+  },
+  "dependencies": {
+    "playwright-core": "^1.58.2"
+  }
+}

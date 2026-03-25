@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark" />
+    <title>Стрим окончен — maseaaao</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geologica:wght@100..900&family=Onest:wght@100..900&display=swap"
+      rel="stylesheet" />
+    <link rel="stylesheet" href="./obs-scene.css" />
+  </head>
+  <body data-scene="end">
+    <main class="scene-viewport">
+      <section class="scene-stage" aria-label="Финальная сцена">
+        <div class="scene-shell">
+          <div class="scene-layout scene-layout--default">
+            <div class="scene-main">
+              <section class="hero-panel hero-panel--default" aria-label="Шапка сцены">
+                <div class="hero-panel__copy">
+                  <div class="identity">
+                    <div class="identity__row">
+                      <h1 class="identity__name">maseaaao</h1>
+                    </div>
+                    <p class="identity__status">Стрим окончен</p>
+                  </div>
+                </div>
+
+                <aside class="hero-panel__qr" aria-label="QR-код maseaaao.com">
+                  <div class="qr-frame">
+                    <img
+                      src="../assets/maseaaao.com.jpeg"
+                      alt="QR-код на сайт maseaaao.com"
+                      width="800"
+                      height="800"
+                      loading="eager"
+                      fetchpriority="high"
+                      decoding="async" />
+                  </div>
+                </aside>
+              </section>
+
+              <section
+                class="panel panel--alerts"
+                data-slot="alerts"
+                aria-label="Зона уведомлений и оповещений"></section>
+            </div>
+
+            <aside class="panel panel--chat" data-slot="chat" aria-label="Зона чата"></aside>
+          </div>
+        </div>
+      </section>
+    </main>
+    <script src="./obs-scene.js"></script>
+  </body>
+</html>

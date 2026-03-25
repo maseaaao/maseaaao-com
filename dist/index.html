@@ -1,891 +1,923 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- SEO -->
-  <title>maseaaao — стример | TikTok, Telegram, YouTube</title>
-  <meta name="description"
-    content="Все ссылки maseaaao в одном месте. Стримы и клипы на TikTok, видео на YouTube, общение в Telegram.">
-  <meta name="keywords" content="maseaaao, стример, tiktok, telegram, gaming">
-  <link rel="canonical" href="https://maseaaao.com/">
-
-  <!-- Open Graph (Discord, Telegram, VK, Facebook) -->
-  <meta property="og:type" content="profile">
-  <meta property="og:title" content="maseaaao ✨">
-  <meta property="og:description" content="Стример — все ссылки в одном месте">
-  <meta property="og:image" content="https://maseaaao.com/og-image.jpg">
-  <meta property="og:url" content="https://maseaaao.com/">
-  <meta property="og:site_name" content="maseaaao">
-
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="maseaaao ✨">
-  <meta name="twitter:description" content="Стример — все ссылки в одном месте">
-  <meta name="twitter:image" content="https://maseaaao.com/og-image.jpg">
-
-  <!-- Favicon -->
-  <link rel="icon" type="image/svg+xml"
-    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✨</text></svg>">
-  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-
-  <meta name="theme-color" content="#0a0a0f">
-
-  <!-- Preload критичного шрифта -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preload" as="style"
-    href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap">
-  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
-
-  <style>
-    :root {
-      --bg-dark: #0a0a0f;
-      --bg-card: rgba(255, 255, 255, 0.03);
-      --accent-pink: #e4a0c4;
-      --accent-purple: #a78bfa;
-      --accent-lavender: #c4b5fd;
-      --text-primary: #f5f5f7;
-      --text-secondary: #b4b4bb;
-      --glow-pink: rgba(228, 160, 196, 0.4);
-      --glow-purple: rgba(167, 139, 250, 0.3);
-      --focus-ring: rgba(167, 139, 250, 0.6);
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Quicksand', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: var(--bg-dark);
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      padding: 40px 20px 60px;
-      position: relative;
-      overflow-x: hidden;
-    }
-
-    /* Ambient background */
-    @keyframes ambientFloat {
-      0%, 100% { transform: translate3d(0, 0, 0); }
-      33% { transform: translate3d(1%, 0.5%, 0); }
-      66% { transform: translate3d(-0.5%, 1%, 0); }
-    }
-
-    body::before {
-      content: '';
-      position: fixed;
-      top: -10%;
-      left: -10%;
-      width: 120%;
-      height: 120%;
-      background:
-        radial-gradient(ellipse at 20% 20%, rgba(167, 139, 250, 0.08) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 80%, rgba(228, 160, 196, 0.06) 0%, transparent 50%),
-        radial-gradient(ellipse at 50% 50%, rgba(196, 181, 253, 0.04) 0%, transparent 60%);
-      animation: ambientFloat 20s ease-in-out infinite;
-      pointer-events: none;
-      z-index: -1;
-      will-change: transform;
-    }
-
-    /* Floating particles */
-    .particles {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 0;
-      overflow: hidden;
-    }
-
-    .particle {
-      position: absolute;
-      width: 4px;
-      height: 4px;
-      background: var(--accent-lavender);
-      border-radius: 50%;
-      opacity: 0;
-      animation: float var(--duration, 14s) infinite;
-      animation-delay: var(--delay, 0s);
-      left: var(--left, 50%);
-      will-change: transform;
-      backface-visibility: hidden;
-    }
-
-    @keyframes float {
-      0% { transform: translateY(100vh) scale(0); opacity: 0; }
-      10% { opacity: 0.6; }
-      90% { opacity: 0.6; }
-      100% { transform: translateY(-100px) scale(1); opacity: 0; }
-    }
-
-    .container {
-      width: 100%;
-      max-width: 420px;
-      position: relative;
-      z-index: 1;
-    }
-
-    /* Profile Section */
-    .profile {
-      text-align: center;
-      margin-bottom: 32px;
-      opacity: 0;
-      animation: fadeIn 0.6s ease forwards;
-    }
-
-    @keyframes fadeIn {
-      to { opacity: 1; }
-    }
-
-    .avatar-wrapper {
-      position: relative;
-      display: inline-block;
-      margin-bottom: 20px;
-    }
-
-    .avatar-glow {
-      position: absolute;
-      inset: -4px;
-      background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple), var(--accent-lavender));
-      border-radius: 50%;
-      filter: blur(12px);
-      opacity: 0.6;
-      animation: pulseGlow 3s ease-in-out infinite;
-    }
-
-    @keyframes pulseGlow {
-      0%, 100% { opacity: 0.5; transform: scale(1); }
-      50% { opacity: 0.7; transform: scale(1.05); }
-    }
-
-    .avatar {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      object-fit: cover;
-      position: relative;
-      border: 3px solid rgba(255, 255, 255, 0.1);
-      transition: transform 0.3s ease;
-      background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
-    }
-
-    .avatar:hover {
-      transform: scale(1.05);
-    }
-
-    .avatar-fallback {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 3rem;
-      position: relative;
-      border: 3px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .username {
-      font-size: 1.75rem;
-      font-weight: 700;
-      color: var(--text-primary);
-      margin-bottom: 6px;
-      letter-spacing: 0.5px;
-    }
-
-    .bio {
-      font-size: 1rem;
-      color: var(--text-secondary);
-      font-weight: 500;
-    }
-
-    .collab-email {
-      margin-top: 12px;
-    }
-
-    .collab-email a {
-      font-size: 0.85rem;
-      color: var(--text-secondary);
-      text-decoration: none;
-      font-weight: 500;
-      transition: color 0.3s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .collab-email a:hover,
-    .collab-email a:focus {
-      color: var(--accent-lavender);
-    }
-
-    .collab-email svg {
-      width: 14px;
-      height: 14px;
-      fill: currentColor;
-    }
-
-    /* Donate Section */
-    .donate-section {
-      margin-bottom: 24px;
-      opacity: 0;
-      animation: fadeIn 0.6s ease forwards;
-      animation-delay: 0.1s;
-    }
-
-    .donate-title {
-      font-size: 0.85rem;
-      color: var(--text-secondary);
-      text-align: center;
-      margin-bottom: 14px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    .donate-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    .donate-card {
-      position: relative;
-      text-decoration: none;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px 16px;
-      background: linear-gradient(135deg,
-          rgba(228, 160, 196, 0.08) 0%,
-          rgba(167, 139, 250, 0.08) 100%);
-      border: 1px solid rgba(228, 160, 196, 0.2);
-      border-radius: 16px;
-      color: var(--text-primary);
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      overflow: hidden;
-      -webkit-tap-highlight-color: rgba(228, 160, 196, 0.2);
-    }
-
-    .donate-card::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg,
-          rgba(228, 160, 196, 0.15) 0%,
-          rgba(167, 139, 250, 0.15) 100%);
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-
-    .donate-card:hover::before,
-    .donate-card:focus::before {
-      opacity: 1;
-    }
-
-    .donate-card:hover,
-    .donate-card:focus {
-      transform: translateY(-3px);
-      border-color: rgba(228, 160, 196, 0.4);
-      box-shadow:
-        0 12px 40px rgba(0, 0, 0, 0.3),
-        0 0 25px rgba(228, 160, 196, 0.2),
-        0 0 50px rgba(167, 139, 250, 0.1);
-    }
-
-    .donate-card:focus {
-      outline: none;
-      box-shadow:
-        0 12px 40px rgba(0, 0, 0, 0.3),
-        0 0 0 3px var(--focus-ring),
-        0 0 25px rgba(228, 160, 196, 0.2);
-    }
-
-    .donate-card:active {
-      transform: scale(0.98);
-    }
-
-    .donate-qr {
-      width: 140px;
-      height: 140px;
-      border-radius: 12px;
-      background: white;
-      margin-bottom: 12px;
-      position: relative;
-      z-index: 1;
-      object-fit: cover;
-      transition: transform 0.3s ease;
-      /* Четкость QR */
-      image-rendering: -webkit-optimize-contrast;
-      image-rendering: crisp-edges;
-    }
-
-    .donate-card:hover .donate-qr {
-      transform: scale(1.03);
-    }
-
-    .donate-card-text {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .donate-label {
-      font-size: 0.95rem;
-      font-weight: 600;
-      position: relative;
-      z-index: 1;
-      background: linear-gradient(90deg, var(--accent-pink), var(--accent-lavender));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      text-align: center;
-    }
-
-    .donate-sublabel {
-      font-size: 0.75rem;
-      color: var(--text-secondary);
-      position: relative;
-      z-index: 1;
-      margin-top: 4px;
-      opacity: 0.7;
-    }
-
-    /* Links Section */
-    .links {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    .link-item {
-      --item-delay: 0.1s;
-      position: relative;
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 16px 20px;
-      background: var(--bg-card);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      border-radius: 16px;
-      color: var(--text-primary);
-      font-weight: 600;
-      font-size: 0.95rem;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      overflow: hidden;
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fadeInUp 0.5s ease forwards;
-      animation-delay: var(--item-delay);
-      -webkit-tap-highlight-color: rgba(167, 139, 250, 0.2);
-    }
-
-    .link-item:nth-child(1) { --item-delay: 0.15s; }
-    .link-item:nth-child(2) { --item-delay: 0.2s; }
-    .link-item:nth-child(3) { --item-delay: 0.25s; }
-    .link-item:nth-child(4) { --item-delay: 0.3s; }
-    .link-item:nth-child(5) { --item-delay: 0.35s; }
-    .link-item:nth-child(6) { --item-delay: 0.4s; }
-    .link-item:nth-child(7) { --item-delay: 0.45s; }
-
-    @keyframes fadeInUp {
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .link-item::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg,
-          rgba(228, 160, 196, 0.1) 0%,
-          rgba(167, 139, 250, 0.1) 100%);
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-
-    .link-item:hover::before,
-    .link-item:focus::before {
-      opacity: 1;
-    }
-
-    .link-item:hover,
-    .link-item:focus {
-      transform: translateY(-2px);
-      border-color: rgba(167, 139, 250, 0.3);
-      box-shadow:
-        0 8px 32px rgba(0, 0, 0, 0.3),
-        0 0 0 1px rgba(167, 139, 250, 0.1),
-        inset 0 1px 0 rgba(255, 255, 255, 0.05);
-    }
-
-    .link-item:focus {
-      outline: none;
-      box-shadow:
-        0 8px 32px rgba(0, 0, 0, 0.3),
-        0 0 0 3px var(--focus-ring),
-        inset 0 1px 0 rgba(255, 255, 255, 0.05);
-    }
-
-    .link-item:focus:not(:focus-visible) {
-      box-shadow:
-        0 8px 32px rgba(0, 0, 0, 0.3),
-        0 0 0 1px rgba(167, 139, 250, 0.1),
-        inset 0 1px 0 rgba(255, 255, 255, 0.05);
-    }
-
-    .link-item:focus-visible {
-      box-shadow:
-        0 8px 32px rgba(0, 0, 0, 0.3),
-        0 0 0 3px var(--focus-ring),
-        inset 0 1px 0 rgba(255, 255, 255, 0.05);
-    }
-
-    .link-item:active {
-      transform: scale(0.98);
-    }
-
-    .link-icon {
-      width: 24px;
-      height: 24px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      z-index: 1;
-      flex-shrink: 0;
-    }
-
-    .link-icon svg {
-      width: 22px;
-      height: 22px;
-      fill: currentColor;
-      transition: transform 0.3s ease;
-    }
-
-    .link-item:hover .link-icon svg,
-    .link-item:focus .link-icon svg {
-      transform: scale(1.1);
-    }
-
-    .link-text {
-      position: relative;
-      z-index: 1;
-      flex-grow: 1;
-    }
-
-    .link-arrow {
-      position: relative;
-      z-index: 1;
-      opacity: 0.4;
-      transition: all 0.3s ease;
-    }
-
-    .link-item:hover .link-arrow,
-    .link-item:focus .link-arrow {
-      opacity: 0.8;
-      transform: translateX(4px);
-    }
-
-    /* Platform-specific accent colors */
-    .link-item.twitch:hover,
-    .link-item.twitch:focus { border-color: rgba(145, 70, 255, 0.4); }
-
-    .link-item.tiktok:hover,
-    .link-item.tiktok:focus { border-color: rgba(255, 0, 80, 0.4); }
-
-    .link-item.telegram:hover,
-    .link-item.telegram:focus { border-color: rgba(38, 165, 228, 0.4); }
-
-    .link-item.youtube:hover,
-    .link-item.youtube:focus { border-color: rgba(255, 0, 0, 0.4); }
-
-    /* Footer */
-    .footer {
-      text-align: center;
-      margin-top: 40px;
-      padding-top: 24px;
-      border-top: 1px solid rgba(255, 255, 255, 0.05);
-    }
-
-    .footer-text {
-      font-size: 0.75rem;
-      color: var(--text-secondary);
-      opacity: 0.5;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-    }
-
-    .heart {
-      color: var(--accent-pink);
-      animation: heartbeat 1.5s ease-in-out infinite;
-    }
-
-    @keyframes heartbeat {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.2); }
-    }
-
-    /* ===== RESPONSIVE ===== */
-
-    /* Большие экраны (планшеты и десктоп) */
-    @media (min-width: 481px) {
-      .container {
-        max-width: 480px;
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#050711" />
+    <meta name="robots" content="index,follow" />
+
+    <title>maseaaao — стримы, клипы и поддержка</title>
+    <meta
+      name="description"
+      content="Хаб maseaaao: Twitch, YouTube, поддержка и контакты в одном месте." />
+    <link rel="canonical" href="https://maseaaao.com/" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="maseaaao — стримы, клипы и поддержка" />
+    <meta
+      property="og:description"
+      content="Хаб maseaaao: Twitch, YouTube, поддержка и контакты в одном месте." />
+    <meta property="og:image" content="https://maseaaao.com/og-image.jpg" />
+    <meta property="og:image:alt" content="maseaaao" />
+    <meta property="og:url" content="https://maseaaao.com/" />
+    <meta property="og:site_name" content="maseaaao" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="maseaaao — стримы, клипы и поддержка" />
+    <meta
+      name="twitter:description"
+      content="Хаб maseaaao: Twitch, YouTube, поддержка и контакты в одном месте." />
+    <meta name="twitter:image" content="https://maseaaao.com/og-image.jpg" />
+    <meta name="twitter:image:alt" content="maseaaao" />
+
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="48x48" href="favicon-48x48.png" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="application-name" content="maseaaao" />
+    <link rel="apple-touch-icon" sizes="57x57" href="apple-touch-icon-57x57.png" />
+    <link rel="apple-touch-icon" sizes="60x60" href="apple-touch-icon-60x60.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="apple-touch-icon-72x72.png" />
+    <link rel="apple-touch-icon" sizes="76x76" href="apple-touch-icon-76x76.png" />
+    <link rel="apple-touch-icon" sizes="114x114" href="apple-touch-icon-114x114.png" />
+    <link rel="apple-touch-icon" sizes="120x120" href="apple-touch-icon-120x120.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="apple-touch-icon-144x144.png" />
+    <link rel="apple-touch-icon" sizes="152x152" href="apple-touch-icon-152x152.png" />
+    <link rel="apple-touch-icon" sizes="167x167" href="apple-touch-icon-167x167.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon-180x180.png" />
+    <link rel="apple-touch-icon" sizes="1024x1024" href="apple-touch-icon-1024x1024.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="maseaaao" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geologica:wght@100..900&family=Onest:wght@100..900&display=swap"
+      rel="stylesheet" />
+
+    <style>
+      :root {
+        --bg: #050711;
+        --panel: rgba(12, 15, 25, 0.84);
+        --panel-strong: rgba(16, 20, 33, 0.92);
+        --border: rgba(255, 255, 255, 0.08);
+        --border-strong: rgba(255, 255, 255, 0.14);
+        --text: #f5f7ff;
+        --muted: #a7b0c6;
+        --muted-strong: #8090ab;
+        --accent-violet: #9f8bff;
+        --accent-rose: #ff8bb8;
+        --accent-cyan: #7fe0ff;
+        --accent-red: #ff5f7d;
+        --shadow: 0 30px 90px rgba(0, 0, 0, 0.46);
+        --focus: rgba(159, 139, 255, 0.55);
       }
 
-      .donate-qr {
-        width: 160px;
-        height: 160px;
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
       }
 
-      .donate-card {
-        padding: 24px 20px;
+      html {
+        color-scheme: dark;
       }
 
-      .donate-label {
-        font-size: 1rem;
-      }
-    }
-
-    @media (min-width: 768px) {
       body {
-        padding: 60px 20px 80px;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        font-family: "Onest", system-ui, sans-serif;
+        color: var(--text);
+        background-color: var(--bg);
+        background:
+          radial-gradient(
+            circle at 14% 14%,
+            rgba(159, 139, 255, 0.18),
+            transparent 30%
+          ),
+          radial-gradient(
+            circle at 84% 18%,
+            rgba(255, 139, 184, 0.14),
+            transparent 26%
+          ),
+          radial-gradient(
+            circle at 50% 112%,
+            rgba(127, 224, 255, 0.1),
+            transparent 30%
+          ),
+          linear-gradient(180deg, #050711 0%, #080b15 52%, #030409 100%);
+        overflow-x: hidden;
+        position: relative;
+        isolation: isolate;
       }
 
-      .container {
-        max-width: 520px;
+      body::before,
+      body::after {
+        content: "";
+        position: fixed;
+        inset: -20%;
+        pointer-events: none;
+        z-index: -1;
       }
 
-      .donate-grid {
-        gap: 16px;
+      body::before {
+        background:
+          radial-gradient(
+            circle at 20% 20%,
+            rgba(159, 139, 255, 0.18),
+            transparent 38%
+          ),
+          radial-gradient(
+            circle at 80% 24%,
+            rgba(255, 139, 184, 0.14),
+            transparent 34%
+          ),
+          radial-gradient(
+            circle at 52% 78%,
+            rgba(127, 224, 255, 0.12),
+            transparent 40%
+          );
+        filter: blur(20px);
+        opacity: 0.92;
       }
 
-      .donate-qr {
-        width: 180px;
-        height: 180px;
+      body::after {
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+        background-size: 128px 128px;
+        opacity: 0.05;
       }
 
-      .donate-card {
-        padding: 28px 24px;
-        border-radius: 20px;
+      a {
+        color: inherit;
       }
 
-      .donate-label {
-        font-size: 1.1rem;
+      .page {
+        width: min(100%, 760px);
+        margin: 0 auto;
+        padding: clamp(14px, 4vw, 40px);
+        position: relative;
+        z-index: 1;
       }
 
-      .donate-sublabel {
-        font-size: 0.8rem;
-        margin-top: 6px;
+      .shell {
+        position: relative;
+        overflow: hidden;
+        display: grid;
+        gap: clamp(18px, 3vw, 24px);
+        padding: clamp(22px, 4vw, 34px);
+        border-radius: clamp(26px, 4vw, 40px);
+        background: linear-gradient(180deg, var(--panel), rgba(7, 9, 16, 0.82));
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(24px);
+        animation: lift 0.75s ease both;
       }
 
-      .link-item {
-        padding: 18px 24px;
-      }
-    }
-
-    /* Мобильные (до 480px) */
-    @media (max-width: 480px) {
-      body {
-        padding: 30px 16px 50px;
+      .shell::before,
+      .shell::after {
+        content: "";
+        position: absolute;
+        border-radius: 50%;
+        pointer-events: none;
+        filter: blur(10px);
       }
 
-      .avatar,
-      .avatar-fallback {
-        width: 100px;
-        height: 100px;
+      .shell::before {
+        inset: auto auto -140px -120px;
+        width: 280px;
+        height: 280px;
+        background: radial-gradient(
+          circle,
+          rgba(127, 224, 255, 0.16),
+          transparent 68%
+        );
       }
 
-      .avatar-fallback {
-        font-size: 2.5rem;
+      .shell::after {
+        inset: -120px -100px auto auto;
+        width: 260px;
+        height: 260px;
+        background: radial-gradient(
+          circle,
+          rgba(255, 139, 184, 0.16),
+          transparent 68%
+        );
       }
 
-      .username {
-        font-size: 1.5rem;
+      .identity {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        gap: 0;
+        align-content: start;
       }
 
-      .link-item {
-        padding: 14px 16px;
+      .identity__top {
+        display: flex;
+        align-items: center;
+        gap: 20px;
       }
 
-      .donate-grid {
-        gap: 10px;
+      .identity__copy {
+        min-width: 0;
+        display: grid;
+        gap: 14px;
+        align-content: center;
       }
 
-      .donate-qr {
-        width: 120px;
-        height: 120px;
-      }
-
-      .donate-card {
-        padding: 16px 12px;
-      }
-
-      .donate-label {
-        font-size: 0.9rem;
-      }
-    }
-
-    /* Узкие экраны (до 380px) - карточки в колонку */
-    @media (max-width: 380px) {
-      .donate-grid {
-        grid-template-columns: 1fr;
-        gap: 12px;
-      }
-
-      .donate-card {
-        flex-direction: row;
-        padding: 16px;
-        gap: 16px;
-      }
-
-      .donate-qr {
-        width: 110px;
-        height: 110px;
-        margin-bottom: 0;
+      .avatar-shell {
+        position: relative;
+        width: clamp(108px, 17vw, 142px);
+        height: clamp(108px, 17vw, 142px);
         flex-shrink: 0;
       }
 
-      .donate-card-text {
-        align-items: flex-start;
-        justify-content: center;
+      .avatar-shell::before {
+        content: "";
+        position: absolute;
+        inset: -10px;
+        border-radius: 50%;
+        background: linear-gradient(
+          135deg,
+          rgba(159, 139, 255, 0.5),
+          rgba(255, 139, 184, 0.42),
+          rgba(127, 224, 255, 0.34)
+        );
+        filter: blur(16px);
+        opacity: 0.68;
       }
 
-      .donate-label {
-        font-size: 1rem;
-        text-align: left;
+      .avatar-frame {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        border-radius: 50%;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        background: linear-gradient(
+          135deg,
+          rgba(159, 139, 255, 0.22),
+          rgba(255, 139, 184, 0.18)
+        );
+        box-shadow: 0 16px 30px rgba(0, 0, 0, 0.28);
       }
 
-      .donate-sublabel {
-        text-align: left;
-      }
-    }
-
-    /* Очень узкие экраны */
-    @media (max-width: 320px) {
-      .container {
-        max-width: 100%;
+      .avatar {
+        width: 100%;
+        height: 100%;
+        display: block;
+        object-fit: cover;
       }
 
-      .link-item {
-        padding: 12px 14px;
-        gap: 10px;
-        font-size: 0.9rem;
-      }
-
-      .link-icon svg {
-        width: 20px;
-        height: 20px;
-      }
-
-      .donate-qr {
-        width: 90px;
-        height: 90px;
-      }
-
-      .donate-label {
-        font-size: 0.9rem;
-      }
-    }
-
-    /* Landscape на мобильных */
-    @media (max-height: 500px) and (orientation: landscape) {
-      body {
-        padding: 20px 20px 30px;
-      }
-
-      .avatar,
       .avatar-fallback {
-        width: 80px;
-        height: 80px;
+        width: 100%;
+        height: 100%;
+        display: grid;
+        place-items: center;
+        background: linear-gradient(
+          135deg,
+          rgba(159, 139, 255, 0.35),
+          rgba(255, 139, 184, 0.34)
+        );
+        color: var(--text);
+        font-size: clamp(2.1rem, 4vw, 3rem);
+        font-weight: 800;
       }
 
-      .profile {
-        margin-bottom: 20px;
-      }
-
-      .links {
+      .profile-meta {
+        display: flex;
+        align-items: center;
         gap: 10px;
+        flex-wrap: wrap;
       }
 
-      .link-item {
-        padding: 12px 16px;
+      .live-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 95, 125, 0.24);
+        background: rgba(255, 95, 125, 0.08);
+        color: #ffe1e6;
+        font-size: 0.72rem;
+        font-weight: 800;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        white-space: nowrap;
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.02);
       }
 
-      .donate-section {
-        margin-bottom: 16px;
+      .live-badge__dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--accent-red);
+        box-shadow: 0 0 0 5px rgba(255, 95, 125, 0.12);
+        animation: pulse 1.8s ease-in-out infinite;
       }
 
-      .donate-grid {
-        grid-template-columns: 1fr 1fr;
+      h1 {
+        font-family: "Onest", system-ui, sans-serif;
+        font-size: clamp(3rem, 7.8vw, 4.75rem);
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        line-height: 0.9;
+        text-wrap: balance;
+        background: linear-gradient(
+          135deg,
+          #ffffff 0%,
+          #eef1ff 46%,
+          var(--accent-violet) 100%
+        );
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+        text-shadow: 0 0 28px rgba(159, 139, 255, 0.12);
       }
 
-      .donate-qr {
-        width: 100px;
-        height: 100px;
+      .actions {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        gap: 18px;
+        align-content: start;
       }
 
-      .donate-card {
-        flex-direction: column;
-        padding: 14px 12px;
+      .section {
+        display: grid;
+        gap: 12px;
       }
 
-      .donate-qr {
-        margin-bottom: 8px;
+      .section-head {
+        display: flex;
+        align-items: baseline;
+        gap: 12px;
+        flex-wrap: wrap;
       }
-    }
 
-    .skip-link {
-      position: absolute;
-      top: -40px;
-      left: 0;
-      background: var(--accent-purple);
-      color: white;
-      padding: 8px 16px;
-      z-index: 100;
-      border-radius: 0 0 8px 0;
-      transition: top 0.3s;
-    }
+      .section-head strong {
+        color: var(--text);
+        font-family: "Geologica", system-ui, sans-serif;
+        font-size: 0.95rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
 
-    .skip-link:focus {
-      top: 0;
-    }
-  </style>
-</head>
+      .tiles {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
 
-<body>
-  <a href="#links" class="skip-link">Перейти к ссылкам</a>
+      .tile {
+        position: relative;
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 14px;
+        min-height: 92px;
+        padding: 16px;
+        border-radius: 20px;
+        text-decoration: none;
+        color: var(--text);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.05),
+          rgba(255, 255, 255, 0.025)
+        );
+        overflow: hidden;
+        transition:
+          transform 0.22s ease,
+          border-color 0.22s ease,
+          box-shadow 0.22s ease,
+          background 0.22s ease;
+      }
 
-  <div class="particles" aria-hidden="true">
-    <div class="particle" style="--left: 10%; --delay: 0s; --duration: 12s;"></div>
-    <div class="particle" style="--left: 20%; --delay: 2s; --duration: 14s;"></div>
-    <div class="particle" style="--left: 30%; --delay: 4s; --duration: 11s;"></div>
-    <div class="particle" style="--left: 40%; --delay: 1s; --duration: 16s;"></div>
-    <div class="particle" style="--left: 50%; --delay: 3s; --duration: 13s;"></div>
-    <div class="particle" style="--left: 60%; --delay: 5s; --duration: 15s;"></div>
-    <div class="particle" style="--left: 70%; --delay: 2.5s; --duration: 12s;"></div>
-    <div class="particle" style="--left: 80%; --delay: 4.5s; --duration: 14s;"></div>
-    <div class="particle" style="--left: 90%; --delay: 1.5s; --duration: 11s;"></div>
-  </div>
+      .tile::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          135deg,
+          rgba(159, 139, 255, 0.12),
+          rgba(255, 139, 184, 0.08)
+        );
+        opacity: 0;
+        transition: opacity 0.22s ease;
+      }
 
-  <div class="container">
-    <!-- Profile Section -->
-    <header class="profile">
-      <div class="avatar-wrapper">
-        <div class="avatar-glow" aria-hidden="true"></div>
-        <img src="og-image.jpg" alt="Аватар maseaaao" class="avatar" loading="eager"
-          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-        <div class="avatar-fallback" style="display: none;" aria-hidden="true">✨</div>
-      </div>
-      <h1 class="username">maseaaao</h1>
-      <p class="bio" style="display: none;" aria-hidden="true">streamer ✨</p>
-      <div class="collab-email">
-        <a href="mailto:collab@maseaaao.com" title="Написать по сотрудничеству">
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
-          </svg>
-          collab@maseaaao.com
-        </a>
-      </div>
-    </header>
+      .tile:hover,
+      .tile:focus-visible {
+        transform: translateY(-2px);
+        border-color: rgba(159, 139, 255, 0.24);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.28);
+      }
 
-    <!-- Donate Section -->
-    <section class="donate-section" aria-label="Поддержать">
-      <p class="donate-title">Поддержать 💖</p>
-      <div class="donate-grid">
-        <a href="https://www.donationalerts.com/r/maseaaao" target="_blank" rel="noopener noreferrer"
-          class="donate-card" title="Донат на стриме">
-          <img src="./stream-qr-donation.jpg" alt="QR код для доната на стриме" class="donate-qr" loading="lazy">
-          <div class="donate-card-text">
-            <span class="donate-label">На стриме</span>
-            <span class="donate-sublabel">DonationAlerts</span>
+      .tile:hover::before,
+      .tile:focus-visible::before {
+        opacity: 1;
+      }
+
+      .tile:focus-visible {
+        outline: none;
+        box-shadow:
+          0 0 0 3px var(--focus),
+          0 12px 30px rgba(0, 0, 0, 0.28);
+      }
+
+      .tile__icon {
+        position: relative;
+        z-index: 1;
+        width: 44px;
+        height: 44px;
+        border-radius: 15px;
+        display: grid;
+        place-items: center;
+        flex-shrink: 0;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(255, 255, 255, 0.04);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      }
+
+      .tile__icon img {
+        width: 22px;
+        height: 22px;
+        display: block;
+        object-fit: contain;
+      }
+
+      .tile__icon img.tile__icon--mono {
+        filter: brightness(0) saturate(100%) invert(1);
+      }
+
+      .tile__copy {
+        position: relative;
+        z-index: 1;
+        min-width: 0;
+        display: grid;
+        gap: 4px;
+      }
+
+      .tile__title {
+        font-family: "Geologica", system-ui, sans-serif;
+        font-size: 1rem;
+        font-weight: 620;
+        letter-spacing: -0.015em;
+      }
+
+      .tile__meta {
+        color: var(--muted);
+        font-size: 0.84rem;
+        line-height: 1.35;
+      }
+
+      .tile__arrow {
+        position: relative;
+        z-index: 1;
+        color: var(--muted-strong);
+        font-size: 1.05rem;
+        transition:
+          transform 0.22s ease,
+          color 0.22s ease;
+      }
+
+      .tile:hover .tile__arrow,
+      .tile:focus-visible .tile__arrow {
+        transform: translateX(3px);
+        color: var(--text);
+      }
+
+      .tile--feature {
+        background: linear-gradient(
+          180deg,
+          rgba(145, 70, 255, 0.14),
+          rgba(255, 255, 255, 0.04)
+        );
+      }
+
+      .tile--twitch {
+        color: #f0e9ff;
+      }
+
+      .tile--twitch .tile__icon {
+        color: #dbcfff;
+        border-color: rgba(145, 70, 255, 0.22);
+        background: rgba(145, 70, 255, 0.18);
+      }
+
+      .tile--youtube {
+        background: linear-gradient(
+          180deg,
+          rgba(255, 0, 0, 0.12),
+          rgba(255, 255, 255, 0.035)
+        );
+      }
+
+      .tile--youtube .tile__icon {
+        color: #ffd6db;
+        border-color: rgba(255, 0, 0, 0.22);
+        background: rgba(255, 0, 0, 0.14);
+      }
+
+      .tile--discord {
+        background: linear-gradient(
+          180deg,
+          rgba(88, 101, 242, 0.14),
+          rgba(255, 255, 255, 0.035)
+        );
+      }
+
+      .tile--discord .tile__icon {
+        color: #e6e9ff;
+        border-color: rgba(88, 101, 242, 0.24);
+        background: rgba(88, 101, 242, 0.18);
+      }
+
+      .tile--steam {
+        background: linear-gradient(
+          180deg,
+          rgba(102, 192, 244, 0.12),
+          rgba(255, 255, 255, 0.035)
+        );
+      }
+
+      .tile--steam .tile__icon {
+        color: #dff5ff;
+        border-color: rgba(102, 192, 244, 0.22);
+        background: rgba(102, 192, 244, 0.14);
+      }
+
+      .tile--donationalerts {
+        background: linear-gradient(
+          180deg,
+          rgba(245, 117, 7, 0.12),
+          rgba(255, 255, 255, 0.035)
+        );
+      }
+
+      .tile--donationalerts .tile__icon {
+        color: #ffe4c8;
+        border-color: rgba(245, 117, 7, 0.22);
+        background: rgba(245, 117, 7, 0.14);
+      }
+
+      .tile--boosty {
+        background: linear-gradient(
+          180deg,
+          rgba(241, 95, 44, 0.12),
+          rgba(255, 255, 255, 0.035)
+        );
+      }
+
+      .tile--boosty .tile__icon {
+        color: #ffddd0;
+        border-color: rgba(241, 95, 44, 0.22);
+        background: rgba(241, 95, 44, 0.14);
+      }
+
+      .contact {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        flex-wrap: wrap;
+        padding-top: 8px;
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
+        color: var(--muted);
+      }
+
+      .contact span {
+        font-size: 0.88rem;
+      }
+
+      .contact a {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 14px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(255, 255, 255, 0.04);
+        color: var(--text);
+        text-decoration: none;
+        font-weight: 700;
+      }
+
+      .contact a:hover,
+      .contact a:focus-visible {
+        border-color: rgba(159, 139, 255, 0.24);
+      }
+
+      .contact a:focus-visible {
+        outline: none;
+        box-shadow: 0 0 0 3px var(--focus);
+      }
+
+      @keyframes lift {
+        from {
+          opacity: 0;
+          transform: translateY(14px) scale(0.986);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+
+        50% {
+          transform: scale(1.18);
+        }
+      }
+
+      @media (max-width: 640px) {
+        .page {
+          padding: 12px;
+        }
+
+        .shell {
+          padding: 18px;
+          gap: 18px;
+          border-radius: 26px;
+        }
+
+        .identity {
+          border-bottom: 1px solid var(--border-strong);
+          border-radius: 26px 26px 0 0;
+          padding-bottom: 18px;
+        }
+
+        .identity__top {
+          flex-direction: column;
+          align-items: center;
+          gap: 16px;
+        }
+
+        .avatar-shell {
+          width: clamp(104px, 28vw, 118px);
+          height: clamp(104px, 28vw, 118px);
+        }
+
+        .profile-meta {
+          width: 100%;
+          justify-content: center;
+        }
+
+        .tiles {
+          grid-template-columns: 1fr;
+        }
+
+        .identity__copy {
+          gap: 10px;
+          width: 100%;
+        }
+
+        .section-head {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .contact {
+          align-items: flex-start;
+        }
+
+        h1 {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          text-align: center;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+          scroll-behavior: auto !important;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <main class="page">
+      <section class="shell" aria-labelledby="profile-name">
+        <header class="identity">
+          <div class="identity__top">
+            <div class="avatar-shell">
+              <div class="avatar-frame">
+                <img
+                  src="og-image.jpg"
+                  alt="maseaaao"
+                  class="avatar"
+                  loading="eager"
+                  fetchpriority="high"
+                  decoding="async"
+                  width="144"
+                  height="144"
+                  onerror="
+                    this.hidden = true;
+                    this.nextElementSibling.hidden = false;
+                  " />
+                <div class="avatar-fallback" hidden aria-hidden="true">m</div>
+              </div>
+            </div>
+
+            <div class="identity__copy">
+              <div class="profile-meta">
+                <span class="live-badge" title="Сейчас в эфире" data-live-badge>
+                  <span class="live-badge__dot" aria-hidden="true"></span>
+                  LIVE
+                </span>
+              </div>
+
+              <h1 id="profile-name">maseaaao</h1>
+            </div>
           </div>
-        </a>
-        <a href="https://boosty.to/maseaaao/donate" target="_blank" rel="noopener noreferrer" class="donate-card"
-          title="Донат просто так">
-          <img src="./common-qr-donation.jpg" alt="QR код для доната" class="donate-qr" loading="lazy">
-          <div class="donate-card-text">
-            <span class="donate-label">Просто так</span>
-            <span class="donate-sublabel">Boosty</span>
-          </div>
-        </a>
-      </div>
-    </section>
+        </header>
 
-    <!-- Links Section -->
-    <nav class="links" id="links" aria-label="Социальные сети">
-      <!-- Telegram -->
-      <!-- <a href="https://t.me/maseaaao" target="_blank" rel="noopener noreferrer" class="link-item telegram"
-        title="Telegram @maseaaao">
-        <div class="link-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z" />
-          </svg>
+        <div class="actions">
+          <section class="section" aria-labelledby="watch-title">
+            <div class="section-head">
+              <strong id="watch-title">Смотреть</strong>
+            </div>
+
+            <div class="tiles" aria-label="Основные ссылки">
+              <a
+                href="https://www.twitch.tv/maseaaao_"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="tile tile--feature tile--twitch"
+                title="Twitch maseaaao_">
+                <span class="tile__icon" aria-hidden="true">
+                  <img
+                    src="https://cdn.simpleicons.org/twitch/FFFFFF"
+                    alt=""
+                    width="22"
+                    height="22"
+                    decoding="async" />
+                </span>
+                <span class="tile__copy">
+                  <span class="tile__title">Twitch</span>
+                  <span class="tile__meta">Смотреть стримы</span>
+                </span>
+                <span class="tile__arrow" aria-hidden="true">↗</span>
+              </a>
+
+              <a
+                href="https://www.youtube.com/@maseaaao"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="tile tile--youtube"
+                title="YouTube канал">
+                <span class="tile__icon" aria-hidden="true">
+                  <img
+                    src="https://cdn.simpleicons.org/youtube/FFFFFF"
+                    alt=""
+                    width="22"
+                    height="22"
+                    decoding="async" />
+                </span>
+                <span class="tile__copy">
+                  <span class="tile__title">YouTube</span>
+                  <span class="tile__meta">Нарезки, архивы и клипы</span>
+                </span>
+                <span class="tile__arrow" aria-hidden="true">↗</span>
+              </a>
+            </div>
+          </section>
+
+          <section class="section" aria-labelledby="support-title">
+            <div class="section-head">
+              <strong id="support-title">Поддержать</strong>
+            </div>
+
+            <div class="tiles" aria-label="Ссылки на поддержку">
+              <a
+                href="https://www.donationalerts.com/r/maseaaao"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="tile tile--donationalerts"
+                title="Донат на стриме">
+                <span class="tile__icon" aria-hidden="true">
+                  <img
+                    src="https://www.donationalerts.com/img/brand/da.svg"
+                    alt=""
+                    width="22"
+                    height="22"
+                    decoding="async"
+                    class="tile__icon--mono" />
+                </span>
+                <span class="tile__copy">
+                  <span class="tile__title">DonationAlerts</span>
+                  <span class="tile__meta">Во время трансляции</span>
+                </span>
+                <span class="tile__arrow" aria-hidden="true">↗</span>
+              </a>
+
+              <a
+                href="https://boosty.to/maseaaao/donate"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="tile tile--boosty"
+                title="Донат просто так">
+                <span class="tile__icon" aria-hidden="true">
+                  <img
+                    src="https://cdn.simpleicons.org/boosty/FFFFFF"
+                    alt=""
+                    width="22"
+                    height="22"
+                    decoding="async" />
+                </span>
+                <span class="tile__copy">
+                  <span class="tile__title">Boosty</span>
+                  <span class="tile__meta">Вне эфира</span>
+                </span>
+                <span class="tile__arrow" aria-hidden="true">↗</span>
+              </a>
+            </div>
+          </section>
+
+          <section class="section" aria-labelledby="profiles-title">
+            <div class="section-head">
+              <strong id="profiles-title">Профили</strong>
+            </div>
+
+            <div class="tiles" aria-label="Профили и соцсети">
+              <a
+                href="https://discord.com/users/1418860040869384192"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="tile tile--discord"
+                title="Discord профиль">
+                <span class="tile__icon" aria-hidden="true">
+                  <img
+                    src="https://cdn.simpleicons.org/discord/FFFFFF"
+                    alt=""
+                    width="22"
+                    height="22"
+                    decoding="async" />
+                </span>
+                <span class="tile__copy">
+                  <span class="tile__title">Discord</span>
+                  <span class="tile__meta">Связаться</span>
+                </span>
+                <span class="tile__arrow" aria-hidden="true">↗</span>
+              </a>
+
+              <a
+                href="https://steamcommunity.com/id/maseaaao"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="tile tile--steam"
+                title="Steam профиль">
+                <span class="tile__icon" aria-hidden="true">
+                  <img
+                    src="https://cdn.simpleicons.org/steam/FFFFFF"
+                    alt=""
+                    width="22"
+                    height="22"
+                    decoding="async" />
+                </span>
+                <span class="tile__copy">
+                  <span class="tile__title">Steam</span>
+                  <span class="tile__meta">Поиграть</span>
+                </span>
+                <span class="tile__arrow" aria-hidden="true">↗</span>
+              </a>
+            </div>
+          </section>
+
+          <footer class="contact">
+            <a
+              href="mailto:collab@maseaaao.com"
+              title="Написать по сотрудничеству"
+              >collab@maseaaao.com</a
+            >
+          </footer>
         </div>
-        <span class="link-text">Telegram</span>
-        <span class="link-arrow" aria-hidden="true">💖</span>
-      </a> -->
-
-      <!-- TikTok -->
-      <a href="https://www.tiktok.com/@maseaaao" target="_blank" rel="noopener noreferrer" class="link-item tiktok"
-        title="TikTok @maseaaao">
-        <div class="link-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z" />
-          </svg>
-        </div>
-        <span class="link-text">TikTok</span>
-        <span class="link-arrow" aria-hidden="true">→</span>
-      </a>
-
-      <!-- Twitch -->
-      <a href="https://www.twitch.tv/maseaaao_" target="_blank" rel="noopener noreferrer" class="link-item twitch"
-        title="Twitch maseaaao_">
-        <div class="link-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714Z" />
-          </svg>
-        </div>
-        <span class="link-text">Twitch</span>
-        <span class="link-arrow" aria-hidden="true">→</span>
-      </a>
-
-      <!-- YouTube -->
-      <a href="https://www.youtube.com/@maseaaao" target="_blank" rel="noopener noreferrer" class="link-item youtube"
-        title="YouTube канал">
-        <div class="link-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
-          </svg>
-        </div>
-        <span class="link-text">YouTube</span>
-        <span class="link-arrow" aria-hidden="true">→</span>
-      </a>
-    </nav>
-
-    <!-- Footer -->
-    <footer class="footer">
-      <p class="footer-text">сделано с <span class="heart" aria-label="любовью">♥</span></p>
-    </footer>
-  </div>
-</body>
-
+      </section>
+    </main>
+  </body>
 </html>
