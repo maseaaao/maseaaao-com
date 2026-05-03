@@ -10,14 +10,14 @@
     <title>maseaaao — стримы, клипы и поддержка</title>
     <meta
       name="description"
-      content="Хаб maseaaao: Twitch, YouTube, поддержка и контакты в одном месте." />
+      content="Хаб maseaaao: Twitch, Kick, YouTube, поддержка и контакты в одном месте." />
     <link rel="canonical" href="https://maseaaao.com/" />
 
     <meta property="og:type" content="website" />
     <meta property="og:title" content="maseaaao — стримы, клипы и поддержка" />
     <meta
       property="og:description"
-      content="Хаб maseaaao: Twitch, YouTube, поддержка и контакты в одном месте." />
+      content="Хаб maseaaao: Twitch, Kick, YouTube, поддержка и контакты в одном месте." />
     <meta property="og:image" content="https://maseaaao.com/og-image.jpg" />
     <meta property="og:image:alt" content="maseaaao" />
     <meta property="og:url" content="https://maseaaao.com/" />
@@ -27,7 +27,7 @@
     <meta name="twitter:title" content="maseaaao — стримы, клипы и поддержка" />
     <meta
       name="twitter:description"
-      content="Хаб maseaaao: Twitch, YouTube, поддержка и контакты в одном месте." />
+      content="Хаб maseaaao: Twitch, Kick, YouTube, поддержка и контакты в одном месте." />
     <meta name="twitter:image" content="https://maseaaao.com/og-image.jpg" />
     <meta name="twitter:image:alt" content="maseaaao" />
 
@@ -379,6 +379,11 @@
         gap: 12px;
       }
 
+      .tiles--watch .tile--feature {
+        grid-column: 1 / -1;
+        min-height: 104px;
+      }
+
       .tile {
         position: relative;
         display: grid;
@@ -461,6 +466,13 @@
         filter: brightness(0) saturate(100%) invert(1);
       }
 
+      .tile__glyph {
+        font-family: "Geologica", system-ui, sans-serif;
+        font-size: 1.2rem;
+        font-weight: 780;
+        line-height: 1;
+      }
+
       .tile__copy {
         position: relative;
         z-index: 1;
@@ -529,18 +541,18 @@
         background: rgba(255, 0, 0, 0.14);
       }
 
-      .tile--discord {
+      .tile--kick {
         background: linear-gradient(
           180deg,
-          rgba(88, 101, 242, 0.14),
+          rgba(83, 252, 24, 0.12),
           rgba(255, 255, 255, 0.035)
         );
       }
 
-      .tile--discord .tile__icon {
-        color: #e6e9ff;
-        border-color: rgba(88, 101, 242, 0.24);
-        background: rgba(88, 101, 242, 0.18);
+      .tile--kick .tile__icon {
+        color: #e8ffdf;
+        border-color: rgba(83, 252, 24, 0.22);
+        background: rgba(83, 252, 24, 0.12);
       }
 
       .tile--steam {
@@ -555,6 +567,20 @@
         color: #dff5ff;
         border-color: rgba(102, 192, 244, 0.22);
         background: rgba(102, 192, 244, 0.14);
+      }
+
+      .tile--mail {
+        background: linear-gradient(
+          180deg,
+          rgba(255, 139, 184, 0.11),
+          rgba(255, 255, 255, 0.035)
+        );
+      }
+
+      .tile--mail .tile__icon {
+        color: #ffe4ee;
+        border-color: rgba(255, 139, 184, 0.22);
+        background: rgba(255, 139, 184, 0.12);
       }
 
       .tile--donationalerts {
@@ -583,44 +609,6 @@
         color: #ffddd0;
         border-color: rgba(241, 95, 44, 0.22);
         background: rgba(241, 95, 44, 0.14);
-      }
-
-      .contact {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 12px;
-        flex-wrap: wrap;
-        padding-top: 8px;
-        border-top: 1px solid rgba(255, 255, 255, 0.06);
-        color: var(--muted);
-      }
-
-      .contact span {
-        font-size: 0.88rem;
-      }
-
-      .contact a {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 10px 14px;
-        border-radius: 999px;
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        background: rgba(255, 255, 255, 0.04);
-        color: var(--text);
-        text-decoration: none;
-        font-weight: 700;
-      }
-
-      .contact a:hover,
-      .contact a:focus-visible {
-        border-color: rgba(159, 139, 255, 0.24);
-      }
-
-      .contact a:focus-visible {
-        outline: none;
-        box-shadow: 0 0 0 3px var(--focus);
       }
 
       @keyframes lift {
@@ -693,10 +681,6 @@
           align-items: flex-start;
         }
 
-        .contact {
-          align-items: flex-start;
-        }
-
         h1 {
           display: flex;
           align-items: center;
@@ -761,7 +745,7 @@
               <strong id="watch-title">Смотреть</strong>
             </div>
 
-            <div class="tiles" aria-label="Основные ссылки">
+            <div class="tiles tiles--watch" aria-label="Основные ссылки">
               <a
                 href="https://www.twitch.tv/maseaaao_"
                 target="_blank"
@@ -778,6 +762,27 @@
                 </span>
                 <span class="tile__copy">
                   <span class="tile__title">Twitch</span>
+                  <span class="tile__meta">Смотреть стримы</span>
+                </span>
+                <span class="tile__arrow" aria-hidden="true">↗</span>
+              </a>
+
+              <a
+                href="https://kick.com/maseaaao"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="tile tile--kick"
+                title="Kick maseaaao">
+                <span class="tile__icon" aria-hidden="true">
+                  <img
+                    src="https://cdn.simpleicons.org/kick/FFFFFF"
+                    alt=""
+                    width="22"
+                    height="22"
+                    decoding="async" />
+                </span>
+                <span class="tile__copy">
+                  <span class="tile__title">Kick</span>
                   <span class="tile__meta">Смотреть стримы</span>
                 </span>
                 <span class="tile__arrow" aria-hidden="true">↗</span>
@@ -862,28 +867,7 @@
               <strong id="profiles-title">Профили</strong>
             </div>
 
-            <div class="tiles" aria-label="Профили и соцсети">
-              <a
-                href="https://discord.com/users/1418860040869384192"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="tile tile--discord"
-                title="Discord профиль">
-                <span class="tile__icon" aria-hidden="true">
-                  <img
-                    src="https://cdn.simpleicons.org/discord/FFFFFF"
-                    alt=""
-                    width="22"
-                    height="22"
-                    decoding="async" />
-                </span>
-                <span class="tile__copy">
-                  <span class="tile__title">Discord</span>
-                  <span class="tile__meta">Связаться</span>
-                </span>
-                <span class="tile__arrow" aria-hidden="true">↗</span>
-              </a>
-
+            <div class="tiles" aria-label="Профили и контакты">
               <a
                 href="https://steamcommunity.com/id/maseaaao"
                 target="_blank"
@@ -904,16 +888,22 @@
                 </span>
                 <span class="tile__arrow" aria-hidden="true">↗</span>
               </a>
+
+              <a
+                href="mailto:collab@maseaaao.com"
+                class="tile tile--mail"
+                title="Написать по сотрудничеству">
+                <span class="tile__icon" aria-hidden="true">
+                  <span class="tile__glyph">@</span>
+                </span>
+                <span class="tile__copy">
+                  <span class="tile__title">collab@maseaaao.com</span>
+                  <span class="tile__meta">Для сотрудничества</span>
+                </span>
+                <span class="tile__arrow" aria-hidden="true">↗</span>
+              </a>
             </div>
           </section>
-
-          <footer class="contact">
-            <a
-              href="mailto:collab@maseaaao.com"
-              title="Написать по сотрудничеству"
-              >collab@maseaaao.com</a
-            >
-          </footer>
         </div>
       </section>
     </main>
