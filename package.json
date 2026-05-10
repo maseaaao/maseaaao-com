@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "render:scenes": "node scripts/render-scenes/index.mjs",
-    "render:camera-frame": "node scripts/render-camera-frame/index.mjs"
+    "render:scenes:vertical": "node scripts/render-scenes/index.mjs --scenes-dir dist/scenes-vertical --width 1440 --height 2560"
   },
   "dependencies": {
     "playwright-core": "^1.58.2"

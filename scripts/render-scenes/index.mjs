@@ -3,15 +3,20 @@ import http from "node:http";
 import path from "node:path";
 import { chromium } from "playwright-core";
 
-const BASE_WIDTH = 2560;
-const BASE_HEIGHT = 1440;
+const DEFAULT_BASE_WIDTH = 2560;
+const DEFAULT_BASE_HEIGHT = 1440;
 const SCENE_TIMEOUT_MS = 20000;
 const SCRIPT_PATH = path.resolve(process.argv[1] ?? "scripts/render-scenes/index.mjs");
 const SCRIPT_DIR = path.dirname(SCRIPT_PATH);
 const REPO_ROOT = path.resolve(SCRIPT_DIR, "..", "..");
 const DIST_DIR = path.join(REPO_ROOT, "dist");
-const SCENES_DIR = path.join(DIST_DIR, "scenes");
-const OUTPUT_DIR = path.join(SCENES_DIR, "rendered");
+const options = parseCliOptions(process.argv.slice(2));
+const BASE_WIDTH = readPositiveIntegerOption(options.width, "--width", DEFAULT_BASE_WIDTH);
+const BASE_HEIGHT = readPositiveIntegerOption(options.height, "--height", DEFAULT_BASE_HEIGHT);
+const SCENES_DIR = resolveRepoPath(options.scenesDir ?? "dist/scenes");
+const OUTPUT_DIR = options.outputDir
+  ? resolveRepoPath(options.outputDir)
+  : path.join(SCENES_DIR, "rendered");
 
 const CONTENT_TYPES = new Map([
   [".css", "text/css; charset=utf-8"],
@@ -29,7 +34,8 @@ const CONTENT_TYPES = new Map([
 
 async function main() {
   await assertDirectoryExists(DIST_DIR, "dist");
-  await assertDirectoryExists(SCENES_DIR, "dist/scenes");
+  assertPathInside(DIST_DIR, SCENES_DIR, "Scenes directory");
+  await assertDirectoryExists(SCENES_DIR, path.relative(REPO_ROOT, SCENES_DIR));
   await fs.promises.mkdir(OUTPUT_DIR, { recursive: true });
 
   const scenes = await discoverScenes();
@@ -58,6 +64,7 @@ async function main() {
 
     console.log(`Serving ${DIST_DIR} at ${server.origin}`);
     console.log(`Using Edge: ${edgeBinary}`);
+    console.log(`Rendering ${path.relative(REPO_ROOT, SCENES_DIR)} at ${BASE_WIDTH}x${BASE_HEIGHT}`);
 
     for (const scene of scenes) {
       const page = await context.newPage();
@@ -66,6 +73,7 @@ async function main() {
         const sceneUrl = `${server.origin}${scene.urlPath}`;
         await page.goto(sceneUrl, { waitUntil: "load", timeout: SCENE_TIMEOUT_MS });
         await waitForSceneReady(page, SCENE_TIMEOUT_MS);
+        await page.waitForTimeout(250);
 
         const outputPath = path.join(OUTPUT_DIR, `${scene.basename}.webp`);
         const bytes = await captureWebp(page);
@@ -113,9 +121,83 @@ async function discoverScenes() {
     .map((entry) => ({
       basename: path.basename(entry.name, ".html"),
       fileName: entry.name,
-      urlPath: `/scenes/${entry.name}`,
+      urlPath: toUrlPath(path.relative(DIST_DIR, path.join(SCENES_DIR, entry.name))),
     }))
     .sort((left, right) => left.fileName.localeCompare(right.fileName, "en"));
+}
+
+function parseCliOptions(args) {
+  const aliases = new Map([
+    ["height", "height"],
+    ["output-dir", "outputDir"],
+    ["scenes-dir", "scenesDir"],
+    ["width", "width"],
+  ]);
+  const parsed = {};
+
+  for (let index = 0; index < args.length; index += 1) {
+    const arg = args[index];
+    if (!arg.startsWith("--")) {
+      throw new Error(`Unexpected argument: ${arg}`);
+    }
+
+    const separatorIndex = arg.indexOf("=");
+    const rawKey = arg.slice(2, separatorIndex === -1 ? undefined : separatorIndex);
+    const key = aliases.get(rawKey);
+    if (!key) {
+      throw new Error(`Unknown option: --${rawKey}`);
+    }
+
+    let value = separatorIndex === -1 ? undefined : arg.slice(separatorIndex + 1);
+    if (value === undefined) {
+      index += 1;
+      value = args[index];
+    }
+
+    if (!value || value.startsWith("--")) {
+      throw new Error(`Expected a value for --${rawKey}.`);
+    }
+
+    parsed[key] = value;
+  }
+
+  return parsed;
+}
+
+function readPositiveIntegerOption(value, label, fallback) {
+  if (value === undefined) {
+    return fallback;
+  }
+
+  const parsed = Number.parseInt(value, 10);
+  if (!Number.isInteger(parsed) || parsed <= 0 || String(parsed) !== String(value)) {
+    throw new Error(`${label} must be a positive integer.`);
+  }
+
+  return parsed;
+}
+
+function resolveRepoPath(value) {
+  if (path.isAbsolute(value)) {
+    return path.resolve(value);
+  }
+
+  return path.resolve(REPO_ROOT, value);
+}
+
+function assertPathInside(rootDir, candidatePath, label) {
+  const relativePath = path.relative(rootDir, candidatePath);
+
+  if (relativePath === "" || (!relativePath.startsWith("..") && !path.isAbsolute(relativePath))) {
+    return;
+  }
+
+  throw new Error(`${label} must be inside ${path.relative(REPO_ROOT, rootDir)}.`);
+}
+
+function toUrlPath(relativePath) {
+  const segments = relativePath.split(path.sep).map((segment) => encodeURIComponent(segment));
+  return `/${segments.join("/")}`;
 }
 
 function startStaticServer(rootDir) {
