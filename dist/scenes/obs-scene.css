@@ -97,7 +97,8 @@ body[data-scene="live"] {
   --scene-glow-c: rgba(127, 224, 255, 0.12);
 }
 
-body[data-scene="blank"] {
+body[data-scene="blank"],
+body[data-scene="placeholder"] {
   --scene-glow-a: rgba(159, 139, 255, 0.22);
   --scene-glow-b: rgba(255, 139, 184, 0.16);
   --scene-glow-c: rgba(127, 224, 255, 0.14);
