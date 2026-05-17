@@ -97,6 +97,13 @@ body[data-scene="live"] {
   --scene-glow-c: rgba(127, 224, 255, 0.12);
 }
 
+body[data-scene="schedule"] {
+  --scene-glow-a: rgba(127, 224, 255, 0.17);
+  --scene-glow-b: rgba(255, 139, 184, 0.15);
+  --scene-glow-c: rgba(159, 139, 255, 0.14);
+  --scene-dot: var(--accent-cyan);
+}
+
 body[data-scene="blank"],
 body[data-scene="placeholder"] {
   --scene-glow-a: rgba(159, 139, 255, 0.22);
@@ -530,6 +537,342 @@ body[data-scene="live"] .identity__name {
   background: linear-gradient(135deg, #ffffff 0%, #fff0f3 44%, var(--accent-red) 100%);
   -webkit-background-clip: text;
   background-clip: text;
+}
+
+.schedule-layout {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  display: grid;
+  grid-template-rows: minmax(0, 380px) minmax(0, 1fr) auto;
+  gap: 40px;
+}
+
+.schedule-hero {
+  min-width: 0;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 680px;
+  gap: 40px;
+}
+
+.schedule-intro,
+.schedule-time,
+.schedule-day,
+.schedule-footer {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--panel-radius);
+  border: 1px solid var(--border);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.022)),
+    linear-gradient(180deg, var(--panel-strong), rgba(9, 11, 18, 0.9));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.schedule-intro::before,
+.schedule-time::before,
+.schedule-day::before,
+.schedule-footer::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.045), transparent 54%),
+    radial-gradient(circle at 100% 0, var(--scene-glow-c), transparent 42%);
+  opacity: 0.9;
+}
+
+.schedule-intro {
+  padding: 48px 54px;
+  display: grid;
+  align-content: center;
+}
+
+.schedule-kicker,
+.schedule-label,
+.schedule-day__name,
+.schedule-footer__label {
+  font-family: "Geologica", system-ui, sans-serif;
+  font-weight: 820;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.schedule-kicker {
+  position: relative;
+  z-index: 1;
+  width: fit-content;
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 26px;
+  color: #dff7ff;
+  font-size: 24px;
+}
+
+.schedule-kicker::before {
+  content: "";
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: var(--scene-dot);
+  box-shadow: 0 0 0 8px rgba(127, 224, 255, 0.12);
+}
+
+.schedule-title {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  max-width: 1380px;
+  font-family: "Geologica", system-ui, sans-serif;
+  font-size: 112px;
+  font-weight: 840;
+  line-height: 0.9;
+  background: linear-gradient(135deg, #ffffff 0%, #eefcff 48%, var(--accent-cyan) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  text-shadow: 0 0 32px rgba(127, 224, 255, 0.12);
+}
+
+.schedule-subtitle {
+  position: relative;
+  z-index: 1;
+  max-width: 1160px;
+  margin: 24px 0 0;
+  color: var(--muted);
+  font-size: 34px;
+  font-weight: 520;
+  line-height: 1.18;
+}
+
+.schedule-time {
+  padding: 44px 46px;
+  display: grid;
+  align-content: center;
+  gap: 28px;
+}
+
+.schedule-label {
+  position: relative;
+  z-index: 1;
+  color: var(--muted);
+  font-size: 24px;
+}
+
+.schedule-time__stack {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 16px;
+}
+
+.schedule-time__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 24px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.schedule-time__row:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.schedule-time__hour {
+  font-family: "Geologica", system-ui, sans-serif;
+  font-size: 82px;
+  font-weight: 840;
+  line-height: 0.92;
+  color: var(--text);
+}
+
+.schedule-time__zone {
+  color: var(--accent-cyan);
+  font-family: "Geologica", system-ui, sans-serif;
+  font-size: 34px;
+  font-weight: 760;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.schedule-week {
+  min-width: 0;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.schedule-day {
+  min-width: 0;
+  min-height: 0;
+  padding: 30px 24px;
+  display: grid;
+  align-content: space-between;
+  gap: 26px;
+}
+
+.schedule-day:nth-child(2n)::before {
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.04), transparent 54%),
+    radial-gradient(circle at 100% 0, var(--scene-glow-b), transparent 42%);
+}
+
+.schedule-day__top,
+.schedule-day__times {
+  position: relative;
+  z-index: 1;
+}
+
+.schedule-day__top {
+  display: grid;
+  gap: 14px;
+}
+
+.schedule-day__name {
+  color: #f7f9ff;
+  font-size: 38px;
+  line-height: 1;
+}
+
+.schedule-day__mark {
+  width: 48px;
+  height: 5px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent-cyan), var(--accent-rose));
+  box-shadow: 0 0 24px rgba(127, 224, 255, 0.22);
+}
+
+.schedule-day__times {
+  display: grid;
+  gap: 16px;
+}
+
+.schedule-day__time {
+  display: grid;
+  gap: 7px;
+}
+
+.schedule-day__hour {
+  font-family: "Geologica", system-ui, sans-serif;
+  font-size: 45px;
+  font-weight: 820;
+  line-height: 0.95;
+  color: var(--text);
+}
+
+.schedule-day__zone {
+  color: var(--muted);
+  font-size: 22px;
+  font-weight: 640;
+  line-height: 1;
+}
+
+.schedule-footer {
+  min-height: 186px;
+  padding: 34px 42px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 40px;
+}
+
+.schedule-footer__copy,
+.schedule-socials {
+  position: relative;
+  z-index: 1;
+}
+
+.schedule-footer__copy {
+  min-width: 0;
+  display: grid;
+  gap: 12px;
+}
+
+.schedule-footer__label {
+  color: var(--accent-rose);
+  font-size: 23px;
+}
+
+.schedule-footer__text {
+  margin: 0;
+  max-width: 1180px;
+  color: var(--text);
+  font-size: 40px;
+  font-weight: 650;
+  line-height: 1.12;
+}
+
+.schedule-socials {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 340px));
+  gap: 18px;
+}
+
+.schedule-social {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 62px minmax(0, 1fr);
+  align-items: center;
+  gap: 18px;
+  padding: 20px;
+  border-radius: 26px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.026)),
+    rgba(255, 255, 255, 0.02);
+}
+
+.schedule-social__icon {
+  width: 62px;
+  height: 62px;
+  display: grid;
+  place-items: center;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text);
+  font-family: "Geologica", system-ui, sans-serif;
+  font-size: 30px;
+  font-weight: 820;
+  line-height: 1;
+}
+
+.schedule-social--youtube .schedule-social__icon {
+  background: rgba(255, 0, 0, 0.16);
+  border-color: rgba(255, 0, 0, 0.28);
+}
+
+.schedule-social--telegram .schedule-social__icon {
+  background: rgba(38, 165, 228, 0.18);
+  border-color: rgba(38, 165, 228, 0.3);
+}
+
+.schedule-social__copy {
+  min-width: 0;
+  display: grid;
+  gap: 5px;
+}
+
+.schedule-social__name {
+  font-family: "Geologica", system-ui, sans-serif;
+  font-size: 26px;
+  font-weight: 760;
+  line-height: 1;
+}
+
+.schedule-social__handle {
+  color: var(--muted);
+  font-size: 24px;
+  font-weight: 620;
+  line-height: 1;
 }
 
 @keyframes pulse {

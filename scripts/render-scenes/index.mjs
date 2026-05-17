@@ -5,6 +5,8 @@ import { chromium } from "playwright-core";
 
 const DEFAULT_BASE_WIDTH = 2560;
 const DEFAULT_BASE_HEIGHT = 1440;
+const DEFAULT_CAPTURE_FORMAT = "webp";
+const DEFAULT_CAPTURE_QUALITY = 100;
 const SCENE_TIMEOUT_MS = 20000;
 const SCRIPT_PATH = path.resolve(process.argv[1] ?? "scripts/render-scenes/index.mjs");
 const SCRIPT_DIR = path.dirname(SCRIPT_PATH);
@@ -13,6 +15,8 @@ const DIST_DIR = path.join(REPO_ROOT, "dist");
 const options = parseCliOptions(process.argv.slice(2));
 const BASE_WIDTH = readPositiveIntegerOption(options.width, "--width", DEFAULT_BASE_WIDTH);
 const BASE_HEIGHT = readPositiveIntegerOption(options.height, "--height", DEFAULT_BASE_HEIGHT);
+const CAPTURE_FORMAT = readCaptureFormatOption(options.format);
+const CAPTURE_QUALITY = readScreenshotQualityOption(options.quality, "--quality", DEFAULT_CAPTURE_QUALITY);
 const SCENES_DIR = resolveRepoPath(options.scenesDir ?? "dist/scenes");
 const OUTPUT_DIR = options.outputDir
   ? resolveRepoPath(options.outputDir)
@@ -75,8 +79,8 @@ async function main() {
         await waitForSceneReady(page, SCENE_TIMEOUT_MS);
         await page.waitForTimeout(250);
 
-        const outputPath = path.join(OUTPUT_DIR, `${scene.basename}.webp`);
-        const bytes = await captureWebp(page);
+        const outputPath = path.join(OUTPUT_DIR, `${scene.basename}.${CAPTURE_FORMAT}`);
+        const bytes = await captureScreenshot(page);
         await writeAtomically(outputPath, bytes);
         console.log(`[ok] ${scene.fileName} -> ${path.relative(REPO_ROOT, outputPath)}`);
       } catch (error) {
@@ -129,7 +133,9 @@ async function discoverScenes() {
 function parseCliOptions(args) {
   const aliases = new Map([
     ["height", "height"],
+    ["format", "format"],
     ["output-dir", "outputDir"],
+    ["quality", "quality"],
     ["scenes-dir", "scenesDir"],
     ["width", "width"],
   ]);
@@ -172,6 +178,29 @@ function readPositiveIntegerOption(value, label, fallback) {
   const parsed = Number.parseInt(value, 10);
   if (!Number.isInteger(parsed) || parsed <= 0 || String(parsed) !== String(value)) {
     throw new Error(`${label} must be a positive integer.`);
+  }
+
+  return parsed;
+}
+
+function readCaptureFormatOption(value) {
+  if (value === undefined) {
+    return DEFAULT_CAPTURE_FORMAT;
+  }
+
+  const normalized = value.toLowerCase();
+  if (normalized === "jpeg" || normalized === "png" || normalized === "webp") {
+    return normalized;
+  }
+
+  throw new Error("--format must be one of: jpeg, png, webp.");
+}
+
+function readScreenshotQualityOption(value, label, fallback) {
+  const parsed = readPositiveIntegerOption(value, label, fallback);
+
+  if (parsed > 100) {
+    throw new Error(`${label} must be between 1 and 100.`);
   }
 
   return parsed;
@@ -402,16 +431,20 @@ async function waitForSceneReady(page, timeoutMs) {
   }, timeoutMs);
 }
 
-async function captureWebp(page) {
+async function captureScreenshot(page) {
   const session = await page.context().newCDPSession(page);
+  const screenshotOptions = {
+    captureBeyondViewport: false,
+    format: CAPTURE_FORMAT,
+    fromSurface: true,
+  };
+
+  if (CAPTURE_FORMAT !== "png") {
+    screenshotOptions.quality = CAPTURE_QUALITY;
+  }
 
   try {
-    const { data } = await session.send("Page.captureScreenshot", {
-      captureBeyondViewport: false,
-      format: "webp",
-      fromSurface: true,
-      quality: 100,
-    });
+    const { data } = await session.send("Page.captureScreenshot", screenshotOptions);
 
     return Buffer.from(data, "base64");
   } finally {

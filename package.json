@@ -2,10 +2,18 @@
   "name": "maseaaao-com",
   "private": true,
   "scripts": {
+    "optimize:images": "node scripts/optimize-images/index.mjs",
+    "render:banners": "npm run render:banners:youtube && npm run render:banners:wtv",
+    "render:banners:youtube": "node scripts/render-scenes/index.mjs --scenes-dir dist/banners/youtube --output-dir dist/banners/rendered --width 2048 --height 1152 --format png",
+    "render:banners:wtv": "node scripts/render-scenes/index.mjs --scenes-dir dist/banners/wtv --output-dir dist/banners/rendered --width 2224 --height 570 --format png",
     "render:scenes": "node scripts/render-scenes/index.mjs",
     "render:scenes:vertical": "node scripts/render-scenes/index.mjs --scenes-dir dist/scenes-vertical --width 1440 --height 2560"
   },
   "dependencies": {
     "playwright-core": "^1.58.2"
+  },
+  "devDependencies": {
+    "jpegtran-bin": "^7.0.0",
+    "sharp": "^0.34.5"
   }
 }

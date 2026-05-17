@@ -1,0 +1,488 @@
+:root {
+  color-scheme: dark;
+  --banner-width: 2048px;
+  --banner-height: 1152px;
+  --banner-scale: 1;
+  --bg: #050711;
+  --panel: rgba(12, 15, 25, 0.84);
+  --panel-strong: rgba(16, 20, 33, 0.92);
+  --border: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.14);
+  --text: #f5f7ff;
+  --muted: #a7b0c6;
+  --accent-violet: #9f8bff;
+  --accent-rose: #ff8bb8;
+  --accent-cyan: #7fe0ff;
+  --accent-red: #ff5f7d;
+  --shadow: 0 30px 90px rgba(0, 0, 0, 0.46);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+  position: relative;
+  isolation: isolate;
+  font-family: "Onest", system-ui, sans-serif;
+  color: var(--text);
+  background-color: var(--bg);
+  background:
+    radial-gradient(circle at 14% 12%, rgba(127, 224, 255, 0.16), transparent 28%),
+    radial-gradient(circle at 82% 18%, rgba(255, 139, 184, 0.14), transparent 30%),
+    radial-gradient(circle at 52% 92%, rgba(159, 139, 255, 0.16), transparent 34%),
+    linear-gradient(180deg, #050711 0%, #080b15 52%, #030409 100%);
+}
+
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+}
+
+body::before {
+  inset: -20%;
+  background:
+    radial-gradient(circle at 18% 16%, rgba(127, 224, 255, 0.14), transparent 36%),
+    radial-gradient(circle at 80% 24%, rgba(255, 139, 184, 0.14), transparent 34%),
+    radial-gradient(circle at 52% 78%, rgba(159, 139, 255, 0.14), transparent 40%);
+  filter: blur(20px);
+  opacity: 0.9;
+}
+
+body::after {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 112px 112px;
+  opacity: 0.045;
+}
+
+.banner-viewport {
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.banner-stage {
+  position: relative;
+  width: calc(var(--banner-width) * var(--banner-scale));
+  height: calc(var(--banner-height) * var(--banner-scale));
+}
+
+.banner-shell {
+  position: relative;
+  width: var(--banner-width);
+  height: var(--banner-height);
+  overflow: hidden;
+  isolation: isolate;
+  transform: scale(var(--banner-scale));
+  transform-origin: top left;
+}
+
+.banner-shell::before {
+  content: "";
+  position: absolute;
+  inset: 54px;
+  border-radius: 52px;
+  border: 1px solid var(--border);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.012)),
+    linear-gradient(180deg, rgba(12, 15, 25, 0.58), rgba(7, 9, 16, 0.18));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    var(--shadow);
+  backdrop-filter: blur(24px);
+}
+
+.safe-panel,
+.ambient-card,
+.wtv-panel {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--border-strong);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.028)),
+    linear-gradient(180deg, var(--panel-strong), rgba(9, 11, 18, 0.92));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(22px);
+}
+
+.safe-panel::before,
+.ambient-card::before,
+.wtv-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.045), transparent 54%),
+    radial-gradient(circle at 100% 0, rgba(127, 224, 255, 0.12), transparent 42%);
+}
+
+.kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: "Geologica", system-ui, sans-serif;
+  font-weight: 820;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #dff7ff;
+}
+
+.kicker::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent-cyan);
+  box-shadow: 0 0 0 7px rgba(127, 224, 255, 0.12);
+}
+
+.weekday-strip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.weekday-strip span {
+  display: grid;
+  place-items: center;
+  min-width: 54px;
+  height: 38px;
+  padding: 0 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.045);
+  color: #f7f9ff;
+  font-family: "Geologica", system-ui, sans-serif;
+  font-size: 20px;
+  font-weight: 780;
+  line-height: 1;
+}
+
+.time-pair {
+  display: grid;
+  gap: 10px;
+}
+
+.time-row {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  min-width: 0;
+}
+
+.time-row strong {
+  font-family: "Geologica", system-ui, sans-serif;
+  font-weight: 860;
+  color: var(--text);
+  line-height: 0.9;
+}
+
+.time-row span {
+  color: var(--accent-cyan);
+  font-family: "Geologica", system-ui, sans-serif;
+  font-weight: 760;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.youtube-banner {
+  --banner-width: 2048px;
+  --banner-height: 1152px;
+  --yt-safe-width: 1235px;
+  --yt-safe-height: 338px;
+}
+
+.youtube-ambient {
+  position: absolute;
+  inset: 88px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 260px 1fr 260px;
+  gap: 24px;
+}
+
+.ambient-card {
+  border-radius: 34px;
+  padding: 34px 38px;
+}
+
+.ambient-card--wide {
+  grid-column: 1 / -1;
+}
+
+.ambient-card--left,
+.ambient-card--right {
+  opacity: 0.72;
+}
+
+.ambient-card--left {
+  align-self: start;
+}
+
+.ambient-card--right {
+  align-self: end;
+}
+
+.ambient-card__label {
+  position: relative;
+  z-index: 1;
+  display: block;
+  margin-bottom: 20px;
+  color: var(--muted);
+  font-family: "Geologica", system-ui, sans-serif;
+  font-size: 22px;
+  font-weight: 820;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.ambient-card__line {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+  color: var(--text);
+  font-family: "Geologica", system-ui, sans-serif;
+  font-size: 60px;
+  font-weight: 840;
+  line-height: 0.95;
+}
+
+.ambient-card__line span {
+  color: var(--muted);
+  font-size: 25px;
+  font-weight: 700;
+}
+
+.youtube-safe {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  top: 50%;
+  width: var(--yt-safe-width);
+  height: var(--yt-safe-height);
+  transform: translate(-50%, -50%);
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: 18px;
+  padding: 28px 34px;
+  border-radius: 34px;
+}
+
+.youtube-safe__top,
+.youtube-safe__main,
+.youtube-safe__footer {
+  position: relative;
+  z-index: 1;
+}
+
+.youtube-safe__top,
+.youtube-safe__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.youtube-safe__top {
+  min-height: 38px;
+}
+
+.youtube-safe__main {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 30px;
+}
+
+.youtube-safe h1 {
+  margin: 0;
+  font-family: "Geologica", system-ui, sans-serif;
+  font-size: 90px;
+  font-weight: 860;
+  line-height: 0.88;
+  background: linear-gradient(135deg, #ffffff 0%, #eefcff 48%, var(--accent-cyan) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  text-shadow: 0 0 30px rgba(127, 224, 255, 0.12);
+}
+
+.youtube-safe .time-row strong {
+  font-size: 74px;
+}
+
+.youtube-safe .time-row span {
+  font-size: 31px;
+}
+
+.youtube-safe__footer {
+  color: var(--muted);
+  font-size: 24px;
+  font-weight: 640;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.youtube-safe__footer strong {
+  color: var(--text);
+  font-family: "Geologica", system-ui, sans-serif;
+  font-weight: 780;
+}
+
+.wtv-banner {
+  --banner-width: 2224px;
+  --banner-height: 570px;
+}
+
+.wtv-frame {
+  position: absolute;
+  inset: 28px;
+  display: grid;
+  place-items: center;
+}
+
+.wtv-panel {
+  width: 100%;
+  height: 100%;
+  border-radius: 40px;
+  display: grid;
+  grid-template-columns: 590px minmax(0, 1fr) 470px;
+  align-items: center;
+  gap: 42px;
+  padding: 46px 58px;
+}
+
+.wtv-panel__brand,
+.wtv-panel__times,
+.wtv-panel__meta {
+  position: relative;
+  z-index: 1;
+}
+
+.wtv-panel__brand {
+  min-width: 0;
+  display: grid;
+  gap: 24px;
+}
+
+.wtv-panel h1 {
+  margin: 0;
+  font-family: "Geologica", system-ui, sans-serif;
+  font-size: 96px;
+  font-weight: 860;
+  line-height: 0.9;
+  background: linear-gradient(135deg, #ffffff 0%, #eefcff 48%, var(--accent-cyan) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  text-shadow: 0 0 30px rgba(127, 224, 255, 0.12);
+}
+
+.wtv-panel .weekday-strip span {
+  min-width: 48px;
+  height: 36px;
+  font-size: 19px;
+}
+
+.wtv-panel__times {
+  display: grid;
+  grid-template-columns: 1fr 1px 1fr;
+  align-items: center;
+  gap: 34px;
+  min-width: 0;
+}
+
+.wtv-time {
+  min-width: 0;
+  display: grid;
+  justify-items: center;
+  gap: 16px;
+}
+
+.wtv-time strong {
+  font-family: "Geologica", system-ui, sans-serif;
+  font-size: 118px;
+  font-weight: 860;
+  line-height: 0.86;
+}
+
+.wtv-time span {
+  color: var(--accent-cyan);
+  font-family: "Geologica", system-ui, sans-serif;
+  font-size: 36px;
+  font-weight: 780;
+  line-height: 1;
+}
+
+.wtv-divider {
+  width: 1px;
+  height: 210px;
+  background: rgba(255, 255, 255, 0.11);
+}
+
+.wtv-panel__meta {
+  display: grid;
+  justify-items: end;
+  gap: 20px;
+  color: var(--muted);
+  font-size: 31px;
+  font-weight: 660;
+  line-height: 1.12;
+  text-align: right;
+}
+
+.wtv-panel__meta p {
+  margin: 0;
+}
+
+.wtv-panel__meta strong {
+  display: block;
+  color: var(--accent-rose);
+  font-family: "Geologica", system-ui, sans-serif;
+  font-size: 27px;
+  font-weight: 820;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.wtv-socials {
+  display: grid;
+  gap: 9px;
+  color: var(--text);
+  font-family: "Geologica", system-ui, sans-serif;
+  font-size: 31px;
+  font-weight: 760;
+  line-height: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
