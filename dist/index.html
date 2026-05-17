@@ -379,10 +379,6 @@
         gap: 12px;
       }
 
-      .tiles--watch .tile--feature {
-        min-height: 104px;
-      }
-
       .tile {
         position: relative;
         display: grid;
@@ -465,13 +461,6 @@
         filter: brightness(0) saturate(100%) invert(1);
       }
 
-      .tile__glyph {
-        font-family: "Geologica", system-ui, sans-serif;
-        font-size: 1.2rem;
-        font-weight: 780;
-        line-height: 1;
-      }
-
       .tile__copy {
         position: relative;
         z-index: 1;
@@ -508,16 +497,16 @@
         color: var(--text);
       }
 
-      .tile--feature {
+      .tile--wide {
+        grid-column: 1 / -1;
+      }
+
+      .tile--twitch {
         background: linear-gradient(
           180deg,
           rgba(145, 70, 255, 0.14),
           rgba(255, 255, 255, 0.04)
         );
-      }
-
-      .tile--twitch {
-        color: #f0e9ff;
       }
 
       .tile--twitch .tile__icon {
@@ -568,34 +557,6 @@
         background: rgba(83, 252, 24, 0.12);
       }
 
-      .tile--steam {
-        background: linear-gradient(
-          180deg,
-          rgba(102, 192, 244, 0.12),
-          rgba(255, 255, 255, 0.035)
-        );
-      }
-
-      .tile--steam .tile__icon {
-        color: #dff5ff;
-        border-color: rgba(102, 192, 244, 0.22);
-        background: rgba(102, 192, 244, 0.14);
-      }
-
-      .tile--mail {
-        background: linear-gradient(
-          180deg,
-          rgba(255, 139, 184, 0.11),
-          rgba(255, 255, 255, 0.035)
-        );
-      }
-
-      .tile--mail .tile__icon {
-        color: #ffe4ee;
-        border-color: rgba(255, 139, 184, 0.22);
-        background: rgba(255, 139, 184, 0.12);
-      }
-
       .tile--donationalerts {
         background: linear-gradient(
           180deg,
@@ -610,18 +571,32 @@
         background: rgba(245, 117, 7, 0.14);
       }
 
-      .tile--boosty {
-        background: linear-gradient(
-          180deg,
-          rgba(241, 95, 44, 0.12),
-          rgba(255, 255, 255, 0.035)
-        );
+      .contact-link {
+        position: relative;
+        z-index: 1;
+        justify-self: start;
+        color: var(--muted);
+        font-size: 0.95rem;
+        line-height: 1.4;
+        text-decoration: underline;
+        text-decoration-color: rgba(159, 139, 255, 0.42);
+        text-decoration-thickness: 1px;
+        text-underline-offset: 5px;
+        transition:
+          color 0.22s ease,
+          text-decoration-color 0.22s ease;
       }
 
-      .tile--boosty .tile__icon {
-        color: #ffddd0;
-        border-color: rgba(241, 95, 44, 0.22);
-        background: rgba(241, 95, 44, 0.14);
+      .contact-link:hover,
+      .contact-link:focus-visible {
+        color: var(--text);
+        text-decoration-color: var(--accent-violet);
+      }
+
+      .contact-link:focus-visible {
+        border-radius: 6px;
+        outline: 3px solid var(--focus);
+        outline-offset: 4px;
       }
 
       @keyframes lift {
@@ -763,7 +738,7 @@
                 href="https://www.twitch.tv/maseaaao_"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="tile tile--feature tile--twitch"
+                class="tile tile--twitch"
                 title="Twitch maseaaao_">
                 <span class="tile__icon" aria-hidden="true">
                   <img
@@ -776,27 +751,6 @@
                 <span class="tile__copy">
                   <span class="tile__title">Twitch</span>
                   <span class="tile__meta">Смотреть стримы</span>
-                </span>
-                <span class="tile__arrow" aria-hidden="true">↗</span>
-              </a>
-
-              <a
-                href="https://t.me/maseaaao"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="tile tile--feature tile--telegram"
-                title="Telegram maseaaao">
-                <span class="tile__icon" aria-hidden="true">
-                  <img
-                    src="https://cdn.simpleicons.org/telegram/FFFFFF"
-                    alt=""
-                    width="22"
-                    height="22"
-                    decoding="async" />
-                </span>
-                <span class="tile__copy">
-                  <span class="tile__title">Telegram</span>
-                  <span class="tile__meta">Анонсы и связь</span>
                 </span>
                 <span class="tile__arrow" aria-hidden="true">↗</span>
               </a>
@@ -826,7 +780,7 @@
                 href="https://www.youtube.com/@maseaaao"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="tile tile--youtube"
+                class="tile tile--youtube tile--wide"
                 title="YouTube канал">
                 <span class="tile__icon" aria-hidden="true">
                   <img
@@ -855,7 +809,7 @@
                 href="https://www.donationalerts.com/r/maseaaao"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="tile tile--donationalerts"
+                class="tile tile--donationalerts tile--wide"
                 title="Донат на стриме">
                 <span class="tile__icon" aria-hidden="true">
                   <img
@@ -872,72 +826,44 @@
                 </span>
                 <span class="tile__arrow" aria-hidden="true">↗</span>
               </a>
-
-              <a
-                href="https://boosty.to/maseaaao/donate"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="tile tile--boosty"
-                title="Донат просто так">
-                <span class="tile__icon" aria-hidden="true">
-                  <img
-                    src="https://cdn.simpleicons.org/boosty/FFFFFF"
-                    alt=""
-                    width="22"
-                    height="22"
-                    decoding="async" />
-                </span>
-                <span class="tile__copy">
-                  <span class="tile__title">Boosty</span>
-                  <span class="tile__meta">Вне эфира</span>
-                </span>
-                <span class="tile__arrow" aria-hidden="true">↗</span>
-              </a>
             </div>
           </section>
 
-          <section class="section" aria-labelledby="profiles-title">
+          <section class="section" aria-labelledby="follow-title">
             <div class="section-head">
-              <strong id="profiles-title">Профили</strong>
+              <strong id="follow-title">Следить</strong>
             </div>
 
-            <div class="tiles" aria-label="Профили и контакты">
+            <div class="tiles" aria-label="Социальные ссылки">
               <a
-                href="https://steamcommunity.com/id/maseaaao"
+                href="https://t.me/maseaaao"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="tile tile--steam"
-                title="Steam профиль">
+                class="tile tile--telegram tile--wide"
+                title="Telegram maseaaao">
                 <span class="tile__icon" aria-hidden="true">
                   <img
-                    src="https://cdn.simpleicons.org/steam/FFFFFF"
+                    src="https://cdn.simpleicons.org/telegram/FFFFFF"
                     alt=""
                     width="22"
                     height="22"
                     decoding="async" />
                 </span>
                 <span class="tile__copy">
-                  <span class="tile__title">Steam</span>
-                  <span class="tile__meta">Поиграть</span>
-                </span>
-                <span class="tile__arrow" aria-hidden="true">↗</span>
-              </a>
-
-              <a
-                href="mailto:collab@maseaaao.com"
-                class="tile tile--mail"
-                title="Написать по сотрудничеству">
-                <span class="tile__icon" aria-hidden="true">
-                  <span class="tile__glyph">@</span>
-                </span>
-                <span class="tile__copy">
-                  <span class="tile__title">collab@maseaaao.com</span>
-                  <span class="tile__meta">Для сотрудничества</span>
+                  <span class="tile__title">Telegram</span>
+                  <span class="tile__meta">Анонсы и связь</span>
                 </span>
                 <span class="tile__arrow" aria-hidden="true">↗</span>
               </a>
             </div>
           </section>
+
+          <!-- <a
+            href="mailto:collab@maseaaao.com"
+            class="contact-link"
+            title="Написать по сотрудничеству">
+            collab@maseaaao.com
+          </a> -->
         </div>
       </section>
     </main>
