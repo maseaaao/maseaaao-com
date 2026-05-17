@@ -3,7 +3,8 @@
   "private": true,
   "scripts": {
     "optimize:images": "node scripts/optimize-images/index.mjs",
-    "render:banners": "npm run render:banners:youtube && npm run render:banners:wtv",
+    "render:banners": "npm run render:banners:youtube && npm run render:banners:kick && npm run render:banners:wtv",
+    "render:banners:kick": "node scripts/render-scenes/index.mjs --scenes-dir dist/banners/kick --output-dir dist/banners/rendered --width 1920 --height 1080 --format png",
     "render:banners:youtube": "node scripts/render-scenes/index.mjs --scenes-dir dist/banners/youtube --output-dir dist/banners/rendered --width 2048 --height 1152 --format png",
     "render:banners:wtv": "node scripts/render-scenes/index.mjs --scenes-dir dist/banners/wtv --output-dir dist/banners/rendered --width 2224 --height 570 --format png",
     "render:scenes": "node scripts/render-scenes/index.mjs",

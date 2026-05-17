@@ -209,6 +209,13 @@ body::after {
   --yt-safe-height: 338px;
 }
 
+.kick-banner {
+  --banner-width: 1920px;
+  --banner-height: 1080px;
+  --yt-safe-width: 1500px;
+  --yt-safe-height: 470px;
+}
+
 .youtube-ambient {
   position: absolute;
   inset: 88px;
@@ -347,6 +354,63 @@ body::after {
   color: var(--text);
   font-family: "Geologica", system-ui, sans-serif;
   font-weight: 780;
+}
+
+.kick-banner .banner-shell::before {
+  inset: 36px;
+}
+
+.kick-banner .youtube-safe {
+  gap: 26px;
+  padding: 42px 52px;
+  border-radius: 42px;
+}
+
+.kick-banner .youtube-safe__top {
+  min-height: 46px;
+}
+
+.kick-banner .kicker {
+  font-size: 24px;
+}
+
+.kick-banner .weekday-strip {
+  gap: 10px;
+}
+
+.kick-banner .weekday-strip span {
+  min-width: 64px;
+  height: 46px;
+  border-radius: 16px;
+  font-size: 24px;
+}
+
+.kick-banner .youtube-safe__main {
+  gap: 46px;
+}
+
+.kick-banner .youtube-safe h1 {
+  font-size: 126px;
+}
+
+.kick-banner .time-pair {
+  gap: 16px;
+}
+
+.kick-banner .time-row {
+  gap: 20px;
+}
+
+.kick-banner .time-row strong {
+  font-size: 103px;
+}
+
+.kick-banner .time-row span {
+  font-size: 42px;
+}
+
+.kick-banner .youtube-safe__footer {
+  font-size: 31px;
 }
 
 .wtv-banner {
