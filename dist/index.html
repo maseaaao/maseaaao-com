@@ -62,10 +62,10 @@
     <style>
       :root {
         --bg: #050711;
-        --panel: rgba(12, 15, 25, 0.84);
-        --panel-strong: rgba(16, 20, 33, 0.92);
-        --border: rgba(255, 255, 255, 0.08);
-        --border-strong: rgba(255, 255, 255, 0.14);
+        --panel: rgba(17, 19, 31, 0.72);
+        --panel-strong: rgba(22, 25, 40, 0.88);
+        --border: rgba(255, 255, 255, 0.11);
+        --border-strong: rgba(255, 255, 255, 0.18);
         --text: #f5f7ff;
         --muted: #a7b0c6;
         --muted-strong: #8090ab;
@@ -73,7 +73,9 @@
         --accent-rose: #ff8bb8;
         --accent-cyan: #7fe0ff;
         --accent-red: #ff5f7d;
-        --shadow: 0 30px 90px rgba(0, 0, 0, 0.46);
+        --surface: rgba(255, 255, 255, 0.055);
+        --surface-hover: rgba(255, 255, 255, 0.085);
+        --shadow: 0 24px 70px rgba(0, 0, 0, 0.42);
         --focus: rgba(159, 139, 255, 0.55);
       }
 
@@ -599,6 +601,131 @@
         outline-offset: 4px;
       }
 
+      .shell {
+        gap: clamp(18px, 3vw, 26px);
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.028)),
+          rgba(10, 12, 22, 0.78);
+        border-color: var(--border-strong);
+        box-shadow:
+          0 1px 0 rgba(255, 255, 255, 0.08) inset,
+          0 24px 70px rgba(0, 0, 0, 0.42),
+          0 0 0 1px rgba(159, 139, 255, 0.06);
+      }
+
+      .identity {
+        padding: clamp(18px, 3vw, 24px);
+        border: 1px solid var(--border);
+        border-radius: clamp(22px, 4vw, 32px);
+        background:
+          radial-gradient(circle at 0 0, rgba(159, 139, 255, 0.18), transparent 38%),
+          linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.03));
+      }
+
+      .avatar-shell::before {
+        background: conic-gradient(from 180deg, var(--accent-violet), var(--accent-cyan), var(--accent-rose), var(--accent-violet));
+        opacity: 0.95;
+        filter: blur(0);
+      }
+
+      .avatar-frame {
+        border-radius: 32px;
+        border-color: rgba(255, 255, 255, 0.22);
+      }
+
+      .avatar,
+      .avatar-fallback {
+        border-radius: 26px;
+      }
+
+      .live-badge {
+        border-color: rgba(255, 95, 125, 0.32);
+        background: rgba(255, 95, 125, 0.12);
+      }
+
+      .stream-card {
+        position: relative;
+        z-index: 1;
+        overflow: hidden;
+        display: grid;
+        gap: 12px;
+        padding: clamp(18px, 4vw, 26px);
+        border: 1px solid rgba(159, 139, 255, 0.26);
+        border-radius: clamp(22px, 4vw, 32px);
+        background:
+          radial-gradient(circle at 100% 0, rgba(127, 224, 255, 0.18), transparent 42%),
+          linear-gradient(135deg, rgba(159, 139, 255, 0.16), rgba(255, 255, 255, 0.045));
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      }
+
+      .stream-card__eyebrow {
+        width: fit-content;
+        padding: 7px 12px;
+        border-radius: 999px;
+        border: 1px solid rgba(127, 224, 255, 0.26);
+        background: rgba(127, 224, 255, 0.1);
+        color: #dff7ff;
+        font-family: "Geologica", system-ui, sans-serif;
+        font-size: 0.72rem;
+        font-weight: 820;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+
+      .stream-card__content {
+        display: grid;
+        gap: 8px;
+      }
+
+      .stream-card h2 {
+        margin: 0;
+        font-family: "Geologica", system-ui, sans-serif;
+        font-size: clamp(2.25rem, 12vw, 5.6rem);
+        font-weight: 850;
+        line-height: 0.88;
+        letter-spacing: -0.075em;
+        background: linear-gradient(135deg, #ffffff 0%, #eefcff 48%, var(--accent-cyan) 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+      }
+
+      .stream-card p {
+        max-width: 34rem;
+        margin: 0;
+        color: var(--muted);
+        font-size: clamp(0.98rem, 2.8vw, 1.15rem);
+        font-weight: 560;
+        line-height: 1.45;
+      }
+
+      .section {
+        padding: 16px;
+        border: 1px solid var(--border);
+        border-radius: 28px;
+        background: rgba(255, 255, 255, 0.035);
+      }
+
+      .tile {
+        border-radius: 22px;
+        border-color: var(--border-strong);
+        background:
+          linear-gradient(180deg, var(--surface), rgba(255, 255, 255, 0.024)),
+          rgba(255, 255, 255, 0.02);
+      }
+
+      .tile:hover,
+      .tile:focus-visible {
+        background:
+          linear-gradient(180deg, var(--surface-hover), rgba(255, 255, 255, 0.038)),
+          rgba(255, 255, 255, 0.03);
+      }
+
+      .tile__icon {
+        border-radius: 16px;
+      }
+
       @keyframes lift {
         from {
           opacity: 0;
@@ -727,6 +854,14 @@
           </div>
         </header>
 
+        <section class="stream-card" aria-labelledby="stream-title">
+          <span class="stream-card__eyebrow">стримы</span>
+          <div class="stream-card__content">
+            <h2 id="stream-title">Каждый вечер</h2>
+            <p>Без жёсткой привязки ко времени — точные анонсы и переносы публикую в Telegram.</p>
+          </div>
+        </section>
+
         <div class="actions">
           <section class="section" aria-labelledby="watch-title">
             <div class="section-head">
@@ -750,7 +885,7 @@
                 </span>
                 <span class="tile__copy">
                   <span class="tile__title">Twitch</span>
-                  <span class="tile__meta">Смотреть стримы</span>
+                  <span class="tile__meta">Стримы каждый вечер</span>
                 </span>
                 <span class="tile__arrow" aria-hidden="true">↗</span>
               </a>
@@ -771,7 +906,7 @@
                 </span>
                 <span class="tile__copy">
                   <span class="tile__title">Kick</span>
-                  <span class="tile__meta">Смотреть стримы</span>
+                  <span class="tile__meta">Стримы каждый вечер</span>
                 </span>
                 <span class="tile__arrow" aria-hidden="true">↗</span>
               </a>
