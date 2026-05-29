@@ -1,0 +1,688 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light" />
+    <link rel="icon" href="data:image/svg+xml,%0A%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%3E%0A%20%20%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22central%22%20text-anchor%3D%22middle%22%20font-size%3D%2254%22%3E%E2%9C%85%3C%2Ftext%3E%0A%3C%2Fsvg%3E%0A" type="image/svg+xml" />
+    <title>СТРИМ-ЧЕКЛИСТ: PUBG / OBS / Twitch + Kick + YouTube — maseaaao</title>
+    <style>
+      :root {
+        --bg: #f5f7f6;
+        --surface: #ffffff;
+        --surface-muted: #eef3f0;
+        --text: #1b211f;
+        --muted: #60706a;
+        --line: #d9e2de;
+        --line-strong: #bdccc6;
+        --accent: #16765a;
+        --accent-dark: #0f5943;
+        --danger: #a84630;
+        --progress: 0%;
+        --shadow: 0 18px 44px rgba(18, 36, 30, 0.1);
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        color-scheme: light;
+        scroll-behavior: smooth;
+      }
+
+      body {
+        min-height: 100vh;
+        margin: 0;
+        color: var(--text);
+        background:
+          linear-gradient(90deg, rgba(22, 118, 90, 0.06) 1px, transparent 1px),
+          linear-gradient(rgba(22, 118, 90, 0.05) 1px, transparent 1px),
+          var(--bg);
+        background-size: 32px 32px;
+      }
+
+      a {
+        color: var(--accent-dark);
+        text-decoration-thickness: 1px;
+        text-underline-offset: 3px;
+      }
+
+      .app {
+        width: min(100%, 1120px);
+        margin: 0 auto;
+        padding: 18px clamp(14px, 3vw, 32px) 56px;
+      }
+
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 5;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 18px;
+        align-items: center;
+        padding: 16px 0;
+        background: rgba(245, 247, 246, 0.9);
+        border-bottom: 1px solid rgba(217, 226, 222, 0.82);
+        backdrop-filter: blur(18px);
+      }
+
+      .title {
+        min-width: 0;
+      }
+
+      h1 {
+        margin: 0;
+        color: var(--text);
+        font-size: clamp(1.45rem, 3vw, 2.4rem);
+        line-height: 1.05;
+        letter-spacing: 0;
+      }
+
+      .meta {
+        margin: 5px 0 0;
+        color: var(--muted);
+        font-size: 0.92rem;
+      }
+
+      .controls {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 10px;
+      }
+
+      .progress-pill {
+        min-width: 128px;
+        padding: 9px 12px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--surface);
+        box-shadow: var(--shadow);
+        text-align: right;
+      }
+
+      .progress-pill span {
+        display: block;
+        color: var(--muted);
+        font-size: 0.74rem;
+        font-weight: 700;
+        line-height: 1.15;
+        text-transform: uppercase;
+      }
+
+      .progress-pill strong {
+        display: block;
+        margin-top: 2px;
+        font-size: 1rem;
+        line-height: 1.2;
+      }
+
+      button {
+        min-height: 44px;
+        padding: 0 16px;
+        border: 1px solid rgba(168, 70, 48, 0.34);
+        border-radius: 8px;
+        color: var(--danger);
+        background: #fff;
+        font: inherit;
+        font-weight: 750;
+        cursor: pointer;
+        box-shadow: var(--shadow);
+      }
+
+      button:hover:not(:disabled),
+      button:focus-visible {
+        border-color: rgba(168, 70, 48, 0.62);
+        background: #fff7f5;
+      }
+
+      button:focus-visible {
+        outline: 3px solid rgba(22, 118, 90, 0.24);
+        outline-offset: 2px;
+      }
+
+      button:disabled {
+        cursor: default;
+        opacity: 0.45;
+      }
+
+      .progress-track {
+        height: 8px;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: var(--surface);
+      }
+
+      .progress-track span {
+        display: block;
+        width: var(--progress);
+        height: 100%;
+        border-radius: inherit;
+        background: linear-gradient(90deg, var(--accent), #55a07d);
+        transition: width 180ms ease;
+      }
+
+      .content {
+        margin-top: 24px;
+        padding: clamp(18px, 3vw, 34px);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.9);
+        box-shadow: var(--shadow);
+      }
+
+      h2,
+      h3,
+      h4,
+      p,
+      pre {
+        margin: 0;
+      }
+
+      h2 {
+        margin-top: 34px;
+        padding-top: 28px;
+        border-top: 2px solid var(--line-strong);
+        font-size: clamp(1.3rem, 2vw, 1.75rem);
+        line-height: 1.2;
+      }
+
+      h2:first-child {
+        margin-top: 0;
+        padding-top: 0;
+        border-top: 0;
+      }
+
+      h3 {
+        margin-top: 28px;
+        padding-top: 18px;
+        border-top: 1px solid var(--line);
+        color: #24312d;
+        font-size: clamp(1.06rem, 1.6vw, 1.28rem);
+        line-height: 1.25;
+      }
+
+      h4 {
+        margin-top: 22px;
+        color: var(--accent-dark);
+        font-size: 0.8rem;
+        letter-spacing: 0.08em;
+        line-height: 1.35;
+        text-transform: uppercase;
+      }
+
+      h2 a,
+      h3 a,
+      h4 a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      p {
+        margin-top: 14px;
+        color: #33413c;
+        line-height: 1.6;
+      }
+
+      code {
+        padding: 0.08em 0.34em;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        color: #24463b;
+        background: var(--surface-muted);
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+        font-size: 0.92em;
+      }
+
+      pre {
+        margin-top: 14px;
+        overflow-x: auto;
+        padding: 14px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #16201d;
+        color: #ecf7f2;
+      }
+
+      pre code {
+        padding: 0;
+        border: 0;
+        color: inherit;
+        background: transparent;
+      }
+
+      .checklist {
+        margin-top: 10px;
+        border-top: 1px solid var(--line);
+      }
+
+      .check-item {
+        display: grid;
+        grid-template-columns: 24px minmax(0, 1fr);
+        gap: 12px;
+        align-items: start;
+        min-height: 46px;
+        padding: 11px 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .check-item input {
+        width: 22px;
+        height: 22px;
+        margin: 0;
+        appearance: none;
+        -webkit-appearance: none;
+        border: 2px solid #9eb1aa;
+        border-radius: 6px;
+        background: #fff;
+        cursor: pointer;
+      }
+
+      .check-item input:checked {
+        border-color: var(--accent);
+        background-color: #e4f4ed;
+        background-image: url("data:image/svg+xml,%3Csvg width='18' height='18' viewBox='0 0 18 18' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4 9.25L7.3 12.5L14 5.75' stroke='%2316765a' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: 18px 18px;
+      }
+
+      .check-item input:focus-visible {
+        outline: 3px solid rgba(22, 118, 90, 0.24);
+        outline-offset: 2px;
+      }
+
+      .check-item label {
+        min-width: 0;
+        color: #25302d;
+        font-size: 1rem;
+        line-height: 1.45;
+        cursor: pointer;
+      }
+
+      .check-item input:checked + label {
+        color: var(--muted);
+        text-decoration: line-through;
+        text-decoration-color: rgba(22, 118, 90, 0.45);
+      }
+
+      @media (max-width: 720px) {
+        .topbar {
+          grid-template-columns: 1fr;
+          gap: 12px;
+        }
+
+        .controls {
+          justify-content: stretch;
+        }
+
+        .progress-pill {
+          flex: 1;
+          text-align: left;
+        }
+
+        button {
+          flex: 0 0 auto;
+        }
+
+        .content {
+          padding: 16px;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          scroll-behavior: auto !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="app">
+      <header class="topbar">
+        <div class="title">
+          <h1>СТРИМ-ЧЕКЛИСТ: PUBG / OBS / Twitch + Kick + YouTube</h1>
+          <p class="meta"><span data-completed-count>0</span>/156 отмечено</p>
+        </div>
+
+        <div class="controls">
+          <div class="progress-pill" aria-live="polite">
+            <span>Прогресс</span>
+            <strong data-progress-percent>0%</strong>
+          </div>
+          <button type="button" data-reset>Сброс</button>
+        </div>
+      </header>
+
+      <div class="progress-track" aria-hidden="true"><span data-progress-bar></span></div>
+
+      <article class="content">
+        <h4 id="1-каждый-стрим"><a href="#1-каждый-стрим">1. КАЖДЫЙ СТРИМ</a></h4>
+        <h4 id="1-1-перед-стартом-3-5-минут"><a href="#1-1-перед-стартом-3-5-минут">1.1. Перед стартом [3–5 минут]</a></h4>
+        <h4 id="пк"><a href="#пк">ПК</a></h4>
+        <div class="checklist">
+        <div class="check-item"><input id="input-check-kz2aq1" type="checkbox" data-check-id="check-kz2aq1" /><label for="input-check-kz2aq1">Закрыты лишние приложения (монтаж, лишний браузер, видео, лаунчеры, апдейтеры, облака, торренты, лишний VPN).</label></div>
+        <div class="check-item"><input id="input-check-sm9lk3" type="checkbox" data-check-id="check-sm9lk3" /><label for="input-check-sm9lk3">Нет активных загрузок: Steam / Windows Update (проверить диспетчер задач).</label></div>
+        <div class="check-item"><input id="input-check-2lek8r" type="checkbox" data-check-id="check-2lek8r" /><label for="input-check-2lek8r">Есть место на диске для записи.</label></div>
+        <div class="check-item"><input id="input-check-19we4qc" type="checkbox" data-check-id="check-19we4qc" /><label for="input-check-19we4qc">Правильный аудиовыход Windows.</label></div>
+        <div class="check-item"><input id="input-check-1q1p1da" type="checkbox" data-check-id="check-1q1p1da" /><label for="input-check-1q1p1da">Правильный микрофон Windows.</label></div>
+        <div class="check-item"><input id="input-check-v4rzro" type="checkbox" data-check-id="check-v4rzro" /><label for="input-check-v4rzro">Запущены нужные фоновые инструменты: OBS, Steam, Discord, NVIDIA Broadcast / обработка микрофона.</label></div>
+        </div>
+        <h4 id="obs"><a href="#obs">OBS</a></h4>
+        <div class="checklist">
+        <div class="check-item"><input id="input-check-1bqddx2" type="checkbox" data-check-id="check-1bqddx2" /><label for="input-check-1bqddx2">Правильный OBS profile.</label></div>
+        <div class="check-item"><input id="input-check-v3uupo" type="checkbox" data-check-id="check-v3uupo" /><label for="input-check-v3uupo">Правильная scene collection.</label></div>
+        <div class="check-item"><input id="input-check-1jrasvv" type="checkbox" data-check-id="check-1jrasvv" /><label for="input-check-1jrasvv">Активна безопасная стартовая сцена.</label></div>
+        <div class="check-item"><input id="input-check-16srlth" type="checkbox" data-check-id="check-16srlth" /><label for="input-check-16srlth">Preview не показывает приватное.</label></div>
+        <div class="check-item"><input id="input-check-15eahi6" type="checkbox" data-check-id="check-15eahi6" /><label for="input-check-15eahi6">Основные источники живы: Game Capture, alerts, chat / widget, viewer count, webcam, overlays.</label></div>
+        <div class="check-item"><input id="input-check-1ecnwpv" type="checkbox" data-check-id="check-1ecnwpv" /><label for="input-check-1ecnwpv">Запись идет в правильную папку.</label></div>
+        <div class="check-item"><input id="input-check-9v2lhs" type="checkbox" data-check-id="check-9v2lhs" /><label for="input-check-9v2lhs">Формат записи отказоустойчивый.</label></div>
+        </div>
+        <h4 id="звук"><a href="#звук">ЗВУК</a></h4>
+        <div class="checklist">
+        <div class="check-item"><input id="input-check-s8cq9q" type="checkbox" data-check-id="check-s8cq9q" /><label for="input-check-s8cq9q">Микрофон слышно, уровень нормальный, нет клиппинга.</label></div>
+        <div class="check-item"><input id="input-check-1gzowst" type="checkbox" data-check-id="check-1gzowst" /><label for="input-check-1gzowst">Шумодав / компрессор не режут голос.</label></div>
+        <div class="check-item"><input id="input-check-13lmr9t" type="checkbox" data-check-id="check-13lmr9t" /><label for="input-check-13lmr9t">Звук игры / системы есть.</label></div>
+        <div class="check-item"><input id="input-check-hlqbk7" type="checkbox" data-check-id="check-hlqbk7" /><label for="input-check-hlqbk7">Discord / Steam voice в нужном routing: слышишь сам; зрители слышат.</label></div>
+        <div class="check-item"><input id="input-check-jomxd4" type="checkbox" data-check-id="check-jomxd4" /><label for="input-check-jomxd4">Нет эха / двойного звука.</label></div>
+        </div>
+        <h4 id="платформы"><a href="#платформы">ПЛАТФОРМЫ</a></h4>
+        <div class="checklist">
+        <div class="check-item"><input id="input-check-ffgq96" type="checkbox" data-check-id="check-ffgq96" /><label for="input-check-ffgq96">Twitch: title, category, chat.</label></div>
+        <div class="check-item"><input id="input-check-12p1cu7" type="checkbox" data-check-id="check-12p1cu7" /><label for="input-check-12p1cu7">Kick: title, category, chat.</label></div>
+        <div class="check-item"><input id="input-check-ays6bh" type="checkbox" data-check-id="check-ays6bh" /><label for="input-check-ays6bh">YouTube: текущая трансляция, видимость, title, chat включен, Live Control Room видит поток.</label></div>
+        </div>
+        <h4 id="приватность"><a href="#приватность">ПРИВАТНОСТЬ</a></h4>
+        <div class="checklist">
+        <div class="check-item"><input id="input-check-15g2rbi" type="checkbox" data-check-id="check-15g2rbi" /><label for="input-check-15g2rbi">Закрыты личные чаты, почта, банки, документы, приватные вкладки.</label></div>
+        <div class="check-item"><input id="input-check-1l6xlsj" type="checkbox" data-check-id="check-1l6xlsj" /><label for="input-check-1l6xlsj">Discord безопасен: DM / friends / overlay не светят лишнее.</label></div>
+        <div class="check-item"><input id="input-check-11cxv3r" type="checkbox" data-check-id="check-11cxv3r" /><label for="input-check-11cxv3r">Уведомления выключены или безопасны.</label></div>
+        <div class="check-item"><input id="input-check-1ca0ivj" type="checkbox" data-check-id="check-1ca0ivj" /><label for="input-check-1ca0ivj">Стартовая / BRB / игровая сцены не палят приватное.</label></div>
+        </div>
+        <h4 id="физическая-готовность"><a href="#физическая-готовность">ФИЗИЧЕСКАЯ ГОТОВНОСТЬ</a></h4>
+        <div class="checklist">
+        <div class="check-item"><input id="input-check-1b7d0kz" type="checkbox" data-check-id="check-1b7d0kz" /><label for="input-check-1b7d0kz">Вода, туалет, телефон, свет / камера, проветривание.</label></div>
+        <div class="check-item"><input id="input-check-z4x54k" type="checkbox" data-check-id="check-z4x54k" /><label for="input-check-z4x54k">Принцип чистого киберстола.</label></div>
+        </div>
+        <h4 id="1-2-старт-эфира"><a href="#1-2-старт-эфира">1.2. СТАРТ ЭФИРА</a></h4>
+        <div class="checklist">
+        <div class="check-item"><input id="input-check-1v834pw" type="checkbox" data-check-id="check-1v834pw" /><label for="input-check-1v834pw">Активна безопасная стартовая сцена.</label></div>
+        <div class="check-item"><input id="input-check-1tv18hh" type="checkbox" data-check-id="check-1tv18hh" /><label for="input-check-1tv18hh">Start Streaming + Start Recording.</label></div>
+        <div class="check-item"><input id="input-check-1y0g7k0" type="checkbox" data-check-id="check-1y0g7k0" /><label for="input-check-1y0g7k0">OBS stats нормальные: stream, recording, dropped frames, rendering lag, encoding lag, bitrate.</label></div>
+        <div class="check-item"><input id="input-check-1hsuom8" type="checkbox" data-check-id="check-1hsuom8" /><label for="input-check-1hsuom8">Эфир появился на Twitch / Kick / YouTube.</label></div>
+        <div class="check-item"><input id="input-check-1wj4z85" type="checkbox" data-check-id="check-1wj4z85" /><label for="input-check-1wj4z85">YouTube не завис в Waiting.</label></div>
+        <div class="check-item"><input id="input-check-l75dat" type="checkbox" data-check-id="check-l75dat" /><label for="input-check-l75dat">Чаты живые.</label></div>
+        </div>
+        <h4 id="чаты"><a href="#чаты">ЧАТЫ</a></h4>
+        <div class="checklist">
+        <div class="check-item"><input id="input-check-jfzlzn" type="checkbox" data-check-id="check-jfzlzn" /><label for="input-check-jfzlzn">Twitch chat приходит.</label></div>
+        <div class="check-item"><input id="input-check-kbcirs" type="checkbox" data-check-id="check-kbcirs" /><label for="input-check-kbcirs">Kick chat приходит.</label></div>
+        <div class="check-item"><input id="input-check-zflrxd" type="checkbox" data-check-id="check-zflrxd" /><label for="input-check-zflrxd">YouTube chat приходит.</label></div>
+        <div class="check-item"><input id="input-check-1mj0rxq" type="checkbox" data-check-id="check-1mj0rxq" /><label for="input-check-1mj0rxq">Команды работают: <code>!tg</code>, <code>!youtube</code>, <code>!commands</code>, <a href="https://maseaaao.com" target="_blank" rel="noopener noreferrer">maseaaao.com</a>.</label></div>
+        <div class="check-item"><input id="input-check-11gcli8" type="checkbox" data-check-id="check-11gcli8" /><label for="input-check-11gcli8">Автосообщения не уходят в оффлайне и не спамят.</label></div>
+        </div>
+        <h4 id="1-3-первые-минуты"><a href="#1-3-первые-минуты">1.3. ПЕРВЫЕ МИНУТЫ</a></h4>
+        <div class="checklist">
+        <div class="check-item"><input id="input-check-1en106c" type="checkbox" data-check-id="check-1en106c" /><label for="input-check-1en106c">Микрофон слышно на платформах.</label></div>
+        <div class="check-item"><input id="input-check-e43oi0" type="checkbox" data-check-id="check-e43oi0" /><label for="input-check-e43oi0">Звук игры / системы есть.</label></div>
+        <div class="check-item"><input id="input-check-1dc51vw" type="checkbox" data-check-id="check-1dc51vw" /><label for="input-check-1dc51vw">Картинка не слайдшоу.</label></div>
+        <div class="check-item"><input id="input-check-1n7p19s" type="checkbox" data-check-id="check-1n7p19s" /><label for="input-check-1n7p19s">OBS stats нормальные: network drops, encoding lag, rendering lag, FPS, bitrate.</label></div>
+        <div class="check-item"><input id="input-check-1i7pz8r" type="checkbox" data-check-id="check-1i7pz8r" /><label for="input-check-1i7pz8r">Recording идет.</label></div>
+        <div class="check-item"><input id="input-check-stwqst" type="checkbox" data-check-id="check-stwqst" /><label for="input-check-stwqst">Коротко обозначен старт эфира.</label></div>
+        <div class="check-item"><input id="input-check-1rjz74l" type="checkbox" data-check-id="check-1rjz74l" /><label for="input-check-1rjz74l">Если есть проблема — коротко сказать, что проверяешь технику.</label></div>
+        </div>
+        <h4 id="1-4-запуск-pubg"><a href="#1-4-запуск-pubg">1.4. ЗАПУСК PUBG</a></h4>
+        <div class="checklist">
+        <div class="check-item"><input id="input-check-ifj2qj" type="checkbox" data-check-id="check-ifj2qj" /><label for="input-check-ifj2qj">PUBG запущен.</label></div>
+        <div class="check-item"><input id="input-check-c7calo" type="checkbox" data-check-id="check-c7calo" /><label for="input-check-c7calo">Game Capture поймал игру.</label></div>
+        <div class="check-item"><input id="input-check-1tuoh1p" type="checkbox" data-check-id="check-1tuoh1p" /><label for="input-check-1tuoh1p">Разрешение / display mode / FPS cap / графика не сброшены.</label></div>
+        <div class="check-item"><input id="input-check-1wen2q2" type="checkbox" data-check-id="check-1wen2q2" /><label for="input-check-1wen2q2">Переключение на игровую сцену.</label></div>
+        <div class="check-item"><input id="input-check-w8ej42" type="checkbox" data-check-id="check-w8ej42" /><label for="input-check-w8ej42">Картинка игры есть.</label></div>
+        <div class="check-item"><input id="input-check-wwyujt" type="checkbox" data-check-id="check-wwyujt" /><label for="input-check-wwyujt">Звук игры есть.</label></div>
+        <div class="check-item"><input id="input-check-6o0nme" type="checkbox" data-check-id="check-6o0nme" /><label for="input-check-6o0nme">Mic есть.</label></div>
+        <div class="check-item"><input id="input-check-2o162j" type="checkbox" data-check-id="check-2o162j" /><label for="input-check-2o162j">Discord / Steam voice в нужном состоянии.</label></div>
+        <div class="check-item"><input id="input-check-1k10pcj" type="checkbox" data-check-id="check-1k10pcj" /><label for="input-check-1k10pcj">Chat / overlays не закрывают важный HUD.</label></div>
+        <div class="check-item"><input id="input-check-ewklw" type="checkbox" data-check-id="check-ewklw" /><label for="input-check-ewklw">FPS / frametime нормальные первые 30–60 секунд.</label></div>
+        <div class="check-item"><input id="input-check-egxa2n" type="checkbox" data-check-id="check-egxa2n" /><label for="input-check-egxa2n">OBS stats нормальные после запуска PUBG.</label></div>
+        </div>
+        <h4 id="1-5-перед-матчем"><a href="#1-5-перед-матчем">1.5. ПЕРЕД МАТЧЕМ</a></h4>
+        <div class="checklist">
+        <div class="check-item"><input id="input-check-11vtkrt" type="checkbox" data-check-id="check-11vtkrt" /><label for="input-check-11vtkrt">Recording идет.</label></div>
+        <div class="check-item"><input id="input-check-1cbn5r0" type="checkbox" data-check-id="check-1cbn5r0" /><label for="input-check-1cbn5r0">Game Capture стабилен.</label></div>
+        <div class="check-item"><input id="input-check-1psvv1m" type="checkbox" data-check-id="check-1psvv1m" /><label for="input-check-1psvv1m">Mic OK.</label></div>
+        <div class="check-item"><input id="input-check-153g0p1" type="checkbox" data-check-id="check-153g0p1" /><label for="input-check-153g0p1">Discord OK или muted.</label></div>
+        <div class="check-item"><input id="input-check-1i2lk1i" type="checkbox" data-check-id="check-1i2lk1i" /><label for="input-check-1i2lk1i">Чат виден и не мешает.</label></div>
+        </div>
+        <h4 id="1-6-тиммейты"><a href="#1-6-тиммейты">1.6. ТИММЕЙТЫ</a></h4>
+        <div class="checklist">
+        <div class="check-item"><input id="input-check-1t489y" type="checkbox" data-check-id="check-1t489y" /><label for="input-check-1t489y">После подключения: поздороваться.</label></div>
+        <div class="check-item"><input id="input-check-tpjonb" type="checkbox" data-check-id="check-tpjonb" /><label for="input-check-tpjonb">После подключения: проверить уровни голосов.</label></div>
+        <div class="check-item"><input id="input-check-qvxblj" type="checkbox" data-check-id="check-qvxblj" /><label for="input-check-qvxblj">После подключения: нет эха / двойного голоса.</label></div>
+        <div class="check-item"><input id="input-check-1wpgwrn" type="checkbox" data-check-id="check-1wpgwrn" /><label for="input-check-1wpgwrn">Если тиммейты слышны в эфире — предупредить, что идет стрим.</label></div>
+        <div class="check-item"><input id="input-check-6sner2" type="checkbox" data-check-id="check-6sner2" /><label for="input-check-6sner2">Если начинается личное — mute Discord / Steam voice source.</label></div>
+        </div>
+        <h4 id="1-7-между-матчами-каждые-15-минут"><a href="#1-7-между-матчами-каждые-15-минут">1.7. МЕЖДУ МАТЧАМИ [каждые 15 минут]</a></h4>
+        <div class="checklist">
+        <div class="check-item"><input id="input-check-xkalmh" type="checkbox" data-check-id="check-xkalmh" /><label for="input-check-xkalmh">OBS stats — network drops, encoding lag, rendering lag, bitrate, FPS.</label></div>
+        <div class="check-item"><input id="input-check-1buf98d" type="checkbox" data-check-id="check-1buf98d" /><label for="input-check-1buf98d">Чаты Twitch / Kick / YouTube.</label></div>
+        <div class="check-item"><input id="input-check-5ddhe3" type="checkbox" data-check-id="check-5ddhe3" /><label for="input-check-5ddhe3">Recording идет.</label></div>
+        </div>
+        <h4 id="1-8-отлучился"><a href="#1-8-отлучился">1.8. ОТЛУЧИЛСЯ</a></h4>
+        <div class="checklist">
+        <div class="check-item"><input id="input-check-d6toxq" type="checkbox" data-check-id="check-d6toxq" /><label for="input-check-d6toxq">Камера безопасна / выключена.</label></div>
+        <div class="check-item"><input id="input-check-3fenfl" type="checkbox" data-check-id="check-3fenfl" /><label for="input-check-3fenfl">На сцене нет приватного.</label></div>
+        </div>
+        <h4 id="1-9-вернулся"><a href="#1-9-вернулся">1.9. ВЕРНУЛСЯ</a></h4>
+        <div class="checklist">
+        <div class="check-item"><input id="input-check-1fi85f2" type="checkbox" data-check-id="check-1fi85f2" /><label for="input-check-1fi85f2">Стрим live, OBS stats нормальные, Recording и Replay Buffer идут.</label></div>
+        <div class="check-item"><input id="input-check-5hhxhr" type="checkbox" data-check-id="check-5hhxhr" /><label for="input-check-5hhxhr">PUBG не свернулся / не крашнулся.</label></div>
+        <div class="check-item"><input id="input-check-1fp0898" type="checkbox" data-check-id="check-1fp0898" /><label for="input-check-1fp0898">Тиммейты не обсуждают личное.</label></div>
+        <div class="check-item"><input id="input-check-1ad55ju" type="checkbox" data-check-id="check-1ad55ju" /><label for="input-check-1ad55ju">Вернуть игровую / основную сцену.</label></div>
+        <div class="check-item"><input id="input-check-hdotbz" type="checkbox" data-check-id="check-hdotbz" /><label for="input-check-hdotbz">Вернуть game / Discord audio в нужное состояние.</label></div>
+        </div>
+        <h4 id="1-10-отключение-pubg"><a href="#1-10-отключение-pubg">1.10. ОТКЛЮЧЕНИЕ PUBG</a></h4>
+        <div class="checklist">
+        <div class="check-item"><input id="input-check-kdkuiv" type="checkbox" data-check-id="check-kdkuiv" /><label for="input-check-kdkuiv">Переключиться на безопасную сцену: Camera.</label></div>
+        <div class="check-item"><input id="input-check-3o40wp" type="checkbox" data-check-id="check-3o40wp" /><label for="input-check-3o40wp">Закрыть PUBG.</label></div>
+        </div>
+        <h4 id="1-11-завершение-стрима"><a href="#1-11-завершение-стрима">1.11. ЗАВЕРШЕНИЕ СТРИМА</a></h4>
+        <div class="checklist">
+        <div class="check-item"><input id="input-check-1b7kipu" type="checkbox" data-check-id="check-1b7kipu" /><label for="input-check-1b7kipu">За 5–10 минут: сказать, что стрим скоро заканчивается.</label></div>
+        <div class="check-item"><input id="input-check-1lhc0er" type="checkbox" data-check-id="check-1lhc0er" /><label for="input-check-1lhc0er">Ответить на последние сообщения.</label></div>
+        <div class="check-item"><input id="input-check-1atxnpf" type="checkbox" data-check-id="check-1atxnpf" /><label for="input-check-1atxnpf">Финал: короткий итог.</label></div>
+        <div class="check-item"><input id="input-check-1h9iypx" type="checkbox" data-check-id="check-1h9iypx" /><label for="input-check-1h9iypx">Финал: ссылка — <a href="https://maseaaao.com" target="_blank" rel="noopener noreferrer">maseaaao.com</a>.</label></div>
+        <div class="check-item"><input id="input-check-fhjufz" type="checkbox" data-check-id="check-fhjufz" /><label for="input-check-fhjufz">Stop Streaming and Recording.</label></div>
+        </div>
+        <h4 id="1-12-после-стрима"><a href="#1-12-после-стрима">1.12. ПОСЛЕ СТРИМА</a></h4>
+        <div class="checklist">
+        <div class="check-item"><input id="input-check-1tke1r2" type="checkbox" data-check-id="check-1tke1r2" /><label for="input-check-1tke1r2">Файл записи сохранился.</label></div>
+        <div class="check-item"><input id="input-check-4kyqb1" type="checkbox" data-check-id="check-4kyqb1" /><label for="input-check-4kyqb1">Проверено начало / середина / конец записи.</label></div>
+        <div class="check-item"><input id="input-check-tg5m2e" type="checkbox" data-check-id="check-tg5m2e" /><label for="input-check-tg5m2e">Звук есть, файл не битый.</label></div>
+        <div class="check-item"><input id="input-check-4jj9ya" type="checkbox" data-check-id="check-4jj9ya" /><label for="input-check-4jj9ya">YouTube: VOD появился, качество обрабатывается, 60fps / 1080p проверены, title / thumbnail / description нормальные.</label></div>
+        <div class="check-item"><input id="input-check-yvpgmu" type="checkbox" data-check-id="check-yvpgmu" /><label for="input-check-yvpgmu">Twitch: VOD есть, category / title нормальные, клипы при необходимости.</label></div>
+        <div class="check-item"><input id="input-check-16zph5t" type="checkbox" data-check-id="check-16zph5t" /><label for="input-check-16zph5t">Kick: VOD / запись доступны.</label></div>
+        <div class="check-item"><input id="input-check-ejmdsy" type="checkbox" data-check-id="check-ejmdsy" /><label for="input-check-ejmdsy">Очистить бесполезные файлы-записи.</label></div>
+        </div>
+        <h4 id="2-регулярное-техобслуживание"><a href="#2-регулярное-техобслуживание">2. РЕГУЛЯРНОЕ ТЕХОБСЛУЖИВАНИЕ</a></h4>
+        <h4 id="2-1-каждую-неделю"><a href="#2-1-каждую-неделю">2.1. КАЖДУЮ НЕДЕЛЮ</a></h4>
+        <div class="checklist">
+        <div class="check-item"><input id="input-check-1jbdgt3" type="checkbox" data-check-id="check-1jbdgt3" /><label for="input-check-1jbdgt3">Все сцены открываются без сломанных источников.</label></div>
+        <div class="check-item"><input id="input-check-1a3u0k6" type="checkbox" data-check-id="check-1a3u0k6" /><label for="input-check-1a3u0k6">Browser sources живы: alerts, chat overlay, viewer count, widgets.</label></div>
+        <div class="check-item"><input id="input-check-z9oaly" type="checkbox" data-check-id="check-z9oaly" /><label for="input-check-z9oaly">Старые неиспользуемые browser sources удалены / выключены, если грузятся в фоне.</label></div>
+        <div class="check-item"><input id="input-check-i7eu4j" type="checkbox" data-check-id="check-i7eu4j" /><label for="input-check-i7eu4j">Starting / BRB / Game / Ending сцены безопасны.</label></div>
+        <div class="check-item"><input id="input-check-1qv07g9" type="checkbox" data-check-id="check-1qv07g9" /><label for="input-check-1qv07g9">Hotkeys проверены: BRB, Back, mute mic, mute Discord, save replay, recording / replay.</label></div>
+        <div class="check-item"><input id="input-check-ljwkrn" type="checkbox" data-check-id="check-ljwkrn" /><label for="input-check-ljwkrn">Тестовая запись 1–2 минуты: mic, game audio, Discord, alerts / widgets, local quality.</label></div>
+        <div class="check-item"><input id="input-check-5gxn7m" type="checkbox" data-check-id="check-5gxn7m" /><label for="input-check-5gxn7m">Уровни микрофона нормальные.</label></div>
+        <div class="check-item"><input id="input-check-1ho6ggf" type="checkbox" data-check-id="check-1ho6ggf" /><label for="input-check-1ho6ggf">Windows input / output не сбились.</label></div>
+        <div class="check-item"><input id="input-check-1x4lf8w" type="checkbox" data-check-id="check-1x4lf8w" /><label for="input-check-1x4lf8w">NVIDIA Broadcast / шумодав / компрессор работают.</label></div>
+        <div class="check-item"><input id="input-check-i6knat" type="checkbox" data-check-id="check-i6knat" /><label for="input-check-i6knat">Discord не сменил mic / output.</label></div>
+        <div class="check-item"><input id="input-check-k2s3mv" type="checkbox" data-check-id="check-k2s3mv" /><label for="input-check-k2s3mv">OBS Advanced Audio Properties не сбились: monitoring, tracks, sync offset, volume.</label></div>
+        <div class="check-item"><input id="input-check-1508nxi" type="checkbox" data-check-id="check-1508nxi" /><label for="input-check-1508nxi">Title / description templates актуальны.</label></div>
+        <div class="check-item"><input id="input-check-1uywvyq" type="checkbox" data-check-id="check-1uywvyq" /><label for="input-check-1uywvyq">YouTube thumbnail / template актуальны.</label></div>
+        <div class="check-item"><input id="input-check-ochbhk" type="checkbox" data-check-id="check-ochbhk" /><label for="input-check-ochbhk">YouTube live creation flow не изменился.</label></div>
+        <div class="check-item"><input id="input-check-1p3tbqx" type="checkbox" data-check-id="check-1p3tbqx" /><label for="input-check-1p3tbqx">Мультичат авторизован и цепляет текущий YouTube live chat.</label></div>
+        <div class="check-item"><input id="input-check-trd8tl" type="checkbox" data-check-id="check-trd8tl" /><label for="input-check-trd8tl">Twitch / Kick не требуют повторного логина.</label></div>
+        <div class="check-item"><input id="input-check-1jrldgm" type="checkbox" data-check-id="check-1jrldgm" /><label for="input-check-1jrldgm">Команды работают: <code>!tg</code>, <code>!youtube</code>, <code>!commands</code>, <a href="https://maseaaao.com" target="_blank" rel="noopener noreferrer">maseaaao.com</a>.</label></div>
+        <div class="check-item"><input id="input-check-1qtb2nx" type="checkbox" data-check-id="check-1qtb2nx" /><label for="input-check-1qtb2nx">Автосообщения / cooldown нормальные.</label></div>
+        <div class="check-item"><input id="input-check-1oi7wip" type="checkbox" data-check-id="check-1oi7wip" /><label for="input-check-1oi7wip">Модерация работает: profile / ban / timeout.</label></div>
+        <div class="check-item"><input id="input-check-tq35ml" type="checkbox" data-check-id="check-tq35ml" /><label for="input-check-tq35ml">Старые временные записи удалены, важные VOD / clips перенесены в архив.</label></div>
+        <div class="check-item"><input id="input-check-coe8p7" type="checkbox" data-check-id="check-coe8p7" /><label for="input-check-coe8p7">Тестовые / битые файлы удалены, свободное место нормальное, папки записи / клипов правильные.</label></div>
+        <div class="check-item"><input id="input-check-tf4sn6" type="checkbox" data-check-id="check-tf4sn6" /><label for="input-check-tf4sn6">PUBG settings не сброшены: resolution, display mode, render scale, FPS cap, graphics, audio, voice chat, keybinds.</label></div>
+        <div class="check-item"><input id="input-check-ofkduj" type="checkbox" data-check-id="check-ofkduj" /><label for="input-check-ofkduj">Game Capture стабильно цепляет PUBG.</label></div>
+        <div class="check-item"><input id="input-check-1jyqsby" type="checkbox" data-check-id="check-1jyqsby" /><label for="input-check-1jyqsby">Короткий тест в lobby / training с OBS recording.</label></div>
+        </div>
+        <h4 id="2-2-ежемесячно"><a href="#2-2-ежемесячно">2.2. ЕЖЕМЕСЯЧНО</a></h4>
+        <div class="checklist">
+        <div class="check-item"><input id="input-check-54wiau" type="checkbox" data-check-id="check-54wiau" /><label for="input-check-54wiau">Проверить обновления, но не перед эфиром: OBS, plugins, NVIDIA driver, NVIDIA Broadcast, Discord, мультичат / Aitum / боты, PUBG.</label></div>
+        <div class="check-item"><input id="input-check-phe0qc" type="checkbox" data-check-id="check-phe0qc" /><label for="input-check-phe0qc">После обновлений сделан тест записи / эфира.</label></div>
+        <div class="check-item"><input id="input-check-17mco0z" type="checkbox" data-check-id="check-17mco0z" /><label for="input-check-17mco0z">Бэкапы: OBS profile, scene collection, bot / automation backup, overlay / browser source configs, hotkeys, audio devices / routing.</label></div>
+        <div class="check-item"><input id="input-check-hgvaws" type="checkbox" data-check-id="check-hgvaws" /><label for="input-check-hgvaws">Stream keys / settings сохранены безопасно, не в публичном месте.</label></div>
+        <div class="check-item"><input id="input-check-193jzn1" type="checkbox" data-check-id="check-193jzn1" /><label for="input-check-193jzn1">Тест PUBG + OBS 10–15 минут: lobby / training / match.</label></div>
+        <div class="check-item"><input id="input-check-1fk37jz" type="checkbox" data-check-id="check-1fk37jz" /><label for="input-check-1fk37jz">Проверены FPS, 1% lows при наличии, frametime, rendering lag, encoding lag, GPU / CPU / RAM / VRAM, температуры.</label></div>
+        <div class="check-item"><input id="input-check-1s3emz5" type="checkbox" data-check-id="check-1s3emz5" /><label for="input-check-1s3emz5">Сравнение с прошлым нормальным состоянием.</label></div>
+        <div class="check-item"><input id="input-check-jmke8b" type="checkbox" data-check-id="check-jmke8b" /><label for="input-check-jmke8b">Не ухудшать frametime ради небольшого average FPS.</label></div>
+        <div class="check-item"><input id="input-check-fvh2a1" type="checkbox" data-check-id="check-fvh2a1" /><label for="input-check-fvh2a1">Сеть: upload stability, bufferbloat / SQM / QoS при наличии, маршруты к платформам, одновременный upload YouTube / Twitch / Kick.</label></div>
+        <div class="check-item"><input id="input-check-ejev4g" type="checkbox" data-check-id="check-ejev4g" /><label for="input-check-ejev4g">Роутер не перегревается и не зависает.</label></div>
+        <div class="check-item"><input id="input-check-1v4q1kn" type="checkbox" data-check-id="check-1v4q1kn" /><label for="input-check-1v4q1kn">Backup WAN / 5G работает, если есть.</label></div>
+        <div class="check-item"><input id="input-check-1hm6nn5" type="checkbox" data-check-id="check-1hm6nn5" /><label for="input-check-1hm6nn5">Безопасность: окна / источники / Discord / Windows notifications / browser bookmarks / autofill / dashboard keys / stream keys не палят приватное.</label></div>
+        <div class="check-item"><input id="input-check-178bqc5" type="checkbox" data-check-id="check-178bqc5" /><label for="input-check-178bqc5">Доступы ботов / мультичата актуальны, старые токены / интеграции отозваны.</label></div>
+        </div>
+        <h4 id="2-3-после-проблемног-острима"><a href="#2-3-после-проблемног-острима">2.3. ПОСЛЕ ПРОБЛЕМНОГ ОСТРИМА</a></h4>
+        <div class="checklist">
+        <div class="check-item"><input id="input-check-1m6n8d3" type="checkbox" data-check-id="check-1m6n8d3" /><label for="input-check-1m6n8d3">Network drops: время, платформа, upload saturation, фоновые загрузки, OBS logs, router / QoS / SQM, провайдер / маршрут; менять по одному параметру.</label></div>
+        <div class="check-item"><input id="input-check-buxo1e" type="checkbox" data-check-id="check-buxo1e" /><label for="input-check-buxo1e">Encoding lag: outputs, encoder settings, local recording, GPU load, лишние browser sources / effects, тестовая запись с теми же настройками.</label></div>
+        <div class="check-item"><input id="input-check-1tod40u" type="checkbox" data-check-id="check-1tod40u" /><label for="input-check-1tod40u">Rendering lag: GPU headroom в PUBG, тяжелые overlays / browser sources, анимированные сцены, RTSS / оверлеи, изменения после драйвера / PUBG patch.</label></div>
+        <div class="check-item"><input id="input-check-nkqb1k" type="checkbox" data-check-id="check-nkqb1k" /><label for="input-check-nkqb1k">Плохой звук: audio routing, OBS Advanced Audio Properties, Discord / NVIDIA Broadcast, Windows devices, тестовая запись голос + игра + Discord.</label></div>
+        <div class="check-item"><input id="input-check-1jh40d0" type="checkbox" data-check-id="check-1jh40d0" /><label for="input-check-1jh40d0">YouTube chat отвалился: stream создан заранее или reused event, старый или текущий broadcast, помогло ли переподключение, работал ли Live Control Room.</label></div>
+        <div class="check-item"><input id="input-check-1c4yja" type="checkbox" data-check-id="check-1c4yja" /><label for="input-check-1c4yja">Fallback на следующий стрим: отдельное окно YouTube chat.</label></div>
+        </div>
+        <h4 id="3-чеклист-после-изменений"><a href="#3-чеклист-после-изменений">3. ЧЕКЛИСТ ПОСЛЕ ИЗМЕНЕНИЙ</a></h4>
+        <p>Запускать после изменений: NVIDIA driver, OBS / plugins, Windows update, PUBG patch, Discord audio update, мультичат / Aitum / боты, роутер / провайдер / VPN, OBS scenes, audio routing, encoder, bitrate, NVIDIA, PUBG settings.</p>
+        <div class="checklist">
+        <div class="check-item"><input id="input-check-gvlntr" type="checkbox" data-check-id="check-gvlntr" /><label for="input-check-gvlntr">OBS открылся.</label></div>
+        <div class="check-item"><input id="input-check-185lpo1" type="checkbox" data-check-id="check-185lpo1" /><label for="input-check-185lpo1">Сцены не сломались.</label></div>
+        <div class="check-item"><input id="input-check-1sxohbx" type="checkbox" data-check-id="check-1sxohbx" /><label for="input-check-1sxohbx">Game Capture работает.</label></div>
+        <div class="check-item"><input id="input-check-5u3p0s" type="checkbox" data-check-id="check-5u3p0s" /><label for="input-check-5u3p0s">Mic работает.</label></div>
+        <div class="check-item"><input id="input-check-1yhmlhh" type="checkbox" data-check-id="check-1yhmlhh" /><label for="input-check-1yhmlhh">Game audio работает.</label></div>
+        <div class="check-item"><input id="input-check-1x3zfjn" type="checkbox" data-check-id="check-1x3zfjn" /><label for="input-check-1x3zfjn">Discord работает.</label></div>
+        <div class="check-item"><input id="input-check-9h882o" type="checkbox" data-check-id="check-9h882o" /><label for="input-check-9h882o">Recording работает.</label></div>
+        <div class="check-item"><input id="input-check-1jxvock" type="checkbox" data-check-id="check-1jxvock" /><label for="input-check-1jxvock">Replay Buffer работает.</label></div>
+        <div class="check-item"><input id="input-check-1xrxrdl" type="checkbox" data-check-id="check-1xrxrdl" /><label for="input-check-1xrxrdl">Hotkeys работают.</label></div>
+        <div class="check-item"><input id="input-check-1wf406c" type="checkbox" data-check-id="check-1wf406c" /><label for="input-check-1wf406c">Мультичат работает.</label></div>
+        <div class="check-item"><input id="input-check-10uku43" type="checkbox" data-check-id="check-10uku43" /><label for="input-check-10uku43">Тестовая запись просмотрена.</label></div>
+        </div>
+        <p>Только после этого изменение считается безопасным для обычного эфира.</p>
+        <h4 id="4-не-делать-перед-стримом-без-веской-причины"><a href="#4-не-делать-перед-стримом-без-веской-причины">4. НЕ ДЕЛАТЬ ПЕРЕД СТРИМОМ БЕЗ ВЕСКОЙ ПРИЧИНЫ</a></h4>
+        <div class="checklist">
+        <div class="check-item"><input id="input-check-1qxhpw3" type="checkbox" data-check-id="check-1qxhpw3" /><label for="input-check-1qxhpw3">Не обновлять NVIDIA driver.</label></div>
+        <div class="check-item"><input id="input-check-zdtijz" type="checkbox" data-check-id="check-zdtijz" /><label for="input-check-zdtijz">Не обновлять OBS / plugins.</label></div>
+        <div class="check-item"><input id="input-check-1or8do5" type="checkbox" data-check-id="check-1or8do5" /><label for="input-check-1or8do5">Не обновлять Windows.</label></div>
+        <div class="check-item"><input id="input-check-s1vhy" type="checkbox" data-check-id="check-s1vhy" /><label for="input-check-s1vhy">Не менять BIOS.</label></div>
+        <div class="check-item"><input id="input-check-1ekk6zn" type="checkbox" data-check-id="check-1ekk6zn" /><label for="input-check-1ekk6zn">Не менять NVIDIA Control Panel.</label></div>
+        <div class="check-item"><input id="input-check-1w618rw" type="checkbox" data-check-id="check-1w618rw" /><label for="input-check-1w618rw">Не менять PUBG graphics config.</label></div>
+        <div class="check-item"><input id="input-check-7i62bh" type="checkbox" data-check-id="check-7i62bh" /><label for="input-check-7i62bh">Не чистить реестр / систему твикерами.</label></div>
+        <div class="check-item"><input id="input-check-1ukywdc" type="checkbox" data-check-id="check-1ukywdc" /><label for="input-check-1ukywdc">Не перестраивать сцены.</label></div>
+        <div class="check-item"><input id="input-check-1tj7i2z" type="checkbox" data-check-id="check-1tj7i2z" /><label for="input-check-1tj7i2z">Не менять encoder / preset / bitrate.</label></div>
+        <div class="check-item"><input id="input-check-5eusop" type="checkbox" data-check-id="check-5eusop" /><label for="input-check-5eusop">Не менять audio routing.</label></div>
+        <div class="check-item"><input id="input-check-fqkx72" type="checkbox" data-check-id="check-fqkx72" /><label for="input-check-fqkx72">Не переустанавливать ботов / мультичат.</label></div>
+        <div class="check-item"><input id="input-check-cfzqzg" type="checkbox" data-check-id="check-cfzqzg" /><label for="input-check-cfzqzg">Не тестировать новый софт прямо перед эфиром.</label></div>
+        </div>
+        <p>Любое такое изменение = режим технический тест, а не обычный эфир.</p>
+      </article>
+    </main>
+
+    <script>
+      (() => {
+        const storageKey = "maseaaao:stream-checklist:v1";
+        const inputs = Array.from(document.querySelectorAll("[data-check-id]"));
+        const completedCount = document.querySelector("[data-completed-count]");
+        const progressPercent = document.querySelector("[data-progress-percent]");
+        const resetButton = document.querySelector("[data-reset]");
+        const total = inputs.length;
+
+        function readState() {
+          try {
+            const rawState = localStorage.getItem(storageKey);
+            if (!rawState) {
+              return null;
+            }
+
+            const state = JSON.parse(rawState);
+            return state && typeof state.checked === "object" ? state.checked : null;
+          } catch {
+            return null;
+          }
+        }
+
+        function writeState() {
+          const checked = {};
+
+          for (const input of inputs) {
+            if (input.checked) {
+              checked[input.dataset.checkId] = true;
+            }
+          }
+
+          try {
+            localStorage.setItem(
+              storageKey,
+              JSON.stringify({
+                checked,
+                updatedAt: new Date().toISOString(),
+              })
+            );
+          } catch {
+            // The checklist still works for the current page view when storage is unavailable.
+          }
+        }
+
+        function updateProgress() {
+          const done = inputs.filter((input) => input.checked).length;
+          const percent = total === 0 ? 0 : Math.round((done / total) * 100);
+
+          document.documentElement.style.setProperty("--progress", percent + "%");
+          completedCount.textContent = String(done);
+          progressPercent.textContent = percent + "%";
+          resetButton.disabled = done === 0;
+        }
+
+        const savedState = readState();
+
+        for (const input of inputs) {
+          input.checked = savedState
+            ? Boolean(savedState[input.dataset.checkId])
+            : input.hasAttribute("data-default-checked");
+
+          input.addEventListener("change", () => {
+            writeState();
+            updateProgress();
+          });
+        }
+
+        resetButton.addEventListener("click", () => {
+          for (const input of inputs) {
+            input.checked = false;
+          }
+
+          try {
+            localStorage.removeItem(storageKey);
+          } catch {
+            // Nothing to reset in persistent storage.
+          }
+
+          updateProgress();
+        });
+
+        updateProgress();
+      })();
+    </script>
+  </body>
+</html>
