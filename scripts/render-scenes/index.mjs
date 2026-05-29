@@ -364,6 +364,7 @@ async function resolveEdgeBinary() {
 async function waitForSceneReady(page, timeoutMs) {
   await page.evaluate(async (timeout) => {
     const requiredFonts = ["Geologica", "Onest"];
+    const requiredFontSample = "AaBb0123456789АБВабвЯя";
 
     const waitForImages = async () => {
       const imagePromises = Array.from(document.images, (image) => {
@@ -407,18 +408,44 @@ async function waitForSceneReady(page, timeoutMs) {
       await Promise.all(imagePromises);
     };
 
-    const readyPromise = (async () => {
-      await document.fonts.ready;
-      await waitForImages();
-      await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+    const normalizeFontFamily = (fontFamily) => fontFamily.replace(/^["']|["']$/g, "");
 
-      const missingFonts = requiredFonts.filter((fontFamily) => {
-        return !document.fonts.check(`16px "${fontFamily}"`);
+    const waitForRequiredFonts = async () => {
+      const visibleText = document.body.innerText.replace(/\s+/g, "");
+      if (!visibleText) {
+        return;
+      }
+
+      const fontFaces = Array.from(document.fonts);
+      const missingRegistrations = requiredFonts.filter((fontFamily) => {
+        return !fontFaces.some((fontFace) => normalizeFontFamily(fontFace.family) === fontFamily);
       });
+
+      if (missingRegistrations.length > 0) {
+        throw new Error(`Required fonts not registered: ${missingRegistrations.join(", ")}`);
+      }
+
+      const missingFonts = [];
+
+      for (const fontFamily of requiredFonts) {
+        const fontDescriptor = `400 16px "${fontFamily}"`;
+        await document.fonts.load(fontDescriptor, requiredFontSample);
+
+        if (!document.fonts.check(fontDescriptor, requiredFontSample)) {
+          missingFonts.push(fontFamily);
+        }
+      }
 
       if (missingFonts.length > 0) {
         throw new Error(`Required fonts not ready: ${missingFonts.join(", ")}`);
       }
+    };
+
+    const readyPromise = (async () => {
+      await document.fonts.ready;
+      await waitForRequiredFonts();
+      await waitForImages();
+      await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
     })();
 
     const timeoutPromise = new Promise((_, reject) => {

@@ -11,7 +11,7 @@
     "render:scenes:vertical": "node scripts/render-scenes/index.mjs --scenes-dir dist/scenes-vertical --width 1440 --height 2560",
     "render:twitch-description": "node scripts/render-scenes/index.mjs --scenes-dir dist/internal/twitch-description --output-dir dist/internal/twitch-description/rendered --width 320 --height 64 --format png",
     "render:docs": "node scripts/render-docs.mjs",
-    "full": "npm run render:banners && npm run render:scenes && render:scenes:vertical && npm run render:twitch-description && npm run render:docs && npm run optimize:images"
+    "full": "npm run render:banners && npm run render:scenes && npm run render:scenes:vertical && npm run render:twitch-description && npm run render:docs && npm run optimize:images"
   },
   "dependencies": {
     "playwright-core": "^1.58.2"
