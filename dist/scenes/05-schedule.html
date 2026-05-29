@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="color-scheme" content="dark" />
-    <title>Расписание стримов — maseaaao</title>
+    <title>Расписание стримов - maseaaao</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -20,153 +20,105 @@
             <section class="schedule-hero" aria-labelledby="schedule-title">
               <div class="schedule-intro">
                 <span class="schedule-kicker">maseaaao live</span>
-                <h1 class="schedule-title" id="schedule-title">Расписание стримов</h1>
+                <h1 class="schedule-title" id="schedule-title">Вечерние стримы</h1>
                 <p class="schedule-subtitle">
-                  Каждый день: старт в одно время всю неделю.
+                  По будням - каждый вечер. Выходные - по анонсам в Telegram.
                 </p>
               </div>
 
-              <aside class="schedule-time" aria-label="Основное время старта">
-                <span class="schedule-label">Старт каждый день</span>
-                <div class="schedule-time__stack">
-                  <div class="schedule-time__row">
-                    <span class="schedule-time__hour">18:00</span>
-                    <span class="schedule-time__zone">МСК</span>
-                  </div>
-                  <div class="schedule-time__row">
-                    <span class="schedule-time__hour">20:00</span>
-                    <span class="schedule-time__zone">Алматы</span>
-                  </div>
+              <aside class="schedule-follow" aria-label="Где следить за анонсами">
+                <span class="schedule-label">анонсы</span>
+                <div class="schedule-follow__stack">
+                  <span class="schedule-follow__icon">
+                    <svg class="schedule-icon" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9Z" />
+                      <path d="M10 21h4" />
+                    </svg>
+                  </span>
+                  <strong>перед стартом</strong>
+                  <span>Telegram @maseaaao</span>
                 </div>
               </aside>
             </section>
 
-            <section class="schedule-week" aria-label="Расписание на неделю">
-              <article class="schedule-day">
-                <div class="schedule-day__top">
-                  <span class="schedule-day__name">Пн</span>
-                  <span class="schedule-day__mark" aria-hidden="true"></span>
+            <section class="schedule-board" aria-label="Ориентир по расписанию">
+              <article class="schedule-block schedule-block--weekdays">
+                <div class="schedule-block__icon">
+                  <svg class="schedule-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M20 15.4A8.4 8.4 0 0 1 8.6 4a7.7 7.7 0 1 0 11.4 11.4Z" />
+                  </svg>
                 </div>
-                <div class="schedule-day__times">
-                  <span class="schedule-day__time">
-                    <span class="schedule-day__hour">18:00</span>
-                    <span class="schedule-day__zone">МСК</span>
-                  </span>
-                  <span class="schedule-day__time">
-                    <span class="schedule-day__hour">20:00</span>
-                    <span class="schedule-day__zone">Алматы</span>
-                  </span>
+                <div class="schedule-block__copy">
+                  <span class="schedule-label">Пн-Пт</span>
+                  <h2>каждый вечер</h2>
+                  <p>Основной ритм стримов. Точный старт появляется в анонсе перед эфиром.</p>
                 </div>
-              </article>
-              <article class="schedule-day">
-                <div class="schedule-day__top">
-                  <span class="schedule-day__name">Вт</span>
-                  <span class="schedule-day__mark" aria-hidden="true"></span>
-                </div>
-                <div class="schedule-day__times">
-                  <span class="schedule-day__time">
-                    <span class="schedule-day__hour">18:00</span>
-                    <span class="schedule-day__zone">МСК</span>
-                  </span>
-                  <span class="schedule-day__time">
-                    <span class="schedule-day__hour">20:00</span>
-                    <span class="schedule-day__zone">Алматы</span>
-                  </span>
+                <div class="schedule-days" aria-label="Будние дни">
+                  <span>Пн</span>
+                  <span>Вт</span>
+                  <span>Ср</span>
+                  <span>Чт</span>
+                  <span>Пт</span>
                 </div>
               </article>
-              <article class="schedule-day">
-                <div class="schedule-day__top">
-                  <span class="schedule-day__name">Ср</span>
-                  <span class="schedule-day__mark" aria-hidden="true"></span>
+
+              <article class="schedule-block schedule-block--weekend">
+                <div class="schedule-block__icon">
+                  <svg class="schedule-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M4 7a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3h-4l-4 3v-3H7a3 3 0 0 1-3-3V7Z" />
+                    <path d="M8 9h8M8 13h5" />
+                  </svg>
                 </div>
-                <div class="schedule-day__times">
-                  <span class="schedule-day__time">
-                    <span class="schedule-day__hour">18:00</span>
-                    <span class="schedule-day__zone">МСК</span>
-                  </span>
-                  <span class="schedule-day__time">
-                    <span class="schedule-day__hour">20:00</span>
-                    <span class="schedule-day__zone">Алматы</span>
-                  </span>
+                <div class="schedule-block__copy">
+                  <span class="schedule-label">Сб-Вс</span>
+                  <h2>по анонсам</h2>
+                  <p>Может быть днем или вечером.</p>
                 </div>
-              </article>
-              <article class="schedule-day">
-                <div class="schedule-day__top">
-                  <span class="schedule-day__name">Чт</span>
-                  <span class="schedule-day__mark" aria-hidden="true"></span>
-                </div>
-                <div class="schedule-day__times">
-                  <span class="schedule-day__time">
-                    <span class="schedule-day__hour">18:00</span>
-                    <span class="schedule-day__zone">МСК</span>
-                  </span>
-                  <span class="schedule-day__time">
-                    <span class="schedule-day__hour">20:00</span>
-                    <span class="schedule-day__zone">Алматы</span>
-                  </span>
+                <div class="schedule-days schedule-days--soft" aria-label="Выходные">
+                  <span>Сб</span>
+                  <span>Вс</span>
                 </div>
               </article>
-              <article class="schedule-day">
-                <div class="schedule-day__top">
-                  <span class="schedule-day__name">Пт</span>
-                  <span class="schedule-day__mark" aria-hidden="true"></span>
+
+              <article class="schedule-block schedule-block--notice">
+                <div class="schedule-block__icon">
+                  <svg class="schedule-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 3l1.5 4.4L18 9l-4.5 1.6L12 15l-1.5-4.4L6 9l4.5-1.6L12 3Z" />
+                    <path d="M19 14l.8 2.2L22 17l-2.2.8L19 20l-.8-2.2L16 17l2.2-.8L19 14Z" />
+                  </svg>
                 </div>
-                <div class="schedule-day__times">
-                  <span class="schedule-day__time">
-                    <span class="schedule-day__hour">18:00</span>
-                    <span class="schedule-day__zone">МСК</span>
-                  </span>
-                  <span class="schedule-day__time">
-                    <span class="schedule-day__hour">20:00</span>
-                    <span class="schedule-day__zone">Алматы</span>
-                  </span>
-                </div>
-              </article>
-              <article class="schedule-day">
-                <div class="schedule-day__top">
-                  <span class="schedule-day__name">Сб</span>
-                  <span class="schedule-day__mark" aria-hidden="true"></span>
-                </div>
-                <div class="schedule-day__times">
-                  <span class="schedule-day__time">
-                    <span class="schedule-day__hour">18:00</span>
-                    <span class="schedule-day__zone">МСК</span>
-                  </span>
-                  <span class="schedule-day__time">
-                    <span class="schedule-day__hour">20:00</span>
-                    <span class="schedule-day__zone">Алматы</span>
-                  </span>
-                </div>
-              </article>
-              <article class="schedule-day">
-                <div class="schedule-day__top">
-                  <span class="schedule-day__name">Вс</span>
-                  <span class="schedule-day__mark" aria-hidden="true"></span>
-                </div>
-                <div class="schedule-day__times">
-                  <span class="schedule-day__time">
-                    <span class="schedule-day__hour">18:00</span>
-                    <span class="schedule-day__zone">МСК</span>
-                  </span>
-                  <span class="schedule-day__time">
-                    <span class="schedule-day__hour">20:00</span>
-                    <span class="schedule-day__zone">Алматы</span>
-                  </span>
+                <div class="schedule-block__copy">
+                  <span class="schedule-label">точный старт</span>
+                  <h2>в анонсе</h2>
+                  <p>Подписка на Telegram - самый быстрый способ не пропустить эфир.</p>
                 </div>
               </article>
             </section>
 
             <footer class="schedule-footer">
+              <div class="schedule-footer__copy">
+                <span class="schedule-footer__label">следить</span>
+                <p class="schedule-footer__text">Анонсы, переносы и внезапные выходные стримы появляются там.</p>
+              </div>
               <div class="schedule-socials" aria-label="Социальные сети">
                 <div class="schedule-social schedule-social--youtube">
-                  <span class="schedule-social__icon" aria-hidden="true">▶</span>
+                  <span class="schedule-social__icon" aria-hidden="true">
+                    <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+                    </svg>
+                  </span>
                   <span class="schedule-social__copy">
                     <span class="schedule-social__name">YouTube</span>
                     <span class="schedule-social__handle">@maseaaao</span>
                   </span>
                 </div>
                 <div class="schedule-social schedule-social--telegram">
-                  <span class="schedule-social__icon" aria-hidden="true">TG</span>
+                  <span class="schedule-social__icon" aria-hidden="true">
+                    <svg class="schedule-icon schedule-icon--fill" viewBox="0 0 24 24">
+                      <path d="M21 4 3.8 10.9c-1.1.4-1 1.9.1 2.2l4.3 1.2 1.7 5.1c.3.9 1.5 1.1 2.1.4l2.4-2.8 4.5 3.3c.8.6 2 .1 2.1-.9L23 5.3c.1-.9-.9-1.5-2-.9ZM9 13.7l9.4-5.9-7.7 7.7-.3 2.3L9 13.7Z" />
+                    </svg>
+                  </span>
                   <span class="schedule-social__copy">
                     <span class="schedule-social__name">Telegram</span>
                     <span class="schedule-social__handle">@maseaaao</span>

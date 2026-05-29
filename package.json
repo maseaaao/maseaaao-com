@@ -3,12 +3,14 @@
   "private": true,
   "scripts": {
     "optimize:images": "node scripts/optimize-images/index.mjs",
-    "render:banners": "npm run render:banners:youtube && npm run render:banners:kick && npm run render:banners:wtv",
+    "render:banners": "npm run render:banners:youtube && npm run render:banners:kick && npm run render:banners:twitch",
     "render:banners:kick": "node scripts/render-scenes/index.mjs --scenes-dir dist/banners/kick --output-dir dist/banners/rendered --width 1920 --height 1080 --format png",
     "render:banners:youtube": "node scripts/render-scenes/index.mjs --scenes-dir dist/banners/youtube --output-dir dist/banners/rendered --width 2048 --height 1152 --format png",
-    "render:banners:wtv": "node scripts/render-scenes/index.mjs --scenes-dir dist/banners/wtv --output-dir dist/banners/rendered --width 2224 --height 570 --format png",
+    "render:banners:twitch": "node scripts/render-scenes/index.mjs --scenes-dir dist/banners/twitch --output-dir dist/banners/rendered --width 2224 --height 570 --format png",
     "render:scenes": "node scripts/render-scenes/index.mjs",
-    "render:scenes:vertical": "node scripts/render-scenes/index.mjs --scenes-dir dist/scenes-vertical --width 1440 --height 2560"
+    "render:scenes:vertical": "node scripts/render-scenes/index.mjs --scenes-dir dist/scenes-vertical --width 1440 --height 2560",
+    "render:twitch-description": "node scripts/render-scenes/index.mjs --scenes-dir dist/internal/twitch-description --output-dir dist/internal/twitch-description/rendered --width 320 --height 64 --format png",
+    "full": "npm run render:banners && npm run render:scenes && render:scenes:vertical && npm run render:twitch-description && npm run optimize:images"
   },
   "dependencies": {
     "playwright-core": "^1.58.2"
