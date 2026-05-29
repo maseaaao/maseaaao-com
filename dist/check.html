@@ -89,48 +89,72 @@
     }
 
     body.is-tv-mode {
-      padding: 10px;
+      height: 100dvh;
+      min-height: 0;
+      padding: 8px;
+      overflow: hidden;
     }
 
-    body.is-tv-mode header {
-      margin-bottom: 10px;
+    body.is-tv-mode header,
+    body.is-tv-mode .note {
+      display: none;
     }
 
     body.is-tv-mode .grid {
-      grid-template-columns: repeat(2, minmax(320px, 1fr));
-      align-items: start;
+      height: calc(100dvh - 16px);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-rows: minmax(0, 1.12fr) minmax(0, 0.88fr);
+      gap: 8px;
+    }
+
+    body.is-tv-mode .card {
+      min-height: 0;
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
+      border-radius: 12px;
     }
 
     body.is-tv-mode .card[data-platform="youtube"] {
       grid-column: 1 / -1;
-      width: min(100%, 1760px);
-      justify-self: center;
+      width: 100%;
+      justify-self: stretch;
     }
 
-    body.is-tv-mode .card[data-platform="youtube"] iframe {
-      aspect-ratio: 16 / 8.4;
+    body.is-tv-mode .card-header {
+      min-height: 0;
+      padding: 6px 8px;
     }
 
-    body.is-tv-mode .card:not([data-platform="youtube"]) iframe {
-      aspect-ratio: 16 / 9;
+    body.is-tv-mode .title {
+      font-size: 13px;
+      line-height: 1;
+    }
+
+    body.is-tv-mode .status,
+    body.is-tv-mode .actions {
+      display: none;
     }
 
     body.is-tv-mode .slot {
       min-height: 0;
-      padding: 8px;
+      height: 100%;
+      padding: 4px;
     }
 
-    body.is-tv-mode .note {
-      display: none;
+    body.is-tv-mode iframe {
+      width: 100%;
+      height: 100%;
+      aspect-ratio: auto;
     }
 
     @media (max-width: 900px) {
       body.is-tv-mode .grid {
         grid-template-columns: 1fr;
+        grid-template-rows: repeat(3, minmax(0, 1fr));
       }
 
       body.is-tv-mode .card[data-platform="youtube"] {
-        width: 100%;
+        grid-column: auto;
       }
     }
 
@@ -274,7 +298,8 @@
   <p class="note">
     iframe не создаются при обычной загрузке страницы. Кнопка <code>Добавить</code> создает плеер,
     кнопка <code>Удалить</code> полностью удаляет его из DOM. Если открыть страницу с <code>?tv=1</code>,
-    все iframe создаются автоматически, YouTube становится главным верхним плеером и запускается без mute.
+    все iframe создаются автоматически, YouTube остается сверху, Twitch и Kick располагаются снизу, а весь layout
+    умещается в один экран без прокрутки.
   </p>
 
   <script>

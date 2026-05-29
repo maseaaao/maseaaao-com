@@ -4,10 +4,10 @@ import path from "node:path";
 
 const SCRIPT_DIR = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.resolve(SCRIPT_DIR, "..");
-const SOURCE_FILE = path.join(REPO_ROOT, "dist", "docs", "stream-checklist.md");
-const OUTPUT_DIR = path.join(REPO_ROOT, "dist", "docs", "stream-checklist");
+const SOURCE_FILE = path.join(REPO_ROOT, "dist", "docs", "checklist.md");
+const OUTPUT_DIR = path.join(REPO_ROOT, "dist", "docs", "checklist");
 const OUTPUT_FILE = path.join(OUTPUT_DIR, "index.html");
-const STORAGE_KEY = "maseaaao:stream-checklist:v1";
+const STORAGE_KEY = "maseaaao:checklist:v1";
 const FAVICON_HREF = `data:image/svg+xml,${encodeURIComponent(`
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
   <text x="50%" y="50%" dominant-baseline="central" text-anchor="middle" font-size="54">✅</text>
