@@ -17,10 +17,15 @@ const BASE_WIDTH = readPositiveIntegerOption(options.width, "--width", DEFAULT_B
 const BASE_HEIGHT = readPositiveIntegerOption(options.height, "--height", DEFAULT_BASE_HEIGHT);
 const CAPTURE_FORMAT = readCaptureFormatOption(options.format);
 const CAPTURE_QUALITY = readScreenshotQualityOption(options.quality, "--quality", DEFAULT_CAPTURE_QUALITY);
+const TRANSPARENT_BACKGROUND = readBooleanFlagOption(options.transparent, "--transparent", false);
 const SCENES_DIR = resolveRepoPath(options.scenesDir ?? "dist/scenes");
 const OUTPUT_DIR = options.outputDir
   ? resolveRepoPath(options.outputDir)
   : path.join(SCENES_DIR, "rendered");
+
+if (TRANSPARENT_BACKGROUND && CAPTURE_FORMAT === "jpeg") {
+  throw new Error("--transparent requires png or webp because jpeg does not support alpha.");
+}
 
 const CONTENT_TYPES = new Map([
   [".css", "text/css; charset=utf-8"],
@@ -137,8 +142,10 @@ function parseCliOptions(args) {
     ["output-dir", "outputDir"],
     ["quality", "quality"],
     ["scenes-dir", "scenesDir"],
+    ["transparent", "transparent"],
     ["width", "width"],
   ]);
+  const booleanFlags = new Set(["transparent"]);
   const parsed = {};
 
   for (let index = 0; index < args.length; index += 1) {
@@ -155,6 +162,16 @@ function parseCliOptions(args) {
     }
 
     let value = separatorIndex === -1 ? undefined : arg.slice(separatorIndex + 1);
+    if (booleanFlags.has(key)) {
+      if (value === undefined && (args[index + 1] === "true" || args[index + 1] === "false")) {
+        index += 1;
+        value = args[index];
+      }
+
+      parsed[key] = value === undefined ? "true" : value;
+      continue;
+    }
+
     if (value === undefined) {
       index += 1;
       value = args[index];
@@ -168,6 +185,22 @@ function parseCliOptions(args) {
   }
 
   return parsed;
+}
+
+function readBooleanFlagOption(value, label, fallback) {
+  if (value === undefined) {
+    return fallback;
+  }
+
+  if (value === "true") {
+    return true;
+  }
+
+  if (value === "false") {
+    return false;
+  }
+
+  throw new Error(`${label} must be true or false when a value is provided.`);
 }
 
 function readPositiveIntegerOption(value, label, fallback) {
@@ -471,6 +504,12 @@ async function captureScreenshot(page) {
   }
 
   try {
+    if (TRANSPARENT_BACKGROUND) {
+      await session.send("Emulation.setDefaultBackgroundColorOverride", {
+        color: { r: 0, g: 0, b: 0, a: 0 },
+      });
+    }
+
     const { data } = await session.send("Page.captureScreenshot", screenshotOptions);
 
     return Buffer.from(data, "base64");
