@@ -37,9 +37,21 @@ body {
   color: var(--text);
   background-color: var(--bg);
   background:
-    radial-gradient(circle at 14% 12%, rgba(127, 224, 255, 0.16), transparent 28%),
-    radial-gradient(circle at 82% 18%, rgba(255, 139, 184, 0.14), transparent 30%),
-    radial-gradient(circle at 52% 92%, rgba(169, 145, 255, 0.15), transparent 34%),
+    radial-gradient(
+      circle at 14% 12%,
+      rgba(127, 224, 255, 0.16),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 82% 18%,
+      rgba(255, 139, 184, 0.14),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 52% 92%,
+      rgba(169, 145, 255, 0.15),
+      transparent 34%
+    ),
     linear-gradient(180deg, #050711 0%, #080b15 52%, #030409 100%);
 }
 
@@ -55,9 +67,21 @@ body::after {
 body::before {
   inset: -20%;
   background:
-    radial-gradient(circle at 18% 16%, rgba(127, 224, 255, 0.12), transparent 36%),
-    radial-gradient(circle at 80% 24%, rgba(255, 139, 184, 0.13), transparent 34%),
-    radial-gradient(circle at 52% 78%, rgba(169, 145, 255, 0.12), transparent 40%);
+    radial-gradient(
+      circle at 18% 16%,
+      rgba(127, 224, 255, 0.12),
+      transparent 36%
+    ),
+    radial-gradient(
+      circle at 80% 24%,
+      rgba(255, 139, 184, 0.13),
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 52% 78%,
+      rgba(169, 145, 255, 0.12),
+      transparent 40%
+    );
   filter: blur(20px);
   opacity: 0.9;
 }
@@ -101,7 +125,11 @@ body::after {
   border: 1px solid var(--line-soft);
   border-radius: 52px;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.012)),
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.035),
+      rgba(255, 255, 255, 0.012)
+    ),
     linear-gradient(180deg, rgba(12, 15, 25, 0.58), rgba(7, 9, 16, 0.18));
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.04),
@@ -115,14 +143,6 @@ body::after {
   --safe-width: 1235px;
   --safe-height: 338px;
   --platform: var(--cyan);
-}
-
-.kick-banner {
-  --banner-width: 1920px;
-  --banner-height: 1080px;
-  --safe-width: 1500px;
-  --safe-height: 470px;
-  --platform: var(--green);
 }
 
 .twitch-banner {
@@ -151,7 +171,11 @@ body::after {
   border: 1px solid rgba(255, 255, 255, 0.055);
   border-radius: 46px;
   background:
-    linear-gradient(135deg, rgba(127, 224, 255, 0.055), rgba(255, 255, 255, 0.012)),
+    linear-gradient(
+      135deg,
+      rgba(127, 224, 255, 0.055),
+      rgba(255, 255, 255, 0.012)
+    ),
     rgba(255, 255, 255, 0.018);
   color: rgba(223, 247, 255, 0.48);
 }
@@ -160,7 +184,11 @@ body::after {
   justify-items: end;
   text-align: right;
   background:
-    linear-gradient(135deg, rgba(255, 139, 184, 0.06), rgba(255, 255, 255, 0.012)),
+    linear-gradient(
+      135deg,
+      rgba(255, 139, 184, 0.06),
+      rgba(255, 255, 255, 0.012)
+    ),
     rgba(255, 255, 255, 0.018);
 }
 
@@ -194,7 +222,11 @@ body::after {
   overflow: hidden;
   border: 1px solid var(--line);
   background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.018) 58%),
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.075),
+      rgba(255, 255, 255, 0.018) 58%
+    ),
     linear-gradient(180deg, var(--surface-strong), rgba(9, 12, 22, 0.94));
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.06),
@@ -338,7 +370,12 @@ body::after {
   font-weight: 860;
   line-height: 0.88;
   letter-spacing: 0;
-  background: linear-gradient(135deg, #ffffff 0%, #eefcff 50%, var(--cyan) 100%);
+  background: linear-gradient(
+    135deg,
+    #ffffff 0%,
+    #eefcff 50%,
+    var(--cyan) 100%
+  );
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -475,119 +512,6 @@ body::after {
   flex: 0 0 auto;
   color: var(--platform);
   font-size: 18px;
-}
-
-.kick-banner .banner-shell::before {
-  inset: 36px;
-}
-
-.kick-banner .banner-ambient {
-  inset: 58px;
-}
-
-.kick-banner .banner-ambient__mark {
-  width: 420px;
-  height: 420px;
-  padding: 44px;
-}
-
-.kick-banner .banner-ambient__mark .icon {
-  font-size: 82px;
-}
-
-.kick-banner .banner-ambient__mark span {
-  font-size: 26px;
-}
-
-.kick-banner .banner-ambient__mark strong {
-  font-size: 68px;
-}
-
-.kick-banner .schedule-banner {
-  gap: 22px;
-  padding: 38px 48px;
-  border-radius: 38px;
-}
-
-.kick-banner .kicker {
-  font-size: 24px;
-}
-
-.kick-banner .platform-pill {
-  height: 42px;
-  padding: 0 16px;
-  font-size: 16px;
-}
-
-.kick-banner .platform-pill .icon {
-  font-size: 21px;
-}
-
-.kick-banner .schedule-banner__body {
-  gap: 46px;
-}
-
-.kick-banner .schedule-title {
-  font-size: 112px;
-}
-
-.kick-banner .schedule-note {
-  max-width: 600px;
-  font-size: 29px;
-}
-
-.kick-banner .schedule-list {
-  gap: 16px;
-}
-
-.kick-banner .schedule-item {
-  min-height: 104px;
-  gap: 18px;
-  padding: 20px 22px;
-  border-radius: 26px;
-}
-
-.kick-banner .schedule-item__icon {
-  width: 66px;
-  height: 66px;
-  border-radius: 20px;
-}
-
-.kick-banner .schedule-item__icon .icon {
-  font-size: 34px;
-}
-
-.kick-banner .label {
-  font-size: 20px;
-}
-
-.kick-banner .schedule-item__title {
-  font-size: 43px;
-}
-
-.kick-banner .schedule-item__note {
-  font-size: 23px;
-}
-
-.kick-banner .day-rail {
-  gap: 10px;
-}
-
-.kick-banner .day-pill {
-  min-width: 52px;
-  height: 38px;
-  border-radius: 14px;
-  font-size: 21px;
-}
-
-.kick-banner .social-link {
-  min-height: 40px;
-  padding: 0 14px;
-  font-size: 24px;
-}
-
-.kick-banner .social-link .icon {
-  font-size: 23px;
 }
 
 .twitch-frame {

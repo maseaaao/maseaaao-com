@@ -1,4 +1,4 @@
-*✅ СТРИМ-ЧЕКЛИСТ: PUBG / OBS / Twitch + Kick + YouTube ✅*
+*✅ СТРИМ-ЧЕКЛИСТ: PUBG / OBS / Twitch + YouTube ✅*
 
 *1. КАЖДЫЙ СТРИМ*
 
@@ -34,7 +34,6 @@
 *ПЛАТФОРМЫ*
 
 - [ ] Twitch: title, category, chat.
-- [ ] Kick: title, category, chat.
 - [ ] YouTube: текущая трансляция, видимость, title, chat включен, Live Control Room видит поток.
 
 *ПРИВАТНОСТЬ*
@@ -54,14 +53,13 @@
 - [ ] Активна безопасная стартовая сцена.
 - [ ] Start Streaming + Start Recording.
 - [ ] OBS stats нормальные: stream, recording, dropped frames, rendering lag, encoding lag, bitrate.
-- [ ] Эфир появился на Twitch / Kick / YouTube.
+- [ ] Эфир появился на Twitch / YouTube.
 - [ ] YouTube не завис в Waiting.
 - [ ] Чаты живые.
 
 *ЧАТЫ*
 
 - [ ] Twitch chat приходит.
-- [ ] Kick chat приходит.
 - [ ] YouTube chat приходит.
 - [ ] Команды работают: `!tg`, `!youtube`, `!commands`, [maseaaao.com](https://maseaaao.com).
 - [ ] Автосообщения не уходят в оффлайне и не спамят.
@@ -109,7 +107,7 @@
 *1.7. МЕЖДУ МАТЧАМИ [каждые 15 минут]*
 
 - [ ] OBS stats — network drops, encoding lag, rendering lag, bitrate, FPS.
-- [ ] Чаты Twitch / Kick / YouTube.
+- [ ] Чаты Twitch / YouTube.
 - [ ] Recording идет.
 
 *1.8. ОТЛУЧИЛСЯ*
@@ -144,7 +142,6 @@
 - [ ] Звук есть, файл не битый.
 - [ ] YouTube: VOD появился, качество обрабатывается, 60fps / 1080p проверены, title / thumbnail / description нормальные.
 - [ ] Twitch: VOD есть, category / title нормальные, клипы при необходимости.
-- [ ] Kick: VOD / запись доступны.
 - [ ] Очистить бесполезные файлы-записи.
 
 *2. РЕГУЛЯРНОЕ ТЕХОБСЛУЖИВАНИЕ*
@@ -166,7 +163,7 @@
 - [ ] YouTube thumbnail / template актуальны.
 - [ ] YouTube live creation flow не изменился.
 - [ ] Мультичат авторизован и цепляет текущий YouTube live chat.
-- [ ] Twitch / Kick не требуют повторного логина.
+- [ ] Twitch не требуют повторного логина.
 - [ ] Команды работают: `!tg`, `!youtube`, `!commands`, [maseaaao.com](https://maseaaao.com).
 - [ ] Автосообщения / cooldown нормальные.
 - [ ] Модерация работает: profile / ban / timeout.
@@ -186,7 +183,7 @@
 - [ ] Проверены FPS, 1% lows при наличии, frametime, rendering lag, encoding lag, GPU / CPU / RAM / VRAM, температуры.
 - [ ] Сравнение с прошлым нормальным состоянием.
 - [ ] Не ухудшать frametime ради небольшого average FPS.
-- [ ] Сеть: upload stability, bufferbloat / SQM / QoS при наличии, маршруты к платформам, одновременный upload YouTube / Twitch / Kick.
+- [ ] Сеть: upload stability, bufferbloat / SQM / QoS при наличии, маршруты к платформам, одновременный upload YouTube / Twitch.
 - [ ] Роутер не перегревается и не зависает.
 - [ ] Backup WAN / 5G работает, если есть.
 - [ ] Безопасность: окна / источники / Discord / Windows notifications / browser bookmarks / autofill / dashboard keys / stream keys не палят приватное.

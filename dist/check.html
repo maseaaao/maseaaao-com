@@ -1,471 +1,480 @@
 <!doctype html>
 <html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stream Checker</title>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Stream Checker</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #0a0a0f;
+        --card: #12121a;
+        --card-2: #171722;
+        --border: #2b2b35;
+        --text: #f5f5f7;
+        --muted: #b8b8c2;
+        --accent: #c7a7ff;
+        --danger: #ff8f8f;
+      }
 
-  <style>
-    :root {
-      color-scheme: dark;
-      --bg: #0a0a0f;
-      --card: #12121a;
-      --card-2: #171722;
-      --border: #2b2b35;
-      --text: #f5f5f7;
-      --muted: #b8b8c2;
-      --accent: #c7a7ff;
-      --danger: #ff8f8f;
-    }
+      * {
+        box-sizing: border-box;
+      }
 
-    * {
-      box-sizing: border-box;
-    }
+      html,
+      body {
+        min-height: 100%;
+      }
 
-    html,
-    body {
-      min-height: 100%;
-    }
+      body {
+        margin: 0;
+        padding: 16px;
+        font-family:
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+        background: var(--bg);
+        color: var(--text);
+      }
 
-    body {
-      margin: 0;
-      padding: 16px;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: var(--bg);
-      color: var(--text);
-    }
+      header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 16px;
+      }
 
-    header {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 16px;
-    }
+      h1 {
+        margin: 0;
+        font-size: 20px;
+        line-height: 1.2;
+      }
 
-    h1 {
-      margin: 0;
-      font-size: 20px;
-      line-height: 1.2;
-    }
+      .global-actions,
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
 
-    .global-actions,
-    .actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
+      button,
+      a.button {
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 8px 10px;
+        background: var(--card-2);
+        color: var(--text);
+        font: inherit;
+        font-size: 14px;
+        line-height: 1;
+        text-decoration: none;
+        cursor: pointer;
+        user-select: none;
+      }
 
-    button,
-    a.button {
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 8px 10px;
-      background: var(--card-2);
-      color: var(--text);
-      font: inherit;
-      font-size: 14px;
-      line-height: 1;
-      text-decoration: none;
-      cursor: pointer;
-      user-select: none;
-    }
+      button:hover,
+      a.button:hover {
+        border-color: var(--accent);
+      }
 
-    button:hover,
-    a.button:hover {
-      border-color: var(--accent);
-    }
+      button[data-kind="remove"] {
+        color: var(--danger);
+      }
 
-    button[data-kind="remove"] {
-      color: var(--danger);
-    }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+        gap: 14px;
+      }
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-      gap: 14px;
-    }
+      body.is-tv-mode {
+        height: 100dvh;
+        min-height: 0;
+        padding: 8px;
+        overflow: hidden;
+      }
 
-    body.is-tv-mode {
-      height: 100dvh;
-      min-height: 0;
-      padding: 8px;
-      overflow: hidden;
-    }
+      body.is-tv-mode header,
+      body.is-tv-mode .note {
+        display: none;
+      }
 
-    body.is-tv-mode header,
-    body.is-tv-mode .note {
-      display: none;
-    }
-
-    body.is-tv-mode .grid {
-      height: calc(100dvh - 16px);
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      grid-template-rows: minmax(0, 1.12fr) minmax(0, 0.88fr);
-      gap: 8px;
-    }
-
-    body.is-tv-mode .card {
-      min-height: 0;
-      display: grid;
-      grid-template-rows: auto minmax(0, 1fr);
-      border-radius: 12px;
-    }
-
-    body.is-tv-mode .card[data-platform="youtube"] {
-      grid-column: 1 / -1;
-      width: 100%;
-      justify-self: stretch;
-    }
-
-    body.is-tv-mode .card-header {
-      min-height: 0;
-      padding: 6px 8px;
-    }
-
-    body.is-tv-mode .title {
-      font-size: 13px;
-      line-height: 1;
-    }
-
-    body.is-tv-mode .status,
-    body.is-tv-mode .actions {
-      display: none;
-    }
-
-    body.is-tv-mode .slot {
-      min-height: 0;
-      height: 100%;
-      padding: 4px;
-    }
-
-    body.is-tv-mode iframe {
-      width: 100%;
-      height: 100%;
-      aspect-ratio: auto;
-    }
-
-    @media (max-width: 900px) {
       body.is-tv-mode .grid {
-        grid-template-columns: 1fr;
-        grid-template-rows: repeat(3, minmax(0, 1fr));
+        height: calc(100dvh - 16px);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-rows: minmax(0, 1.12fr) minmax(0, 0.88fr);
+        gap: 8px;
+      }
+
+      body.is-tv-mode .card {
+        min-height: 0;
+        display: grid;
+        grid-template-rows: auto minmax(0, 1fr);
+        border-radius: 12px;
       }
 
       body.is-tv-mode .card[data-platform="youtube"] {
-        grid-column: auto;
-      }
-    }
-
-    .card {
-      overflow: hidden;
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      background: var(--card);
-    }
-
-    .card-header {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 10px;
-      align-items: center;
-      padding: 12px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .title {
-      font-weight: 700;
-    }
-
-    .status {
-      margin-top: 4px;
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .slot {
-      display: grid;
-      place-items: center;
-      min-height: 220px;
-      padding: 12px;
-      background:
-        linear-gradient(45deg, rgba(255, 255, 255, 0.025) 25%, transparent 25%),
-        linear-gradient(-45deg, rgba(255, 255, 255, 0.025) 25%, transparent 25%),
-        linear-gradient(45deg, transparent 75%, rgba(255, 255, 255, 0.025) 75%),
-        linear-gradient(-45deg, transparent 75%, rgba(255, 255, 255, 0.025) 75%);
-      background-position: 0 0, 0 10px, 10px -10px, -10px 0;
-      background-size: 20px 20px;
-    }
-
-    .placeholder {
-      color: var(--muted);
-      font-size: 14px;
-      text-align: center;
-    }
-
-    iframe {
-      width: 100%;
-      aspect-ratio: 16 / 9;
-      border: 0;
-      display: block;
-      background: #000;
-    }
-
-    .note {
-      margin-top: 16px;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.5;
-    }
-
-    code {
-      color: #e7d7ff;
-    }
-  </style>
-</head>
-
-<body>
-  <header>
-    <h1>Stream Checker</h1>
-
-    <div class="global-actions">
-      <button type="button" data-action="add-all">Добавить все</button>
-      <button type="button" data-action="remove-all" data-kind="remove">Удалить все</button>
-    </div>
-  </header>
-
-  <main class="grid">
-    <section class="card" data-platform="youtube">
-      <div class="card-header">
-        <div>
-          <div class="title">YouTube</div>
-          <div class="status" data-status>iframe не создан</div>
-        </div>
-
-        <div class="actions">
-          <button type="button" data-action="add">Добавить</button>
-          <button type="button" data-action="remove" data-kind="remove">Удалить</button>
-          <a class="button" href="https://www.youtube.com/channel/UCyJNPWpOcPfMo5csKa27yGg/live" target="_blank"
-            rel="noreferrer">Открыть</a>
-        </div>
-      </div>
-
-      <div class="slot" data-slot>
-        <div class="placeholder">YouTube-плеер не загружен</div>
-      </div>
-    </section>
-
-    <section class="card" data-platform="twitch">
-      <div class="card-header">
-        <div>
-          <div class="title">Twitch</div>
-          <div class="status" data-status>iframe не создан</div>
-        </div>
-
-        <div class="actions">
-          <button type="button" data-action="add">Добавить</button>
-          <button type="button" data-action="remove" data-kind="remove">Удалить</button>
-          <a class="button" href="https://www.twitch.tv/maseaaao_" target="_blank" rel="noreferrer">Открыть</a>
-        </div>
-      </div>
-
-      <div class="slot" data-slot>
-        <div class="placeholder">Twitch-плеер не загружен</div>
-      </div>
-    </section>
-
-    <section class="card" data-platform="kick">
-      <div class="card-header">
-        <div>
-          <div class="title">Kick</div>
-          <div class="status" data-status>iframe не создан</div>
-        </div>
-
-        <div class="actions">
-          <button type="button" data-action="add">Добавить</button>
-          <button type="button" data-action="remove" data-kind="remove">Удалить</button>
-          <a class="button" href="https://kick.com/maseaaao" target="_blank" rel="noreferrer">Открыть</a>
-        </div>
-      </div>
-
-      <div class="slot" data-slot>
-        <div class="placeholder">Kick-плеер не загружен</div>
-      </div>
-    </section>
-  </main>
-
-  <p class="note">
-    iframe не создаются при обычной загрузке страницы. Кнопка <code>Добавить</code> создает плеер,
-    кнопка <code>Удалить</code> полностью удаляет его из DOM. Если открыть страницу с <code>?tv=1</code>,
-    все iframe создаются автоматически, YouTube остается сверху, Twitch и Kick располагаются снизу, а весь layout
-    умещается в один экран без прокрутки.
-  </p>
-
-  <script>
-    const SEARCH_PARAMS = new URLSearchParams(window.location.search);
-    const IS_TV_MODE = SEARCH_PARAMS.get("tv") === "1";
-
-    if (IS_TV_MODE) {
-      document.body.classList.add("is-tv-mode");
-    }
-
-    const STREAMS = {
-      youtube: {
-        title: "YouTube live",
-        get src() {
-          const params = new URLSearchParams({
-            channel: "UCyJNPWpOcPfMo5csKa27yGg",
-            autoplay: "1",
-            mute: IS_TV_MODE ? "0" : "1",
-          });
-
-          return `https://www.youtube.com/embed/live_stream?${params.toString()}`;
-        },
-        allow: "autoplay; encrypted-media; picture-in-picture; fullscreen",
-      },
-
-      twitch: {
-        title: "Twitch live",
-        get src() {
-          const parent = window.location.hostname;
-
-          if (!parent) {
-            throw new Error("Twitch iframe requires a real hostname.");
-          }
-
-          const params = new URLSearchParams({
-            channel: "maseaaao_",
-            parent,
-            autoplay: "true",
-            muted: "true",
-          });
-
-          return `https://player.twitch.tv/?${params.toString()}`;
-        },
-        allow: "autoplay; fullscreen",
-      },
-
-      kick: {
-        title: "Kick live",
-        src: "https://player.kick.com/maseaaao?autoplay=true&muted=true",
-        allow: "autoplay; fullscreen",
-      },
-    };
-
-    function getElements(platform) {
-      const card = document.querySelector(`[data-platform="${platform}"]`);
-
-      return {
-        card,
-        slot: card.querySelector("[data-slot]"),
-        status: card.querySelector("[data-status]"),
-      };
-    }
-
-    function setPlaceholder(slot, platform) {
-      const label = {
-        youtube: "YouTube-плеер не загружен",
-        twitch: "Twitch-плеер не загружен",
-        kick: "Kick-плеер не загружен",
-      }[platform];
-
-      slot.replaceChildren(
-        Object.assign(document.createElement("div"), {
-          className: "placeholder",
-          textContent: label,
-        })
-      );
-    }
-
-    function setError(slot, status, message) {
-      slot.replaceChildren(
-        Object.assign(document.createElement("div"), {
-          className: "placeholder",
-          textContent: message,
-        })
-      );
-
-      status.textContent = "ошибка";
-    }
-
-    function addPlayer(platform) {
-      const config = STREAMS[platform];
-      const { slot, status } = getElements(platform);
-
-      if (slot.querySelector("iframe")) {
-        status.textContent = "iframe уже создан";
-        return;
+        grid-column: 1 / -1;
+        width: 100%;
+        justify-self: stretch;
       }
 
-      try {
-        const iframe = document.createElement("iframe");
+      body.is-tv-mode .card-header {
+        min-height: 0;
+        padding: 6px 8px;
+      }
 
-        iframe.title = config.title;
-        iframe.src = config.src;
-        iframe.allow = config.allow;
-        iframe.allowFullscreen = true;
-        iframe.referrerPolicy = "strict-origin-when-cross-origin";
+      body.is-tv-mode .title {
+        font-size: 13px;
+        line-height: 1;
+      }
 
-        if (platform === "kick") {
-          iframe.scrolling = "no";
+      body.is-tv-mode .status,
+      body.is-tv-mode .actions {
+        display: none;
+      }
+
+      body.is-tv-mode .slot {
+        min-height: 0;
+        height: 100%;
+        padding: 4px;
+      }
+
+      body.is-tv-mode iframe {
+        width: 100%;
+        height: 100%;
+        aspect-ratio: auto;
+      }
+
+      @media (max-width: 900px) {
+        body.is-tv-mode .grid {
+          grid-template-columns: 1fr;
+          grid-template-rows: repeat(3, minmax(0, 1fr));
         }
 
-        slot.replaceChildren(iframe);
-        status.textContent = "iframe создан";
-      } catch (error) {
-        setError(slot, status, error instanceof Error ? error.message : "Не удалось создать iframe");
-      }
-    }
-
-    function removePlayer(platform) {
-      const { slot, status } = getElements(platform);
-
-      slot.replaceChildren();
-      setPlaceholder(slot, platform);
-      status.textContent = "iframe не создан";
-    }
-
-    document.addEventListener("click", (event) => {
-      const button = event.target.closest("button[data-action]");
-
-      if (!button) {
-        return;
+        body.is-tv-mode .card[data-platform="youtube"] {
+          grid-column: auto;
+        }
       }
 
-      const action = button.dataset.action;
-      const card = button.closest("[data-platform]");
-      const platforms = Object.keys(STREAMS);
-
-      if (action === "add-all") {
-        platforms.forEach(addPlayer);
-        return;
+      .card {
+        overflow: hidden;
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        background: var(--card);
       }
 
-      if (action === "remove-all") {
-        platforms.forEach(removePlayer);
-        return;
+      .card-header {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 10px;
+        align-items: center;
+        padding: 12px;
+        border-bottom: 1px solid var(--border);
       }
 
-      if (!card) {
-        return;
+      .title {
+        font-weight: 700;
       }
 
-      const platform = card.dataset.platform;
-
-      if (action === "add") {
-        addPlayer(platform);
+      .status {
+        margin-top: 4px;
+        color: var(--muted);
+        font-size: 12px;
       }
 
-      if (action === "remove") {
-        removePlayer(platform);
+      .slot {
+        display: grid;
+        place-items: center;
+        min-height: 220px;
+        padding: 12px;
+        background:
+          linear-gradient(
+            45deg,
+            rgba(255, 255, 255, 0.025) 25%,
+            transparent 25%
+          ),
+          linear-gradient(
+            -45deg,
+            rgba(255, 255, 255, 0.025) 25%,
+            transparent 25%
+          ),
+          linear-gradient(
+            45deg,
+            transparent 75%,
+            rgba(255, 255, 255, 0.025) 75%
+          ),
+          linear-gradient(
+            -45deg,
+            transparent 75%,
+            rgba(255, 255, 255, 0.025) 75%
+          );
+        background-position:
+          0 0,
+          0 10px,
+          10px -10px,
+          -10px 0;
+        background-size: 20px 20px;
       }
-    });
 
-    if (IS_TV_MODE) {
-      Object.keys(STREAMS).forEach(addPlayer);
-    }
-  </script>
-</body>
+      .placeholder {
+        color: var(--muted);
+        font-size: 14px;
+        text-align: center;
+      }
 
+      iframe {
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        border: 0;
+        display: block;
+        background: #000;
+      }
+
+      .note {
+        margin-top: 16px;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.5;
+      }
+
+      code {
+        color: #e7d7ff;
+      }
+    </style>
+  </head>
+
+  <body>
+    <header>
+      <h1>Stream Checker</h1>
+
+      <div class="global-actions">
+        <button type="button" data-action="add-all">Добавить все</button>
+        <button type="button" data-action="remove-all" data-kind="remove"
+          >Удалить все</button
+        >
+      </div>
+    </header>
+
+    <main class="grid">
+      <section class="card" data-platform="youtube">
+        <div class="card-header">
+          <div>
+            <div class="title">YouTube</div>
+            <div class="status" data-status>iframe не создан</div>
+          </div>
+
+          <div class="actions">
+            <button type="button" data-action="add">Добавить</button>
+            <button type="button" data-action="remove" data-kind="remove"
+              >Удалить</button
+            >
+            <a
+              class="button"
+              href="https://www.youtube.com/channel/UCyJNPWpOcPfMo5csKa27yGg/live"
+              target="_blank"
+              rel="noreferrer"
+              >Открыть</a
+            >
+          </div>
+        </div>
+
+        <div class="slot" data-slot>
+          <div class="placeholder">YouTube-плеер не загружен</div>
+        </div>
+      </section>
+
+      <section class="card" data-platform="twitch">
+        <div class="card-header">
+          <div>
+            <div class="title">Twitch</div>
+            <div class="status" data-status>iframe не создан</div>
+          </div>
+
+          <div class="actions">
+            <button type="button" data-action="add">Добавить</button>
+            <button type="button" data-action="remove" data-kind="remove"
+              >Удалить</button
+            >
+            <a
+              class="button"
+              href="https://www.twitch.tv/maseaaao_"
+              target="_blank"
+              rel="noreferrer"
+              >Открыть</a
+            >
+          </div>
+        </div>
+
+        <div class="slot" data-slot>
+          <div class="placeholder">Twitch-плеер не загружен</div>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const SEARCH_PARAMS = new URLSearchParams(window.location.search);
+      const IS_TV_MODE = SEARCH_PARAMS.get("tv") === "1";
+
+      if (IS_TV_MODE) {
+        document.body.classList.add("is-tv-mode");
+      }
+
+      const STREAMS = {
+        youtube: {
+          title: "YouTube live",
+          get src() {
+            const params = new URLSearchParams({
+              channel: "UCyJNPWpOcPfMo5csKa27yGg",
+              autoplay: "1",
+              mute: IS_TV_MODE ? "0" : "1",
+            });
+
+            return `https://www.youtube.com/embed/live_stream?${params.toString()}`;
+          },
+          allow: "autoplay; encrypted-media; picture-in-picture; fullscreen",
+        },
+
+        twitch: {
+          title: "Twitch live",
+          get src() {
+            const parent = window.location.hostname;
+
+            if (!parent) {
+              throw new Error("Twitch iframe requires a real hostname.");
+            }
+
+            const params = new URLSearchParams({
+              channel: "maseaaao_",
+              parent,
+              autoplay: "true",
+              muted: "true",
+            });
+
+            return `https://player.twitch.tv/?${params.toString()}`;
+          },
+          allow: "autoplay; fullscreen",
+        },
+      };
+
+      function getElements(platform) {
+        const card = document.querySelector(`[data-platform="${platform}"]`);
+
+        return {
+          card,
+          slot: card.querySelector("[data-slot]"),
+          status: card.querySelector("[data-status]"),
+        };
+      }
+
+      function setPlaceholder(slot, platform) {
+        const label = {
+          youtube: "YouTube-плеер не загружен",
+          twitch: "Twitch-плеер не загружен",
+        }[platform];
+
+        slot.replaceChildren(
+          Object.assign(document.createElement("div"), {
+            className: "placeholder",
+            textContent: label,
+          }),
+        );
+      }
+
+      function setError(slot, status, message) {
+        slot.replaceChildren(
+          Object.assign(document.createElement("div"), {
+            className: "placeholder",
+            textContent: message,
+          }),
+        );
+
+        status.textContent = "ошибка";
+      }
+
+      function addPlayer(platform) {
+        const config = STREAMS[platform];
+        const { slot, status } = getElements(platform);
+
+        if (slot.querySelector("iframe")) {
+          status.textContent = "iframe уже создан";
+          return;
+        }
+
+        try {
+          const iframe = document.createElement("iframe");
+
+          iframe.title = config.title;
+          iframe.src = config.src;
+          iframe.allow = config.allow;
+          iframe.allowFullscreen = true;
+          iframe.referrerPolicy = "strict-origin-when-cross-origin";
+
+          slot.replaceChildren(iframe);
+          status.textContent = "iframe создан";
+        } catch (error) {
+          setError(
+            slot,
+            status,
+            error instanceof Error
+              ? error.message
+              : "Не удалось создать iframe",
+          );
+        }
+      }
+
+      function removePlayer(platform) {
+        const { slot, status } = getElements(platform);
+
+        slot.replaceChildren();
+        setPlaceholder(slot, platform);
+        status.textContent = "iframe не создан";
+      }
+
+      document.addEventListener("click", (event) => {
+        const button = event.target.closest("button[data-action]");
+
+        if (!button) {
+          return;
+        }
+
+        const action = button.dataset.action;
+        const card = button.closest("[data-platform]");
+        const platforms = Object.keys(STREAMS);
+
+        if (action === "add-all") {
+          platforms.forEach(addPlayer);
+          return;
+        }
+
+        if (action === "remove-all") {
+          platforms.forEach(removePlayer);
+          return;
+        }
+
+        if (!card) {
+          return;
+        }
+
+        const platform = card.dataset.platform;
+
+        if (action === "add") {
+          addPlayer(platform);
+        }
+
+        if (action === "remove") {
+          removePlayer(platform);
+        }
+      });
+
+      if (IS_TV_MODE) {
+        Object.keys(STREAMS).forEach(addPlayer);
+      }
+    </script>
+  </body>
 </html>
