@@ -10,14 +10,14 @@
     <title>maseaaao — стримы, клипы и поддержка</title>
     <meta
       name="description"
-      content="Хаб maseaaao: Twitch, Telegram, YouTube, поддержка и контакты в одном месте." />
+      content="Хаб maseaaao: Twitch, Telegram, YouTube, Instagram, поддержка и контакты в одном месте." />
     <link rel="canonical" href="https://maseaaao.com/" />
 
     <meta property="og:type" content="website" />
     <meta property="og:title" content="maseaaao — стримы, клипы и поддержка" />
     <meta
       property="og:description"
-      content="Хаб maseaaao: Twitch, Telegram, YouTube, поддержка и контакты в одном месте." />
+      content="Хаб maseaaao: Twitch, Telegram, YouTube, Instagram, поддержка и контакты в одном месте." />
     <meta property="og:image" content="https://maseaaao.com/og-image.jpg" />
     <meta property="og:image:alt" content="maseaaao" />
     <meta property="og:url" content="https://maseaaao.com/" />
@@ -27,7 +27,7 @@
     <meta name="twitter:title" content="maseaaao — стримы, клипы и поддержка" />
     <meta
       name="twitter:description"
-      content="Хаб maseaaao: Twitch, Telegram, YouTube, поддержка и контакты в одном месте." />
+      content="Хаб maseaaao: Twitch, Telegram, YouTube, Instagram, поддержка и контакты в одном месте." />
     <meta name="twitter:image" content="https://maseaaao.com/og-image.jpg" />
     <meta name="twitter:image:alt" content="maseaaao" />
 
@@ -542,6 +542,20 @@
         background: rgba(38, 165, 228, 0.16);
       }
 
+      .tile--instagram {
+        background: linear-gradient(
+          180deg,
+          rgba(225, 48, 108, 0.14),
+          rgba(255, 255, 255, 0.035)
+        );
+      }
+
+      .tile--instagram .tile__icon {
+        color: #ffe1ed;
+        border-color: rgba(225, 48, 108, 0.24);
+        background: rgba(225, 48, 108, 0.16);
+      }
+
       .tile--donationalerts {
         background: linear-gradient(
           180deg,
@@ -683,7 +697,7 @@
             <div class="avatar-shell">
               <div class="avatar-frame">
                 <img
-                  src="og-image.jpg"
+                  src="assets/maseaaao.com.jpeg"
                   alt="maseaaao"
                   class="avatar"
                   loading="eager"
@@ -816,6 +830,27 @@
                 <span class="tile__copy">
                   <span class="tile__title">Telegram</span>
                   <span class="tile__meta">Анонсы и связь</span>
+                </span>
+                <span class="tile__arrow" aria-hidden="true">↗</span>
+              </a>
+
+              <a
+                href="https://www.instagram.com/maseaaao"
+                target="_blank"
+                rel="me noopener noreferrer"
+                class="tile tile--instagram tile--wide"
+                title="Instagram maseaaao">
+                <span class="tile__icon" aria-hidden="true">
+                  <img
+                    src="https://cdn.simpleicons.org/instagram/FFFFFF"
+                    alt=""
+                    width="22"
+                    height="22"
+                    decoding="async" />
+                </span>
+                <span class="tile__copy">
+                  <span class="tile__title">Instagram</span>
+                  <span class="tile__meta">Рилсы интересных моментов</span>
                 </span>
                 <span class="tile__arrow" aria-hidden="true">↗</span>
               </a>

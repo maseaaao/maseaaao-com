@@ -121,7 +121,8 @@ async function optimizeJpeg(file) {
 }
 
 async function optimizeWithSharp(file, format) {
-  const tempFile = makeTempPath(file);
+  const workDirectory = await fs.mkdtemp(path.join(os.tmpdir(), "maseaaao-images-"));
+  const tempFile = path.join(workDirectory, `optimized${path.extname(file).toLowerCase()}`);
   const originalSize = await getFileSize(file);
   const input = await fs.readFile(file);
   const image = sharp(input, { animated: true }).keepMetadata();
@@ -152,6 +153,8 @@ async function optimizeWithSharp(file, format) {
   } catch (error) {
     await removeIfExists(tempFile);
     throw error;
+  } finally {
+    await fs.rm(workDirectory, { force: true, recursive: true }).catch(() => {});
   }
 }
 
@@ -167,7 +170,22 @@ async function keepIfSmaller(file, tempFile, originalSize) {
     };
   }
 
-  await replaceFile(tempFile, file);
+  try {
+    await replaceFile(tempFile, file);
+  } catch (error) {
+    await removeIfExists(tempFile);
+
+    if (error?.code === "EPERM" || error?.code === "EACCES") {
+      return {
+        file,
+        kind: "kept",
+        message: `optimized copy was smaller but could not replace original (${error.code})`,
+        saved: 0,
+      };
+    }
+
+    throw error;
+  }
 
   return {
     file,
@@ -197,6 +215,12 @@ async function replaceFile(sourceFile, destinationFile) {
     await fs.rename(sourceFile, destinationFile);
     return;
   } catch (error) {
+    if (error?.code === "EXDEV") {
+      await fs.copyFile(sourceFile, destinationFile);
+      await fs.rm(sourceFile, { force: true });
+      return;
+    }
+
     if (error?.code !== "EEXIST" && error?.code !== "EPERM") {
       throw error;
     }
@@ -221,7 +245,7 @@ function printSummary(results) {
       console.log(`[ok] ${relativeFile} saved ${formatBytes(result.saved)}`);
     } else if (result.kind === "kept") {
       kept += 1;
-      console.log(`[keep] ${relativeFile}`);
+      console.log(`[keep] ${relativeFile}${result.message ? `: ${result.message}` : ""}`);
     } else {
       failed += 1;
       console.warn(`[fail] ${relativeFile}: ${result.message}`);

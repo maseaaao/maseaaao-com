@@ -1,9 +1,9 @@
 {
   "name": "maseaaao",
   "short_name": "maseaaao",
-  "description": "Хаб maseaaao: Twitch, YouTube, поддержка и контакты в одном месте.",
+  "description": "Хаб maseaaao: Twitch, YouTube, Instagram, поддержка и контакты в одном месте.",
   "dir": "auto",
-  "lang": "en-US",
+  "lang": "ru-RU",
   "display": "standalone",
   "orientation": "any",
   "start_url": ".",
