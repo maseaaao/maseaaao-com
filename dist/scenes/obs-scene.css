@@ -385,6 +385,12 @@ body[data-scene="placeholder"] {
   gap: 42px;
 }
 
+body[data-scene="start"] .hero-panel--default,
+body[data-scene="pause"] .hero-panel--default,
+body[data-scene="end"] .hero-panel--default {
+  grid-template-columns: minmax(0, 920px) minmax(0, 1fr) var(--hero-qr-size);
+}
+
 .hero-panel__copy,
 .hero-panel__top-donors,
 .hero-panel__qr {
@@ -470,10 +476,69 @@ body[data-scene="placeholder"] {
 .identity__status {
   margin: 0;
   font-family: "Geologica", system-ui, sans-serif;
-  font-size: 38px;
-  font-weight: 620;
-  line-height: 1;
+  max-width: 760px;
+  font-size: 54px;
+  font-weight: 680;
+  line-height: 0.98;
   color: var(--text);
+  text-wrap: balance;
+  text-shadow: 0 0 24px rgba(245, 247, 255, 0.12);
+}
+
+body[data-scene="start"] .identity,
+body[data-scene="pause"] .identity,
+body[data-scene="end"] .identity {
+  gap: 0;
+}
+
+body[data-scene="start"] .identity__row,
+body[data-scene="pause"] .identity__row,
+body[data-scene="end"] .identity__row {
+  display: none;
+}
+
+body[data-scene="start"] .identity__status,
+body[data-scene="pause"] .identity__status,
+body[data-scene="end"] .identity__status {
+  max-width: 920px;
+  font-size: 96px;
+  font-weight: 780;
+  line-height: 0.94;
+  background: linear-gradient(
+    135deg,
+    #ffffff 0%,
+    #eef1ff 50%,
+    var(--accent-violet) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  text-shadow: 0 0 34px rgba(159, 139, 255, 0.14);
+}
+
+body[data-scene="pause"] .identity__status {
+  background: linear-gradient(
+    135deg,
+    #ffffff 0%,
+    #f6f0ff 50%,
+    var(--accent-rose) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  text-shadow: 0 0 34px rgba(255, 139, 184, 0.12);
+}
+
+body[data-scene="end"] .identity__status {
+  background: linear-gradient(
+    135deg,
+    #ffffff 0%,
+    #eefcff 50%,
+    var(--accent-cyan) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  text-shadow: 0 0 34px rgba(127, 224, 255, 0.12);
 }
 
 .live-badge {
