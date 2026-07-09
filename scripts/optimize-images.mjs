@@ -9,7 +9,7 @@ import sharp from "sharp";
 
 const execFileAsync = promisify(execFile);
 const SCRIPT_DIR = path.dirname(fileURLToPath(import.meta.url));
-const REPO_ROOT = path.resolve(SCRIPT_DIR, "..", "..");
+const REPO_ROOT = path.resolve(SCRIPT_DIR, "..");
 const DEFAULT_TARGETS = ["dist"];
 const IMAGE_EXTENSIONS = new Set([".jpeg", ".jpg", ".png", ".webp"]);
 const SKIPPED_DIRECTORIES = new Set([".git", "node_modules"]);
