@@ -4,7 +4,6 @@
   --stage-height: 1440px;
   --scene-scale: 1;
   --default-top-row-height: 320px;
-  --camera-top-row-height: 320px;
   --stage-pad: 72px;
   --gap: 48px;
   --shell-radius: 52px;
@@ -89,12 +88,6 @@ body[data-scene="end"] {
   --scene-glow-a: rgba(127, 224, 255, 0.18);
   --scene-glow-b: rgba(159, 139, 255, 0.14);
   --scene-glow-c: rgba(255, 139, 184, 0.1);
-}
-
-body[data-scene="live"] {
-  --scene-glow-a: rgba(255, 95, 125, 0.18);
-  --scene-glow-b: rgba(159, 139, 255, 0.14);
-  --scene-glow-c: rgba(127, 224, 255, 0.12);
 }
 
 body[data-scene="blank"],
@@ -304,8 +297,7 @@ body[data-scene="placeholder"] {
 }
 
 .scene-layout,
-.scene-main,
-.camera-main {
+.scene-main {
   min-width: 0;
   min-height: 0;
 }
@@ -320,11 +312,10 @@ body[data-scene="placeholder"] {
 }
 
 .scene-layout--default {
-  grid-template-columns: 1fr 1fr;
-}
-
-.scene-layout--camera {
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1320px 1000px;
+  grid-template-rows: var(--default-top-row-height) 928px;
+  column-gap: 96px;
+  row-gap: var(--gap);
 }
 
 .scene-main {
@@ -333,10 +324,13 @@ body[data-scene="placeholder"] {
   gap: var(--gap);
 }
 
-.camera-main {
+.scene-side {
+  min-width: 0;
+  min-height: 0;
   display: grid;
-  grid-template-rows: var(--camera-top-row-height) minmax(0, 1fr);
-  gap: var(--gap);
+  grid-template-rows: repeat(2, 360px);
+  gap: 56px;
+  align-content: center;
 }
 
 .hero-panel,
@@ -386,15 +380,13 @@ body[data-scene="placeholder"] {
 
 .hero-panel--default {
   --hero-qr-size: calc(var(--default-top-row-height) - 2px);
-  grid-template-columns: minmax(0, 1fr) var(--hero-qr-size);
-}
-
-.hero-panel--camera {
-  --hero-qr-size: calc(var(--camera-top-row-height) - 2px);
-  grid-template-columns: minmax(0, 1fr) var(--hero-qr-size);
+  grid-column: 1 / -1;
+  grid-template-columns: minmax(0, 780px) minmax(0, 1fr) var(--hero-qr-size);
+  gap: 42px;
 }
 
 .hero-panel__copy,
+.hero-panel__top-donors,
 .hero-panel__qr {
   position: relative;
   z-index: 1;
@@ -402,10 +394,38 @@ body[data-scene="placeholder"] {
 
 .hero-panel__copy {
   min-width: 0;
-  padding: 38px 40px;
+  padding: 36px 0 36px 40px;
   display: grid;
   align-content: center;
   gap: 18px;
+}
+
+.hero-panel__top-donors {
+  min-width: 0;
+  height: 184px;
+  padding: 28px 34px;
+  align-self: center;
+  overflow: hidden;
+  border-radius: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.046),
+      rgba(255, 255, 255, 0.018)
+    ),
+    linear-gradient(180deg, rgba(10, 13, 22, 0.64), rgba(7, 9, 16, 0.44));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.hero-panel__top-donors::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.035), transparent 56%),
+    radial-gradient(circle at 100% 0, rgba(255, 139, 184, 0.1), transparent 42%);
 }
 
 .hero-panel__qr {
@@ -431,7 +451,7 @@ body[data-scene="placeholder"] {
 .identity__name {
   margin: 0;
   font-family: "Geologica", system-ui, sans-serif;
-  font-size: 120px;
+  font-size: 104px;
   font-weight: 800;
   line-height: 0.88;
   background: linear-gradient(
@@ -450,7 +470,7 @@ body[data-scene="placeholder"] {
 .identity__status {
   margin: 0;
   font-family: "Geologica", system-ui, sans-serif;
-  font-size: 42px;
+  font-size: 38px;
   font-weight: 620;
   line-height: 1;
   color: var(--text);
@@ -460,13 +480,13 @@ body[data-scene="placeholder"] {
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  padding: 14px 18px;
+  padding: 12px 16px;
   border-radius: 999px;
   border: 1px solid rgba(255, 95, 125, 0.24);
   background: rgba(255, 95, 125, 0.08);
   color: #ffe1e6;
   font-family: "Geologica", system-ui, sans-serif;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 800;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -522,6 +542,8 @@ body[data-scene="placeholder"] {
 }
 
 .panel--chat {
+  grid-column: 1;
+  grid-row: 2;
   background:
     linear-gradient(
       180deg,
@@ -537,6 +559,22 @@ body[data-scene="placeholder"] {
     radial-gradient(circle at 50% 0, var(--scene-glow-a), transparent 44%);
 }
 
+.panel--donations {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.052),
+      rgba(255, 255, 255, 0.02)
+    ),
+    linear-gradient(180deg, rgba(14, 18, 29, 0.94), rgba(8, 10, 16, 0.9));
+}
+
+.panel--donations::before {
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.04), transparent 52%),
+    radial-gradient(circle at 100% 0, var(--scene-glow-b), transparent 42%);
+}
+
 .panel--alerts {
   background:
     linear-gradient(
@@ -547,25 +585,43 @@ body[data-scene="placeholder"] {
     linear-gradient(180deg, rgba(14, 18, 29, 0.94), rgba(8, 10, 16, 0.92));
 }
 
-.panel--camera {
-  background:
-    linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.04),
-      rgba(255, 255, 255, 0.016)
-    ),
-    linear-gradient(180deg, rgba(8, 11, 18, 0.96), rgba(5, 7, 13, 0.96));
+.slot-marker {
+  position: absolute;
+  top: 30px;
+  right: 32px;
+  z-index: 1;
+  display: block;
+  width: 58px;
+  height: 58px;
+  color: rgba(245, 247, 255, 0.26);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.85;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  pointer-events: none;
 }
 
-.panel--camera::before {
-  background:
-    radial-gradient(
-      circle at 12% 18%,
-      rgba(255, 95, 125, 0.12),
-      transparent 28%
-    ),
-    radial-gradient(circle at 88% 0, rgba(127, 224, 255, 0.1), transparent 34%),
-    linear-gradient(135deg, rgba(255, 255, 255, 0.035), transparent 52%);
+.slot-marker--chat {
+  color: rgba(127, 224, 255, 0.25);
+}
+
+.slot-marker--donations {
+  color: rgba(255, 139, 184, 0.24);
+}
+
+.slot-marker--alerts {
+  color: rgba(159, 139, 255, 0.24);
+}
+
+.slot-marker--top-donors {
+  color: rgba(255, 218, 121, 0.25);
+}
+
+.slot-marker--emoji {
+  font-size: 46px;
+  line-height: 1;
+  opacity: 0.24;
 }
 
 body[data-scene="pause"] .identity__name {
@@ -585,17 +641,6 @@ body[data-scene="end"] .identity__name {
     #ffffff 0%,
     #eefcff 48%,
     var(--accent-cyan) 100%
-  );
-  -webkit-background-clip: text;
-  background-clip: text;
-}
-
-body[data-scene="live"] .identity__name {
-  background: linear-gradient(
-    135deg,
-    #ffffff 0%,
-    #fff0f3 44%,
-    var(--accent-red) 100%
   );
   -webkit-background-clip: text;
   background-clip: text;
