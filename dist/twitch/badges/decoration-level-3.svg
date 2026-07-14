@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" fill="none">
+    <defs>
+      <linearGradient id="deco-three" x1="13" y1="15" x2="86" y2="82" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#b8f5ff"/><stop offset=".48" stop-color="#b497ff"/><stop offset="1" stop-color="#ff8bb8"/>
+      </linearGradient>
+      <filter id="deco-three-glow" x="-35%" y="-35%" width="170%" height="170%">
+        <feGaussianBlur stdDeviation="3.6" result="blur"/>
+        <feFlood flood-color="#c09cff" flood-opacity=".8"/>
+        <feComposite in2="blur" operator="in"/>
+        <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+    </defs>
+    <g filter="url(#deco-three-glow)" stroke="url(#deco-three)" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M48 7 54 18l10-8-1 14 14-2-10 11 13 5-15 5" stroke-width="3.6"/>
+      <path d="M48 7 42 18l-10-8 1 14-14-2 10 11-13 5 15 5" stroke-width="3.6"/>
+      <path d="M17 50c-4 9-2 19 6 27M79 50c4 9 2 19-6 27" stroke-width="3" opacity=".9"/>
+      <path d="m48 10 3 8 8 3-8 3-3 8-3-8-8-3 8-3zM17 69l2 5 5 2-5 2-2 5-2-5-5-2 5-2zM79 69l2 5 5 2-5 2-2 5-2-5-5-2 5-2z" fill="#FCFAFF" stroke-width="1.4"/>
+    </g>
+  </svg>

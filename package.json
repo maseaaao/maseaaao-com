@@ -7,6 +7,8 @@
     "render:logo": "node scripts/render-scenes.mjs --scenes-dir dist/logo --output-dir dist/logo/rendered --width 1920 --height 540 --format png --transparent",
     "render:scenes": "node scripts/render-scenes.mjs",
     "render:twitch-description": "node scripts/render-scenes.mjs --scenes-dir dist/twitch-description --output-dir dist/twitch-description/rendered --width 320 --height 64 --format png",
+    "render:twitch-emotes": "node scripts/render-twitch-emotes.mjs",
+    "render:twitch-points": "node scripts/render-twitch-points.mjs",
     "optimize:images": "node scripts/optimize-images.mjs",
     "full": "npm-run-all --parallel render:*",
     "postfull": "npm run optimize:images"
