@@ -1,18 +1,31 @@
-import { readFile, writeFile } from "node:fs/promises";
+import { access, readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import sharp from "sharp";
 
 const outputDir = "dist/twitch/emotes";
-const source = join(outputDir, "pink-mascot-sheet-source.png");
+const xxlSource = join(outputDir, "pink-mascot-sheet-source-XXL.png");
+const fallbackSource = join(outputDir, "pink-mascot-sheet-source.png");
 const names = [
   "follower-hype", "follower-lol", "follower-love", "follower-rage", "follower-sleep",
   "sub1-cheer", "sub1-gg", "sub1-sip", "sub1-think", "sub1-wave",
   "sub1-animated-bounce", "sub1-animated-hype", "sub1-animated-love", "sub1-animated-rage", "sub1-animated-wow",
   "sub2-crown", "sub3-legend", "bits-1000", "bits-5000", "bits-10000",
 ];
-const sizes = [28, 56, 112];
+const sizes = [28, 56, 112, 512];
 const grid = { columns: 5, rows: 4 };
 const cellInset = 8;
+
+async function firstExistingPath(...paths) {
+  for (const path of paths) {
+    try {
+      await access(path);
+      return path;
+    } catch {
+      // Try the next source.
+    }
+  }
+  throw new Error("No source sheet was found.");
+}
 
 function removeChromaKey(data) {
   for (let index = 0; index < data.length; index += 4) {
@@ -23,13 +36,19 @@ function removeChromaKey(data) {
     const greenDominant = green > 45 && green > red * 1.15 && green > blue * 1.15;
 
     if (greenDominant || distance <= 24) {
+      data[index] = 0;
+      data[index + 1] = 0;
+      data[index + 2] = 0;
       data[index + 3] = 0;
     } else if (distance < 92) {
+      data[index + 1] = Math.min(green, Math.max(red, blue));
       data[index + 3] = Math.round(255 * ((distance - 24) / 68));
     }
   }
 }
 
+sharp.cache(false);
+const source = await firstExistingPath(xxlSource, fallbackSource);
 const input = await readFile(source);
 const metadata = await sharp(input).metadata();
 
