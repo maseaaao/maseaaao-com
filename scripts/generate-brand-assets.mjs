@@ -205,13 +205,38 @@ function subscriberBadgeSvg(size, primary, secondary, level) {
 }
 
 function badgeFlairSvg(size, tier) {
-  const color = tier === 3 ? palette.yellow : palette.mint;
+  const primary = tier === 3 ? palette.yellow : palette.mint;
   const secondary = tier === 3 ? palette.pink : palette.lavender;
-  const stroke = Math.max(4, size * 0.055);
-  const outerArc = `<path d="M ${size * 0.17} ${size * 0.66} C ${size * 0.04} ${size * 0.36}, ${size * 0.27} ${size * 0.1}, ${size * 0.5} ${size * 0.1} C ${size * 0.73} ${size * 0.1}, ${size * 0.96} ${size * 0.36}, ${size * 0.83} ${size * 0.66}" fill="none" stroke="${color}" stroke-width="${stroke}" stroke-linecap="round"/>`;
+  const strength = tier === 3 ? 0.42 : 0.28;
+  const middleOpacity = strength * 0.24;
+  const centreOpacity = tier === 3 ? 0.045 : 0.028;
+  const centre = size / 2;
+  const outerRadius = size * 0.5;
+  const safeRadius = size * 0.29;
   return svg(size, size, `
-    ${outerArc}
-    ${tier === 3 ? `<path d="M ${size * 0.24} ${size * 0.57} C ${size * 0.16} ${size * 0.31}, ${size * 0.34} ${size * 0.18}, ${size * 0.5} ${size * 0.18} C ${size * 0.66} ${size * 0.18}, ${size * 0.84} ${size * 0.31}, ${size * 0.76} ${size * 0.57}" fill="none" stroke="${secondary}" stroke-width="${Math.max(3, size * 0.04)}" stroke-linecap="round"/>${spark(size * 0.5, size * 0.075, size * 0.06, color, 1)}` : `${spark(size * 0.16, size * 0.67, size * 0.055, secondary, 1)}${spark(size * 0.84, size * 0.67, size * 0.055, secondary, 1)}`}
+    <defs>
+      <radialGradient id="glow-primary" gradientUnits="userSpaceOnUse" cx="${size * -0.05}" cy="${size * 1.05}" r="${size * 1.02}">
+        <stop stop-color="${primary}" stop-opacity="${strength}"/>
+        <stop offset=".46" stop-color="${primary}" stop-opacity="${middleOpacity}"/>
+        <stop offset=".74" stop-color="${primary}" stop-opacity="${centreOpacity}"/>
+        <stop offset="1" stop-color="${primary}" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="glow-secondary" gradientUnits="userSpaceOnUse" cx="${size * 1.05}" cy="${size * -0.05}" r="${size * 1.02}">
+        <stop stop-color="${secondary}" stop-opacity="${strength * 0.82}"/>
+        <stop offset=".46" stop-color="${secondary}" stop-opacity="${middleOpacity * 0.82}"/>
+        <stop offset=".74" stop-color="${secondary}" stop-opacity="${centreOpacity * 0.82}"/>
+        <stop offset="1" stop-color="${secondary}" stop-opacity="0"/>
+      </radialGradient>
+      <mask id="halo-mask" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" x="0" y="0" width="${size}" height="${size}">
+        <rect width="${size}" height="${size}" fill="black"/>
+        <circle cx="${centre}" cy="${centre}" r="${outerRadius}" fill="white"/>
+        <circle cx="${centre}" cy="${centre}" r="${safeRadius}" fill="black"/>
+      </mask>
+    </defs>
+    <g mask="url(#halo-mask)">
+      <rect width="${size}" height="${size}" fill="url(#glow-primary)"/>
+      <rect width="${size}" height="${size}" fill="url(#glow-secondary)"/>
+    </g>
   `);
 }
 

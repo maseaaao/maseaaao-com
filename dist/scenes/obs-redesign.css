@@ -107,7 +107,7 @@ body::after {
   padding: 0;
   border-color: color-mix(in srgb, var(--accent-violet) 42%, transparent);
   border-radius: 24px;
-  background: transparent;
+  background: #fffaff url("../assets/maseaaao.com.png") center / contain no-repeat;
   box-shadow: 0 24px 70px rgba(0, 0, 0, 0.28), 0 0 0 7px rgba(223, 196, 255, 0.08);
 }
 
@@ -126,6 +126,10 @@ body::after {
 }
 
 .blank-brand__name {
+  display: inline-block;
+  padding-inline-end: 0.12em;
+  overflow: visible;
+  white-space: nowrap;
   color: transparent;
   font-family: "Aoudax", "Geologica", sans-serif;
   font-size: 128px;
@@ -247,6 +251,10 @@ body[data-scene="end"] .identity__status {
 
 .qr-frame img {
   object-fit: contain;
+}
+
+.qr-frame {
+  background: #fffaff url("../assets/maseaaao.com.png") center / contain no-repeat;
 }
 
 .panel::before {

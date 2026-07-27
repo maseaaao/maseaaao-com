@@ -2,6 +2,7 @@ import fs from "node:fs";
 import http from "node:http";
 import path from "node:path";
 import { chromium } from "playwright-core";
+import sharp from "sharp";
 
 const DEFAULT_BASE_WIDTH = 2560;
 const DEFAULT_BASE_HEIGHT = 1440;
@@ -503,30 +504,19 @@ async function waitForSceneReady(page, timeoutMs) {
 }
 
 async function captureScreenshot(page) {
-  const session = await page.context().newCDPSession(page);
-  const screenshotOptions = {
-    captureBeyondViewport: false,
-    format: CAPTURE_FORMAT,
-    fromSurface: true,
-  };
+  const screenshot = await page.screenshot({
+    type: "png",
+    fullPage: false,
+    omitBackground: TRANSPARENT_BACKGROUND,
+  });
 
-  if (CAPTURE_FORMAT !== "png") {
-    screenshotOptions.quality = CAPTURE_QUALITY;
+  if (CAPTURE_FORMAT === "png") {
+    return screenshot;
   }
 
-  try {
-    if (TRANSPARENT_BACKGROUND) {
-      await session.send("Emulation.setDefaultBackgroundColorOverride", {
-        color: { r: 0, g: 0, b: 0, a: 0 },
-      });
-    }
-
-    const { data } = await session.send("Page.captureScreenshot", screenshotOptions);
-
-    return Buffer.from(data, "base64");
-  } finally {
-    await session.detach().catch(() => {});
-  }
+  return sharp(screenshot)
+    .toFormat(CAPTURE_FORMAT, { quality: CAPTURE_QUALITY })
+    .toBuffer();
 }
 
 async function writeAtomically(destinationPath, bytes) {

@@ -36,9 +36,12 @@ body {
 
 .logo-mark {
   font-family: "Aoudax", "Geologica", sans-serif;
-  font-size: 292px;
+  font-size: 278px;
   font-weight: 400;
-  letter-spacing: -0.065em;
+  letter-spacing: -0.045em;
+  padding-inline-end: 0.12em;
+  overflow: visible;
+  white-space: nowrap;
   color: transparent;
   background: var(--brand-wordmark-gradient);
   -webkit-background-clip: text;

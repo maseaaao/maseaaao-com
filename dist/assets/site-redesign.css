@@ -149,6 +149,10 @@ h1 {
 }
 
 #profile-name {
+  display: inline-block;
+  padding-inline-end: 0.12em;
+  overflow: visible;
+  white-space: nowrap;
   color: transparent;
   background: var(--brand-wordmark-gradient);
   -webkit-background-clip: text;
