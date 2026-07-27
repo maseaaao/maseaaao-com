@@ -1,0 +1,263 @@
+@import url("./brand.css");
+
+:root {
+  --bg: var(--brand-ink);
+  --panel: rgba(28, 19, 44, 0.98);
+  --panel-strong: rgba(42, 29, 66, 0.99);
+  --border: rgba(223, 196, 255, 0.28);
+  --border-strong: rgba(223, 196, 255, 0.42);
+  --text: var(--brand-text);
+  --muted: var(--brand-muted);
+  --muted-strong: #a99fba;
+  --accent-violet: var(--brand-lavender);
+  --accent-rose: var(--brand-pink);
+  --accent-cyan: var(--brand-mint);
+  --accent-red: var(--brand-pink);
+  --focus: rgba(223, 196, 255, 0.65);
+  --shadow: 0 30px 90px rgba(2, 0, 8, 0.42);
+}
+
+html {
+  background: var(--brand-ink);
+}
+
+body {
+  font-family: "Geologica", system-ui, sans-serif;
+  background: var(--brand-aura);
+}
+
+body::before {
+  inset: -16%;
+  background:
+    radial-gradient(circle at 14% 14%, rgba(223, 196, 255, 0.28), transparent 31%),
+    radial-gradient(circle at 86% 18%, rgba(255, 196, 222, 0.22), transparent 29%),
+    radial-gradient(circle at 50% 100%, rgba(125, 227, 214, 0.18), transparent 34%);
+  filter: blur(36px);
+  opacity: 0.96;
+}
+
+body::after {
+  inset: auto -190px -260px auto;
+  width: 540px;
+  height: 540px;
+  border: 2px solid rgba(125, 227, 214, 0.28);
+  border-radius: 47% 53% 59% 41%;
+  background: none;
+  background-image: none;
+  transform: rotate(18deg);
+  opacity: 0.5;
+}
+
+.page {
+  width: min(100%, 760px);
+}
+
+.shell {
+  gap: clamp(20px, 3vw, 28px);
+  border-color: var(--border);
+  border-radius: clamp(30px, 4vw, 44px);
+  background:
+    linear-gradient(140deg, rgba(255, 255, 255, 0.05), transparent 33%),
+    linear-gradient(155deg, rgba(38, 26, 59, 0.98), rgba(18, 13, 31, 0.99));
+  box-shadow: var(--shadow), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  backdrop-filter: none;
+  animation: none;
+}
+
+.shell::before {
+  inset: auto auto -118px -105px;
+  width: 270px;
+  height: 270px;
+  border: 2px solid rgba(125, 227, 214, 0.26);
+  border-radius: 46% 54% 41% 59%;
+  background: none;
+  filter: none;
+  transform: rotate(-18deg);
+}
+
+.shell::after {
+  inset: -96px -84px auto auto;
+  width: 238px;
+  height: 238px;
+  border: 2px solid rgba(255, 196, 222, 0.26);
+  border-radius: 58% 42% 53% 47%;
+  background: none;
+  filter: none;
+  transform: rotate(24deg);
+}
+
+.identity {
+  gap: 4px;
+}
+
+.identity__top {
+  gap: 22px;
+}
+
+.avatar-shell {
+  width: clamp(112px, 17vw, 148px);
+  height: clamp(112px, 17vw, 148px);
+}
+
+.avatar-shell::before {
+  inset: -11px;
+  border-radius: 32% 68% 58% 42%;
+  background: linear-gradient(135deg, rgba(223, 196, 255, 0.7), rgba(255, 196, 222, 0.64), rgba(125, 227, 214, 0.48));
+  filter: blur(15px);
+  opacity: 0.62;
+}
+
+.avatar-frame {
+  border: 2px solid rgba(223, 196, 255, 0.68);
+  border-radius: 34% 66% 58% 42%;
+  background: rgba(255, 250, 255, 0.1);
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.28);
+}
+
+.avatar {
+  object-position: center;
+}
+
+.profile-meta {
+  gap: 10px;
+}
+
+.live-badge {
+  border-color: rgba(255, 196, 222, 0.52);
+  background: rgba(255, 196, 222, 0.11);
+  color: var(--brand-pink);
+  font-family: "Aoudax", "Geologica", sans-serif;
+  font-size: 0.75rem;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  box-shadow: none;
+}
+
+.live-badge__dot {
+  background: var(--brand-pink);
+  box-shadow: 0 0 0 5px rgba(255, 196, 222, 0.13);
+}
+
+h1 {
+  color: var(--brand-text);
+  font-family: "Aoudax", "Geologica", sans-serif;
+  font-weight: 400;
+  letter-spacing: -0.055em;
+  background: none;
+  -webkit-text-fill-color: currentColor;
+  text-shadow: 0 0 28px rgba(223, 196, 255, 0.18);
+}
+
+#profile-name {
+  color: transparent;
+  background: var(--brand-wordmark-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.actions {
+  gap: 20px;
+}
+
+.section {
+  gap: 11px;
+}
+
+.section-head strong {
+  color: var(--brand-lavender);
+  font-family: "Geologica", system-ui, sans-serif;
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+
+.tiles {
+  gap: 12px;
+}
+
+.tile {
+  border-color: rgba(223, 196, 255, 0.2);
+  border-radius: 22px;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.065), rgba(255, 255, 255, 0.025));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07);
+}
+
+.tile::before {
+  background: linear-gradient(135deg, rgba(223, 196, 255, 0.17), rgba(255, 196, 222, 0.09));
+}
+
+.tile:hover,
+.tile:focus-visible {
+  border-color: rgba(223, 196, 255, 0.46);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.tile__icon {
+  width: 46px;
+  height: 46px;
+  border-color: color-mix(in srgb, var(--tile-accent, var(--brand-lavender)) 44%, transparent);
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--tile-accent, var(--brand-lavender)) 15%, transparent);
+  box-shadow: none;
+}
+
+.tile__symbol {
+  color: var(--tile-accent, var(--brand-lavender));
+  font-family: "Aoudax", "Geologica", sans-serif;
+  font-size: 1rem;
+  font-weight: 400;
+  letter-spacing: -0.04em;
+}
+
+.tile__copy {
+  gap: 5px;
+}
+
+.tile__title {
+  font-family: "Geologica", system-ui, sans-serif;
+  font-weight: 760;
+}
+
+.tile__meta {
+  color: var(--brand-muted);
+}
+
+.tile__arrow {
+  color: var(--brand-lavender);
+}
+
+.tile--twitch {
+  --tile-accent: var(--brand-lavender);
+  background: linear-gradient(145deg, rgba(223, 196, 255, 0.16), rgba(255, 255, 255, 0.03));
+}
+
+.tile--youtube {
+  --tile-accent: var(--brand-pink);
+  background: linear-gradient(145deg, rgba(255, 196, 222, 0.15), rgba(255, 255, 255, 0.03));
+}
+
+.tile--telegram {
+  --tile-accent: var(--brand-mint);
+  background: linear-gradient(145deg, rgba(125, 227, 214, 0.14), rgba(255, 255, 255, 0.03));
+}
+
+.tile--instagram {
+  --tile-accent: var(--brand-pink);
+  background: linear-gradient(145deg, rgba(255, 196, 222, 0.14), rgba(255, 255, 255, 0.03));
+}
+
+.tile--donationalerts {
+  --tile-accent: var(--brand-yellow);
+  background: linear-gradient(145deg, rgba(255, 224, 138, 0.14), rgba(255, 255, 255, 0.03));
+}
+
+@media (max-width: 640px) {
+  .shell {
+    border-radius: 30px;
+  }
+
+  .identity {
+    border-bottom-color: rgba(223, 196, 255, 0.2);
+  }
+}

@@ -22,6 +22,11 @@ const SCENES_DIR = resolveRepoPath(options.scenesDir ?? "dist/scenes");
 const OUTPUT_DIR = options.outputDir
   ? resolveRepoPath(options.outputDir)
   : path.join(SCENES_DIR, "rendered");
+const SCENE_FILE = options.scene;
+
+if (SCENE_FILE && (path.basename(SCENE_FILE) !== SCENE_FILE || path.extname(SCENE_FILE).toLowerCase() !== ".html")) {
+  throw new Error("--scene must be the name of one HTML file in --scenes-dir.");
+}
 
 if (TRANSPARENT_BACKGROUND && CAPTURE_FORMAT === "jpeg") {
   throw new Error("--transparent requires png or webp because jpeg does not support alpha.");
@@ -126,7 +131,12 @@ async function discoverScenes() {
   const entries = await fs.promises.readdir(SCENES_DIR, { withFileTypes: true });
 
   return entries
-    .filter((entry) => entry.isFile() && path.extname(entry.name).toLowerCase() === ".html")
+    .filter(
+      (entry) =>
+        entry.isFile() &&
+        path.extname(entry.name).toLowerCase() === ".html" &&
+        (!SCENE_FILE || entry.name === SCENE_FILE),
+    )
     .map((entry) => ({
       basename: path.basename(entry.name, ".html"),
       fileName: entry.name,
@@ -141,6 +151,7 @@ function parseCliOptions(args) {
     ["format", "format"],
     ["output-dir", "outputDir"],
     ["quality", "quality"],
+    ["scene", "scene"],
     ["scenes-dir", "scenesDir"],
     ["transparent", "transparent"],
     ["width", "width"],
@@ -396,7 +407,7 @@ async function resolveEdgeBinary() {
 
 async function waitForSceneReady(page, timeoutMs) {
   await page.evaluate(async (timeout) => {
-    const requiredFonts = ["Geologica", "Onest"];
+    const requiredFonts = ["Geologica", "Aoudax"];
     const requiredFontSample = "AaBb0123456789АБВабвЯя";
 
     const waitForImages = async () => {

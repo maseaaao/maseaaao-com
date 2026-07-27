@@ -1,0 +1,54 @@
+@import url("../assets/brand.css");
+
+:root {
+  --text: var(--brand-text);
+  --accent-violet: var(--brand-lavender);
+}
+
+body {
+  font-family: "Geologica", system-ui, sans-serif;
+  background: transparent;
+}
+
+.logo-stage {
+  background: transparent;
+}
+
+.logo-stage--glow::before {
+  inset: 74px 72px 72px;
+  border: 1px solid rgba(223, 196, 255, 0.22);
+  filter: none;
+}
+
+.logo-stage--glow-light::before {
+  background:
+    radial-gradient(ellipse at 50% 48%, rgba(255, 250, 255, 0.72), rgba(223, 196, 255, 0.34) 43%, transparent 74%),
+    radial-gradient(ellipse at 18% 48%, rgba(255, 196, 222, 0.24), transparent 62%),
+    radial-gradient(ellipse at 82% 46%, rgba(125, 227, 214, 0.2), transparent 66%);
+}
+
+.logo-stage--glow-dark::before {
+  background:
+    radial-gradient(ellipse at 50% 48%, rgba(25, 16, 41, 0.94), rgba(71, 44, 101, 0.62) 50%, transparent 77%),
+    radial-gradient(ellipse at 18% 48%, rgba(255, 196, 222, 0.2), transparent 62%),
+    radial-gradient(ellipse at 82% 46%, rgba(125, 227, 214, 0.18), transparent 66%);
+}
+
+.logo-mark {
+  font-family: "Aoudax", "Geologica", sans-serif;
+  font-size: 292px;
+  font-weight: 400;
+  letter-spacing: -0.065em;
+  color: transparent;
+  background: var(--brand-wordmark-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 26px rgba(223, 196, 255, 0.18)) drop-shadow(0 22px 54px rgba(0, 0, 0, 0.26));
+}
+
+.logo-mark::before {
+  color: rgba(223, 196, 255, 0.22);
+  -webkit-text-fill-color: rgba(223, 196, 255, 0.22);
+  filter: blur(20px);
+}
