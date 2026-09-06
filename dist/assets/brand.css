@@ -8,7 +8,8 @@
 
 @font-face {
   font-family: "Geologica";
-  src: url("./fonts/Geologica/variable/geologica-cyrillic-ext-wght-normal.woff2") format("woff2");
+  src: url("./fonts/Geologica/variable/geologica-cyrillic-ext-wght-normal.woff2")
+    format("woff2");
   font-style: normal;
   font-weight: 100 900;
   font-display: swap;
@@ -17,7 +18,8 @@
 
 @font-face {
   font-family: "Geologica";
-  src: url("./fonts/Geologica/variable/geologica-latin-ext-wght-normal.woff2") format("woff2");
+  src: url("./fonts/Geologica/variable/geologica-latin-ext-wght-normal.woff2")
+    format("woff2");
   font-style: normal;
   font-weight: 100 900;
   font-display: swap;
@@ -27,24 +29,37 @@
 :root {
   color-scheme: dark;
   --brand-ink: #0f0b1a;
-  --brand-ink-soft: #181126;
-  --brand-surface: #211734;
-  --brand-surface-strong: #2a1d42;
   --brand-line: rgba(223, 196, 255, 0.28);
-  --brand-line-soft: rgba(255, 255, 255, 0.12);
   --brand-text: #fbf7ff;
   --brand-muted: #c9bfd7;
   --brand-lavender: #dfc4ff;
   --brand-pink: #ffc4de;
   --brand-mint: #7de3d6;
   --brand-yellow: #ffe08a;
-  --brand-cat: #b6b3ba;
   --brand-shadow: rgba(2, 0, 8, 0.42);
-  --brand-wordmark-gradient: linear-gradient(100deg, #fbf7ff 0%, #dfc4ff 30%, #ffc4de 62%, #7de3d6 100%);
+  --brand-wordmark-gradient: linear-gradient(
+    100deg,
+    #fbf7ff 0%,
+    #dfc4ff 30%,
+    #ffc4de 62%,
+    #7de3d6 100%
+  );
   --brand-aura:
-    radial-gradient(circle at 10% 10%, rgba(223, 196, 255, 0.28), transparent 28%),
-    radial-gradient(circle at 86% 18%, rgba(255, 196, 222, 0.22), transparent 31%),
-    radial-gradient(circle at 48% 102%, rgba(125, 227, 214, 0.18), transparent 35%),
+    radial-gradient(
+      circle at 10% 10%,
+      rgba(223, 196, 255, 0.28),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 86% 18%,
+      rgba(255, 196, 222, 0.22),
+      transparent 31%
+    ),
+    radial-gradient(
+      circle at 48% 102%,
+      rgba(125, 227, 214, 0.18),
+      transparent 35%
+    ),
     linear-gradient(145deg, #0d0918 0%, #171027 50%, #0e0a19 100%);
 }
 
@@ -54,23 +69,4 @@
 
 html {
   font-synthesis: none;
-}
-
-.brand-display {
-  font-family: "Aoudax", "Geologica", sans-serif;
-}
-
-.brand-kicker {
-  color: var(--brand-lavender);
-  font-family: "Aoudax", "Geologica", sans-serif;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.brand-wordmark {
-  color: transparent;
-  background: var(--brand-wordmark-gradient);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
 }

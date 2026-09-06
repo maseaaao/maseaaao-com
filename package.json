@@ -1,27 +1,23 @@
 {
-  "name": "maseaaao-com",
+  "name": "maseaaao-stream",
   "private": true,
   "scripts": {
-    "render:banners:youtube": "node scripts/render-scenes.mjs --scenes-dir dist/banners --scene youtube-schedule.html --output-dir dist/banners/rendered --width 2048 --height 1152 --format png",
-    "render:banners:twitch": "node scripts/render-scenes.mjs --scenes-dir dist/banners --scene twitch-schedule.html --output-dir dist/banners/rendered --width 2224 --height 570 --format png",
-    "render:logo": "node scripts/render-scenes.mjs --scenes-dir dist/logo --output-dir dist/logo/rendered --width 1920 --height 540 --format png --transparent",
+    "render:youtube-banner": "node scripts/render-scenes.mjs --scenes-dir src/banners --scene youtube-schedule.html --output-dir src/banners/rendered --width 2048 --height 1152 --format jpeg",
+    "render:twitch-banner": "node scripts/render-scenes.mjs --scenes-dir src/banners --scene twitch-schedule.html --output-dir src/banners/rendered --width 2224 --height 570 --format jpeg",
+    "render:logo": "node scripts/render-scenes.mjs --scenes-dir src/logo --output-dir src/logo/rendered --width 1920 --height 540 --format webp --transparent",
     "render:scenes": "node scripts/render-scenes.mjs",
-    "render:twitch-description": "node scripts/render-scenes.mjs --scenes-dir dist/twitch-description --output-dir dist/twitch-description/rendered --width 320 --height 64 --format png",
-    "render:twitch-emotes": "node scripts/render-twitch-emotes.mjs",
-    "render:twitch-points": "node scripts/render-twitch-points.mjs",
+    "render:twitch-description": "node scripts/render-scenes.mjs --scenes-dir src/twitch-description --output-dir src/twitch-description/rendered --width 320 --height 64 --format jpeg",
     "brand:assets": "node scripts/generate-brand-assets.mjs",
     "brand:subscribe": "node scripts/render-subscribe-card.mjs",
     "optimize:images": "node scripts/optimize-images.mjs",
     "full": "npm-run-all --parallel render:*",
     "postfull": "npm run optimize:images"
   },
-  "dependencies": {
-    "playwright-core": "^1.58.2",
-    "qrcode": "^1.5.4"
-  },
   "devDependencies": {
-    "jpegtran-bin": "^7.0.0",
+    "jsqr": "^1.4.0",
     "npm-run-all": "^4.1.5",
+    "playwright-core": "^1.58.2",
+    "qrcode": "^1.5.4",
     "sharp": "^0.34.5"
   }
 }

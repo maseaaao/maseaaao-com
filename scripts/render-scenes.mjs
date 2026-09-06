@@ -9,28 +9,51 @@ const DEFAULT_BASE_HEIGHT = 1440;
 const DEFAULT_CAPTURE_FORMAT = "webp";
 const DEFAULT_CAPTURE_QUALITY = 100;
 const SCENE_TIMEOUT_MS = 20000;
-const SCRIPT_PATH = path.resolve(process.argv[1] ?? "scripts/render-scenes.mjs");
+const SCRIPT_PATH = path.resolve(
+  process.argv[1] ?? "scripts/render-scenes.mjs",
+);
 const SCRIPT_DIR = path.dirname(SCRIPT_PATH);
 const REPO_ROOT = path.resolve(SCRIPT_DIR, "..");
-const DIST_DIR = path.join(REPO_ROOT, "dist");
 const options = parseCliOptions(process.argv.slice(2));
-const BASE_WIDTH = readPositiveIntegerOption(options.width, "--width", DEFAULT_BASE_WIDTH);
-const BASE_HEIGHT = readPositiveIntegerOption(options.height, "--height", DEFAULT_BASE_HEIGHT);
+const BASE_WIDTH = readPositiveIntegerOption(
+  options.width,
+  "--width",
+  DEFAULT_BASE_WIDTH,
+);
+const BASE_HEIGHT = readPositiveIntegerOption(
+  options.height,
+  "--height",
+  DEFAULT_BASE_HEIGHT,
+);
 const CAPTURE_FORMAT = readCaptureFormatOption(options.format);
-const CAPTURE_QUALITY = readScreenshotQualityOption(options.quality, "--quality", DEFAULT_CAPTURE_QUALITY);
-const TRANSPARENT_BACKGROUND = readBooleanFlagOption(options.transparent, "--transparent", false);
-const SCENES_DIR = resolveRepoPath(options.scenesDir ?? "dist/scenes");
+const CAPTURE_QUALITY = readScreenshotQualityOption(
+  options.quality,
+  "--quality",
+  DEFAULT_CAPTURE_QUALITY,
+);
+const TRANSPARENT_BACKGROUND = readBooleanFlagOption(
+  options.transparent,
+  "--transparent",
+  false,
+);
+const SCENES_DIR = resolveRepoPath(options.scenesDir ?? "src/scenes");
 const OUTPUT_DIR = options.outputDir
   ? resolveRepoPath(options.outputDir)
   : path.join(SCENES_DIR, "rendered");
 const SCENE_FILE = options.scene;
 
-if (SCENE_FILE && (path.basename(SCENE_FILE) !== SCENE_FILE || path.extname(SCENE_FILE).toLowerCase() !== ".html")) {
+if (
+  SCENE_FILE &&
+  (path.basename(SCENE_FILE) !== SCENE_FILE ||
+    path.extname(SCENE_FILE).toLowerCase() !== ".html")
+) {
   throw new Error("--scene must be the name of one HTML file in --scenes-dir.");
 }
 
 if (TRANSPARENT_BACKGROUND && CAPTURE_FORMAT === "jpeg") {
-  throw new Error("--transparent requires png or webp because jpeg does not support alpha.");
+  throw new Error(
+    "--transparent requires png or webp because jpeg does not support alpha.",
+  );
 }
 
 const CONTENT_TYPES = new Map([
@@ -48,8 +71,7 @@ const CONTENT_TYPES = new Map([
 ]);
 
 async function main() {
-  await assertDirectoryExists(DIST_DIR, "dist");
-  assertPathInside(DIST_DIR, SCENES_DIR, "Scenes directory");
+  assertPathInside(REPO_ROOT, SCENES_DIR, "Scenes directory");
   await assertDirectoryExists(SCENES_DIR, path.relative(REPO_ROOT, SCENES_DIR));
   await fs.promises.mkdir(OUTPUT_DIR, { recursive: true });
 
@@ -58,18 +80,22 @@ async function main() {
     throw new Error(`No HTML scenes found in ${SCENES_DIR}.`);
   }
 
-  const edgeBinary = await resolveEdgeBinary();
+  const chromeBinary = await resolveChromeBinary();
   let server = null;
   let browser = null;
   let context = null;
   let failures = 0;
 
   try {
-    server = await startStaticServer(DIST_DIR);
+    server = await startStaticServer(REPO_ROOT);
     browser = await chromium.launch({
-      executablePath: edgeBinary,
+      executablePath: chromeBinary,
       headless: true,
-      args: ["--disable-gpu", "--force-device-scale-factor=1", "--hide-scrollbars"],
+      args: [
+        "--disable-gpu",
+        "--force-device-scale-factor=1",
+        "--hide-scrollbars",
+      ],
     });
     context = await browser.newContext({
       deviceScaleFactor: 1,
@@ -77,23 +103,33 @@ async function main() {
       viewport: { width: BASE_WIDTH, height: BASE_HEIGHT },
     });
 
-    console.log(`Serving ${DIST_DIR} at ${server.origin}`);
-    console.log(`Using Edge: ${edgeBinary}`);
-    console.log(`Rendering ${path.relative(REPO_ROOT, SCENES_DIR)} at ${BASE_WIDTH}x${BASE_HEIGHT}`);
+    console.log(`Serving ${REPO_ROOT} at ${server.origin}`);
+    console.log(`Using Chrome: ${chromeBinary}`);
+    console.log(
+      `Rendering ${path.relative(REPO_ROOT, SCENES_DIR)} at ${BASE_WIDTH}x${BASE_HEIGHT}`,
+    );
 
     for (const scene of scenes) {
       const page = await context.newPage();
 
       try {
         const sceneUrl = `${server.origin}${scene.urlPath}`;
-        await page.goto(sceneUrl, { waitUntil: "load", timeout: SCENE_TIMEOUT_MS });
+        await page.goto(sceneUrl, {
+          waitUntil: "load",
+          timeout: SCENE_TIMEOUT_MS,
+        });
         await waitForSceneReady(page, SCENE_TIMEOUT_MS);
         await page.waitForTimeout(250);
 
-        const outputPath = path.join(OUTPUT_DIR, `${scene.basename}.${CAPTURE_FORMAT}`);
+        const outputPath = path.join(
+          OUTPUT_DIR,
+          `${scene.basename}.${CAPTURE_FORMAT}`,
+        );
         const bytes = await captureScreenshot(page);
         await writeAtomically(outputPath, bytes);
-        console.log(`[ok] ${scene.fileName} -> ${path.relative(REPO_ROOT, outputPath)}`);
+        console.log(
+          `[ok] ${scene.fileName} -> ${path.relative(REPO_ROOT, outputPath)}`,
+        );
       } catch (error) {
         failures += 1;
         console.error(`[fail] ${scene.fileName}: ${formatError(error)}`);
@@ -102,7 +138,11 @@ async function main() {
       }
     }
   } finally {
-    await Promise.allSettled([context?.close(), browser?.close(), closeServer(server?.server)]);
+    await Promise.allSettled([
+      context?.close(),
+      browser?.close(),
+      closeServer(server?.server),
+    ]);
   }
 
   if (failures > 0) {
@@ -111,7 +151,9 @@ async function main() {
     return;
   }
 
-  console.log(`Rendered ${scenes.length} scene(s) to ${path.relative(REPO_ROOT, OUTPUT_DIR)}.`);
+  console.log(
+    `Rendered ${scenes.length} scene(s) to ${path.relative(REPO_ROOT, OUTPUT_DIR)}.`,
+  );
 }
 
 async function assertDirectoryExists(directoryPath, label) {
@@ -120,16 +162,22 @@ async function assertDirectoryExists(directoryPath, label) {
   try {
     stats = await fs.promises.stat(directoryPath);
   } catch {
-    throw new Error(`Expected ${label} at ${directoryPath}, but it was not found.`);
+    throw new Error(
+      `Expected ${label} at ${directoryPath}, but it was not found.`,
+    );
   }
 
   if (!stats.isDirectory()) {
-    throw new Error(`Expected ${label} at ${directoryPath}, but it is not a directory.`);
+    throw new Error(
+      `Expected ${label} at ${directoryPath}, but it is not a directory.`,
+    );
   }
 }
 
 async function discoverScenes() {
-  const entries = await fs.promises.readdir(SCENES_DIR, { withFileTypes: true });
+  const entries = await fs.promises.readdir(SCENES_DIR, {
+    withFileTypes: true,
+  });
 
   return entries
     .filter(
@@ -141,7 +189,9 @@ async function discoverScenes() {
     .map((entry) => ({
       basename: path.basename(entry.name, ".html"),
       fileName: entry.name,
-      urlPath: toUrlPath(path.relative(DIST_DIR, path.join(SCENES_DIR, entry.name))),
+      urlPath: toUrlPath(
+        path.relative(REPO_ROOT, path.join(SCENES_DIR, entry.name)),
+      ),
     }))
     .sort((left, right) => left.fileName.localeCompare(right.fileName, "en"));
 }
@@ -167,15 +217,22 @@ function parseCliOptions(args) {
     }
 
     const separatorIndex = arg.indexOf("=");
-    const rawKey = arg.slice(2, separatorIndex === -1 ? undefined : separatorIndex);
+    const rawKey = arg.slice(
+      2,
+      separatorIndex === -1 ? undefined : separatorIndex,
+    );
     const key = aliases.get(rawKey);
     if (!key) {
       throw new Error(`Unknown option: --${rawKey}`);
     }
 
-    let value = separatorIndex === -1 ? undefined : arg.slice(separatorIndex + 1);
+    let value =
+      separatorIndex === -1 ? undefined : arg.slice(separatorIndex + 1);
     if (booleanFlags.has(key)) {
-      if (value === undefined && (args[index + 1] === "true" || args[index + 1] === "false")) {
+      if (
+        value === undefined &&
+        (args[index + 1] === "true" || args[index + 1] === "false")
+      ) {
         index += 1;
         value = args[index];
       }
@@ -221,7 +278,11 @@ function readPositiveIntegerOption(value, label, fallback) {
   }
 
   const parsed = Number.parseInt(value, 10);
-  if (!Number.isInteger(parsed) || parsed <= 0 || String(parsed) !== String(value)) {
+  if (
+    !Number.isInteger(parsed) ||
+    parsed <= 0 ||
+    String(parsed) !== String(value)
+  ) {
     throw new Error(`${label} must be a positive integer.`);
   }
 
@@ -262,15 +323,22 @@ function resolveRepoPath(value) {
 function assertPathInside(rootDir, candidatePath, label) {
   const relativePath = path.relative(rootDir, candidatePath);
 
-  if (relativePath === "" || (!relativePath.startsWith("..") && !path.isAbsolute(relativePath))) {
+  if (
+    relativePath === "" ||
+    (!relativePath.startsWith("..") && !path.isAbsolute(relativePath))
+  ) {
     return;
   }
 
-  throw new Error(`${label} must be inside ${path.relative(REPO_ROOT, rootDir)}.`);
+  throw new Error(
+    `${label} must be inside ${path.relative(REPO_ROOT, rootDir)}.`,
+  );
 }
 
 function toUrlPath(relativePath) {
-  const segments = relativePath.split(path.sep).map((segment) => encodeURIComponent(segment));
+  const segments = relativePath
+    .split(path.sep)
+    .map((segment) => encodeURIComponent(segment));
   return `/${segments.join("/")}`;
 }
 
@@ -280,7 +348,9 @@ function startStaticServer(rootDir) {
       try {
         await handleStaticRequest(rootDir, request, response);
       } catch (error) {
-        response.writeHead(500, { "content-type": "text/plain; charset=utf-8" });
+        response.writeHead(500, {
+          "content-type": "text/plain; charset=utf-8",
+        });
         response.end(`Internal server error: ${error.message}`);
       }
     });
@@ -331,7 +401,8 @@ async function handleStaticRequest(rootDir, request, response) {
   }
 
   const extension = path.extname(filePath).toLowerCase();
-  const contentType = CONTENT_TYPES.get(extension) ?? "application/octet-stream";
+  const contentType =
+    CONTENT_TYPES.get(extension) ?? "application/octet-stream";
   response.writeHead(200, {
     "cache-control": "no-store",
     "content-length": String(stats.size),
@@ -366,7 +437,9 @@ function resolveRequestPath(rootDir, urlPath) {
 
   const normalizedPath = path.normalize(relativePath.replace(/^[/\\]+/, ""));
   const absolutePath = path.resolve(rootDir, normalizedPath);
-  const rootPrefix = rootDir.endsWith(path.sep) ? rootDir : `${rootDir}${path.sep}`;
+  const rootPrefix = rootDir.endsWith(path.sep)
+    ? rootDir
+    : `${rootDir}${path.sep}`;
 
   if (absolutePath !== rootDir && !absolutePath.startsWith(rootPrefix)) {
     return null;
@@ -375,17 +448,31 @@ function resolveRequestPath(rootDir, urlPath) {
   return absolutePath;
 }
 
-async function resolveEdgeBinary() {
+async function resolveChromeBinary() {
   const candidates = [];
 
-  if (process.env.EDGE_BIN) {
-    candidates.push(process.env.EDGE_BIN);
+  if (process.env.CHROME_BIN) {
+    candidates.push(process.env.CHROME_BIN);
+  }
+
+  if (process.platform === "darwin") {
+    candidates.push(
+      "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+    );
   }
 
   if (process.platform === "win32") {
     candidates.push(
-      "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe",
-      "C:\\Program Files\\Microsoft\\Edge\\Application\\msedge.exe"
+      "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe",
+    );
+  }
+
+  if (process.platform === "linux") {
+    candidates.push(
+      "/usr/bin/google-chrome",
+      "/usr/bin/google-chrome-stable",
+      "/usr/bin/chromium-browser",
     );
   }
 
@@ -402,8 +489,10 @@ async function resolveEdgeBinary() {
     }
   }
 
-  const hint = process.env.EDGE_BIN ? ` EDGE_BIN=${process.env.EDGE_BIN}` : "";
-  throw new Error(`Microsoft Edge binary not found.${hint}`.trim());
+  const hint = process.env.CHROME_BIN
+    ? ` CHROME_BIN=${process.env.CHROME_BIN}`
+    : "";
+  throw new Error(`Google Chrome binary not found.${hint}`.trim());
 }
 
 async function waitForSceneReady(page, timeoutMs) {
@@ -423,7 +512,9 @@ async function waitForSceneReady(page, timeoutMs) {
 
         if (image.complete) {
           if (image.naturalWidth === 0) {
-            throw new Error(`Image failed to load: ${image.currentSrc || image.src || "<unknown>"}`);
+            throw new Error(
+              `Image failed to load: ${image.currentSrc || image.src || "<unknown>"}`,
+            );
           }
 
           return finalizeDecode();
@@ -442,7 +533,11 @@ async function waitForSceneReady(page, timeoutMs) {
 
           const handleError = () => {
             cleanup();
-            reject(new Error(`Image failed to load: ${image.currentSrc || image.src || "<unknown>"}`));
+            reject(
+              new Error(
+                `Image failed to load: ${image.currentSrc || image.src || "<unknown>"}`,
+              ),
+            );
           };
 
           image.addEventListener("load", handleLoad, { once: true });
@@ -453,7 +548,8 @@ async function waitForSceneReady(page, timeoutMs) {
       await Promise.all(imagePromises);
     };
 
-    const normalizeFontFamily = (fontFamily) => fontFamily.replace(/^["']|["']$/g, "");
+    const normalizeFontFamily = (fontFamily) =>
+      fontFamily.replace(/^["']|["']$/g, "");
 
     const waitForRequiredFonts = async () => {
       const visibleText = document.body.innerText.replace(/\s+/g, "");
@@ -463,11 +559,15 @@ async function waitForSceneReady(page, timeoutMs) {
 
       const fontFaces = Array.from(document.fonts);
       const missingRegistrations = requiredFonts.filter((fontFamily) => {
-        return !fontFaces.some((fontFace) => normalizeFontFamily(fontFace.family) === fontFamily);
+        return !fontFaces.some(
+          (fontFace) => normalizeFontFamily(fontFace.family) === fontFamily,
+        );
       });
 
       if (missingRegistrations.length > 0) {
-        throw new Error(`Required fonts not registered: ${missingRegistrations.join(", ")}`);
+        throw new Error(
+          `Required fonts not registered: ${missingRegistrations.join(", ")}`,
+        );
       }
 
       const missingFonts = [];
@@ -490,12 +590,18 @@ async function waitForSceneReady(page, timeoutMs) {
       await document.fonts.ready;
       await waitForRequiredFonts();
       await waitForImages();
-      await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+      await new Promise((resolve) =>
+        requestAnimationFrame(() => requestAnimationFrame(resolve)),
+      );
     })();
 
     const timeoutPromise = new Promise((_, reject) => {
       setTimeout(() => {
-        reject(new Error(`Timed out after ${timeout}ms waiting for fonts and images.`));
+        reject(
+          new Error(
+            `Timed out after ${timeout}ms waiting for fonts and images.`,
+          ),
+        );
       }, timeout);
     });
 
@@ -514,9 +620,16 @@ async function captureScreenshot(page) {
     return screenshot;
   }
 
-  return sharp(screenshot)
-    .toFormat(CAPTURE_FORMAT, { quality: CAPTURE_QUALITY })
-    .toBuffer();
+  let formatOptions;
+  if (CAPTURE_FORMAT === "jpeg") {
+    formatOptions = { quality: CAPTURE_QUALITY, chromaSubsampling: "4:4:4" };
+  } else if (CAPTURE_FORMAT === "webp" && TRANSPARENT_BACKGROUND) {
+    formatOptions = { lossless: true };
+  } else {
+    formatOptions = { quality: CAPTURE_QUALITY };
+  }
+
+  return sharp(screenshot).toFormat(CAPTURE_FORMAT, formatOptions).toBuffer();
 }
 
 async function writeAtomically(destinationPath, bytes) {

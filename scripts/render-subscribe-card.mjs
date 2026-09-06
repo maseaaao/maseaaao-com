@@ -2,7 +2,7 @@ import sharp from "sharp";
 
 const background = "dist/assets/subscribe-background-ai.png";
 const avatar = "dist/assets/avatar-master.png";
-const logo = "dist/logo/rendered/maseaaao-dark.png";
+const logo = "src/logo/rendered/maseaaao-dark.webp";
 const output = "dist/assets/subscribe-512.png";
 
 const overlay = Buffer.from(`
@@ -19,9 +19,17 @@ const overlay = Buffer.from(`
   </svg>
 `);
 
-const avatarImage = await sharp(avatar).resize(184, 184, { fit: "cover", position: "centre" }).png().toBuffer();
-const avatarMask = Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" width="184" height="184"><circle cx="92" cy="92" r="92" fill="#fff"/></svg>');
-const portrait = await sharp(avatarImage).composite([{ input: avatarMask, blend: "dest-in" }]).png().toBuffer();
+const avatarImage = await sharp(avatar)
+  .resize(184, 184, { fit: "cover", position: "centre" })
+  .png()
+  .toBuffer();
+const avatarMask = Buffer.from(
+  '<svg xmlns="http://www.w3.org/2000/svg" width="184" height="184"><circle cx="92" cy="92" r="92" fill="#fff"/></svg>',
+);
+const portrait = await sharp(avatarImage)
+  .composite([{ input: avatarMask, blend: "dest-in" }])
+  .png()
+  .toBuffer();
 const logoImage = await sharp(logo).resize({ width: 286 }).png().toBuffer();
 await sharp(background)
   .resize(512, 512, { fit: "cover", position: "centre" })

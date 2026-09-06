@@ -1,19 +1,14 @@
-import { execFile } from "node:child_process";
 import fs from "node:fs/promises";
 import os from "node:os";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
-import { promisify } from "node:util";
-import jpegtranModule from "jpegtran-bin";
 import sharp from "sharp";
 
-const execFileAsync = promisify(execFile);
 const SCRIPT_DIR = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.resolve(SCRIPT_DIR, "..");
-const DEFAULT_TARGETS = ["dist"];
+const DEFAULT_TARGETS = ["dist", "src"];
 const IMAGE_EXTENSIONS = new Set([".jpeg", ".jpg", ".png", ".webp"]);
 const SKIPPED_DIRECTORIES = new Set([".git", "node_modules"]);
-const jpegtranPath = jpegtranModule.default ?? jpegtranModule;
 
 async function main() {
   const targets = process.argv.slice(2);
@@ -32,7 +27,9 @@ async function main() {
 
   const results = [];
 
-  for (const file of files.sort((left, right) => left.localeCompare(right, "en"))) {
+  for (const file of files.sort((left, right) =>
+    left.localeCompare(right, "en"),
+  )) {
     try {
       results.push(await optimizeImage(file));
     } catch (error) {
@@ -70,7 +67,10 @@ async function collectImageFiles(directoryPath, files) {
       continue;
     }
 
-    if (entry.isFile() && IMAGE_EXTENSIONS.has(path.extname(entry.name).toLowerCase())) {
+    if (
+      entry.isFile() &&
+      IMAGE_EXTENSIONS.has(path.extname(entry.name).toLowerCase())
+    ) {
       files.push(entryPath);
     }
   }
@@ -91,38 +91,38 @@ async function optimizeImage(file) {
 }
 
 async function optimizeJpeg(file) {
-  const tempFile = makeTempPath(file);
-  const workDirectory = await fs.mkdtemp(path.join(os.tmpdir(), "maseaaao-images-"));
-  const extension = path.extname(file).toLowerCase() || ".jpg";
-  const sourceFile = path.join(workDirectory, `source${extension}`);
-  const outputFile = path.join(workDirectory, `optimized${extension}`);
+  const workDirectory = await fs.mkdtemp(
+    path.join(os.tmpdir(), "maseaaao-images-"),
+  );
+  const outputFile = path.join(workDirectory, "optimized.jpg");
   const originalSize = await getFileSize(file);
 
   try {
-    await fs.copyFile(file, sourceFile);
-    await execFileAsync(jpegtranPath, [
-      "-copy",
-      "all",
-      "-optimize",
-      "-progressive",
-      "-outfile",
-      outputFile,
-      sourceFile,
-    ]);
-    await fs.copyFile(outputFile, tempFile);
+    const input = await fs.readFile(file);
+    await sharp(input)
+      .keepMetadata()
+      .jpeg({ mozjpeg: true, quality: 100 })
+      .toFile(outputFile);
 
-    return await keepIfSmaller(file, tempFile, originalSize);
+    return await keepIfSmaller(file, outputFile, originalSize);
   } catch (error) {
-    await removeIfExists(tempFile);
+    await removeIfExists(outputFile);
     throw error;
   } finally {
-    await fs.rm(workDirectory, { force: true, recursive: true }).catch(() => {});
+    await fs
+      .rm(workDirectory, { force: true, recursive: true })
+      .catch(() => {});
   }
 }
 
 async function optimizeWithSharp(file, format) {
-  const workDirectory = await fs.mkdtemp(path.join(os.tmpdir(), "maseaaao-images-"));
-  const tempFile = path.join(workDirectory, `optimized${path.extname(file).toLowerCase()}`);
+  const workDirectory = await fs.mkdtemp(
+    path.join(os.tmpdir(), "maseaaao-images-"),
+  );
+  const tempFile = path.join(
+    workDirectory,
+    `optimized${path.extname(file).toLowerCase()}`,
+  );
   const originalSize = await getFileSize(file);
   const input = await fs.readFile(file);
   const image = sharp(input, { animated: true }).keepMetadata();
@@ -154,7 +154,9 @@ async function optimizeWithSharp(file, format) {
     await removeIfExists(tempFile);
     throw error;
   } finally {
-    await fs.rm(workDirectory, { force: true, recursive: true }).catch(() => {});
+    await fs
+      .rm(workDirectory, { force: true, recursive: true })
+      .catch(() => {});
   }
 }
 
@@ -192,13 +194,6 @@ async function keepIfSmaller(file, tempFile, originalSize) {
     kind: "optimized",
     saved: originalSize - optimizedSize,
   };
-}
-
-function makeTempPath(file) {
-  const directory = path.dirname(file);
-  const extension = path.extname(file);
-  const basename = path.basename(file, extension);
-  return path.join(directory, `${basename}.optimized-${process.pid}-${Date.now()}${extension}`);
 }
 
 async function getFileSize(file) {
@@ -245,7 +240,9 @@ function printSummary(results) {
       console.log(`[ok] ${relativeFile} saved ${formatBytes(result.saved)}`);
     } else if (result.kind === "kept") {
       kept += 1;
-      console.log(`[keep] ${relativeFile}${result.message ? `: ${result.message}` : ""}`);
+      console.log(
+        `[keep] ${relativeFile}${result.message ? `: ${result.message}` : ""}`,
+      );
     } else {
       failed += 1;
       console.warn(`[fail] ${relativeFile}: ${result.message}`);
@@ -253,7 +250,7 @@ function printSummary(results) {
   }
 
   console.log(
-    `Optimized ${optimized} image(s), kept ${kept}, failed ${failed}. Saved ${formatBytes(saved)}.`
+    `Optimized ${optimized} image(s), kept ${kept}, failed ${failed}. Saved ${formatBytes(saved)}.`,
   );
 
   if (failed > 0) {
