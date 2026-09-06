@@ -471,6 +471,15 @@ h1 {
   );
 }
 
+.tile--lobby {
+  --tile-accent: var(--brand-lavender);
+  background: linear-gradient(
+    145deg,
+    rgba(223, 196, 255, 0.14),
+    rgba(255, 255, 255, 0.03)
+  );
+}
+
 .tile--twitch .tile__icon {
   color: #dbcfff;
   border-color: rgba(145, 70, 255, 0.22);
@@ -499,6 +508,12 @@ h1 {
   color: #ffe4c8;
   border-color: rgba(245, 117, 7, 0.22);
   background: rgba(245, 117, 7, 0.14);
+}
+
+.tile--lobby .tile__icon {
+  color: #dff6ff;
+  border-color: rgba(38, 165, 228, 0.24);
+  background: rgba(38, 165, 228, 0.16);
 }
 
 @keyframes pulse {
